@@ -5,7 +5,7 @@
     $ctIsAdmin = $ctUser && $ctUser->role === 'admin';
 @endphp
 
-<header class="ct-site-header" data-ct-navbar>
+<header class="ct-site-header ct-site-header--light" data-ct-navbar>
 
     <nav class="ct-nav-shell" aria-label="Navigasi utama">
 

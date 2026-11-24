@@ -1,8 +1,29 @@
 <style>
+    /* =========================================================
+       NAVBAR PUBLIK — varian gelap (default) dan terang
+       Varian terang aktif bila header memakai class
+       .ct-site-header--light
+    ========================================================= */
+
+    :root {
+        --ct-nav-ink: #0f172a;
+        --ct-nav-ink-soft: #334155;
+        --ct-nav-muted: #64748b;
+        --ct-nav-primary: #f59e0b;
+        --ct-nav-primary-hover: #d97706;
+        --ct-nav-primary-soft: #fef3c7;
+        --ct-nav-primary-ink: #92400e;
+        --ct-nav-border: #e2e8f0;
+        --ct-nav-border-strong: #cbd5e1;
+        --ct-nav-font: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    }
+
     .ct-site-header,
     .ct-site-header * {
         box-sizing: border-box;
     }
+
+    /* ---------- BASE (gelap, untuk halaman lain) ---------- */
 
     .ct-site-header {
         position: sticky;
@@ -14,30 +35,28 @@
         box-shadow: 0 8px 25px rgba(0, 0, 0, .12);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
+        font-family: var(--ct-nav-font);
     }
 
     .ct-nav-shell {
-        width: min(1280px, calc(100% - 64px));
-        min-height: 78px;
+        width: min(1200px, calc(100% - 64px));
+        min-height: 76px;
         margin: 0 auto;
-
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 25px;
+        gap: 24px;
     }
 
     .ct-brand {
         display: inline-flex;
         align-items: center;
         flex-shrink: 0;
-
         color: #ffffff;
         text-decoration: none;
-
-        font-size: 23px;
+        font-size: 22px;
         font-weight: 800;
-        letter-spacing: .5px;
+        letter-spacing: -0.02em;
     }
 
     .ct-brand span {
@@ -47,32 +66,27 @@
     .ct-nav-panel {
         display: flex;
         align-items: center;
-        gap: 25px;
+        gap: 24px;
         margin-left: auto;
     }
 
     .ct-nav-links {
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 4px;
     }
 
     .ct-nav-link {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-
-        min-height: 42px;
+        min-height: 40px;
         padding: 0 14px;
-
-        border-radius: 8px;
-
+        border-radius: 10px;
         color: #cbd5e1;
         text-decoration: none;
-
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 600;
-
         transition: background .2s ease, color .2s ease;
     }
 
@@ -83,14 +97,14 @@
 
     .ct-nav-link.is-active {
         color: #f5b942;
-        background: rgba(245, 185, 66, .09);
+        background: rgba(245, 185, 66, .10);
     }
 
     .ct-nav-actions {
         display: flex;
         align-items: center;
-        gap: 9px;
-        margin-left: 5px;
+        gap: 8px;
+        margin-left: 4px;
     }
 
     .ct-nav-actions form {
@@ -102,20 +116,15 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-
-        min-height: 41px;
+        min-height: 40px;
         padding: 0 16px;
-
         border: 1px solid transparent;
-        border-radius: 8px;
-
+        border-radius: 10px;
         font-family: inherit;
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 700;
-
         text-decoration: none;
         white-space: nowrap;
-
         cursor: pointer;
         transition: all .2s ease;
     }
@@ -174,34 +183,26 @@
         color: #fca5a5;
     }
 
-    /* MOBILE MENU BUTTON */
-
     .ct-nav-toggle {
         display: none;
-
-        width: 43px;
-        height: 43px;
-
+        width: 42px;
+        height: 42px;
         align-items: center;
         justify-content: center;
         flex-direction: column;
         gap: 5px;
-
         background: transparent;
         border: 1px solid #34435e;
-        border-radius: 8px;
-
+        border-radius: 10px;
         cursor: pointer;
     }
 
     .ct-nav-toggle span {
         display: block;
-        width: 19px;
+        width: 18px;
         height: 2px;
-
         background: #f5b942;
-        border-radius: 5px;
-
+        border-radius: 4px;
         transition: all .2s ease;
     }
 
@@ -225,19 +226,97 @@
         outline-offset: 4px;
     }
 
-    /* TABLET DAN MOBILE */
+    /* ---------- VARIAN TERANG ---------- */
+
+    .ct-site-header--light {
+        background: rgba(255, 255, 255, .9);
+        border-bottom: 1px solid var(--ct-nav-border);
+        box-shadow: 0 4px 20px rgba(15, 23, 42, .04);
+    }
+
+    .ct-site-header--light .ct-brand {
+        color: var(--ct-nav-ink);
+    }
+
+    .ct-site-header--light .ct-brand span {
+        color: var(--ct-nav-primary);
+    }
+
+    .ct-site-header--light .ct-nav-link {
+        color: var(--ct-nav-ink-soft);
+    }
+
+    .ct-site-header--light .ct-nav-link:hover,
+    .ct-site-header--light .ct-nav-link.is-active {
+        color: var(--ct-nav-primary-ink);
+        background: var(--ct-nav-primary-soft);
+    }
+
+    .ct-site-header--light .ct-nav-account {
+        background: var(--ct-nav-primary-soft);
+        border-color: #fde68a;
+        color: var(--ct-nav-primary-ink);
+    }
+
+    .ct-site-header--light .ct-nav-account:hover {
+        background: #fde68a;
+    }
+
+    .ct-site-header--light .ct-nav-login {
+        color: var(--ct-nav-ink);
+        border-color: var(--ct-nav-border-strong);
+        background: #ffffff;
+    }
+
+    .ct-site-header--light .ct-nav-login:hover {
+        border-color: var(--ct-nav-primary);
+        color: var(--ct-nav-primary-ink);
+    }
+
+    .ct-site-header--light .ct-nav-register {
+        background: linear-gradient(135deg, #f59e0b, #f97316);
+        color: #ffffff;
+        box-shadow: 0 6px 16px rgba(245, 158, 11, .28);
+    }
+
+    .ct-site-header--light .ct-nav-register:hover {
+        background: linear-gradient(135deg, #d97706, #ea580c);
+    }
+
+    .ct-site-header--light .ct-nav-admin,
+    .ct-site-header--light .ct-nav-logout {
+        color: var(--ct-nav-ink-soft);
+        border-color: var(--ct-nav-border-strong);
+        background: #ffffff;
+    }
+
+    .ct-site-header--light .ct-nav-admin:hover {
+        border-color: var(--ct-nav-primary);
+        color: var(--ct-nav-primary-ink);
+    }
+
+    .ct-site-header--light .ct-nav-logout:hover {
+        background: #fef2f2;
+        border-color: #fca5a5;
+        color: #b91c1c;
+    }
+
+    .ct-site-header--light .ct-nav-toggle {
+        border-color: var(--ct-nav-border-strong);
+    }
+
+    .ct-site-header--light .ct-nav-toggle span {
+        background: var(--ct-nav-ink);
+    }
+
+    /* ---------- TABLET & MOBILE ---------- */
 
     @media (max-width: 900px) {
-
         .ct-nav-shell {
-            width: calc(100% - 36px);
-            min-height: 72px;
+            width: calc(100% - 40px);
+            min-height: 70px;
             flex-wrap: wrap;
             gap: 0;
-        }
-
-        .ct-brand {
-            font-size: 21px;
         }
 
         .ct-nav-toggle {
@@ -247,17 +326,13 @@
 
         .ct-nav-panel {
             display: none;
-
             width: 100%;
             flex: 0 0 100%;
-
             flex-direction: column;
             align-items: stretch;
             gap: 10px;
-
             margin: 0;
-            padding: 12px 0 17px;
-
+            padding: 12px 0 18px;
             border-top: 1px solid rgba(148, 163, 184, .15);
         }
 
@@ -265,27 +340,33 @@
             display: flex;
         }
 
+        .ct-site-header--light .ct-nav-panel {
+            border-top-color: var(--ct-nav-border);
+            background: #ffffff;
+        }
+
         .ct-nav-links {
             flex-direction: column;
             align-items: stretch;
-            gap: 3px;
+            gap: 4px;
         }
 
         .ct-nav-link {
             justify-content: flex-start;
             width: 100%;
-            padding: 0 14px;
         }
 
         .ct-nav-actions {
             flex-direction: column;
             align-items: stretch;
             gap: 8px;
-
-            margin: 5px 0 0;
+            margin: 6px 0 0;
             padding-top: 12px;
-
             border-top: 1px solid rgba(148, 163, 184, .15);
+        }
+
+        .ct-site-header--light .ct-nav-actions {
+            border-top-color: var(--ct-nav-border);
         }
 
         .ct-nav-actions form {
@@ -295,25 +376,20 @@
 
         .ct-nav-action {
             width: 100%;
-            min-height: 43px;
             justify-content: center;
         }
     }
 
     @media (max-width: 430px) {
-
         .ct-nav-shell {
             width: calc(100% - 28px);
-            min-height: 68px;
+            min-height: 66px;
         }
 
         .ct-brand {
             font-size: 19px;
         }
-
     }
-
-    /* CETAK E-TICKET */
 
     @media print {
         .ct-site-header {

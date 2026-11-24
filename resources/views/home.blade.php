@@ -8,9 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta name="theme-color" content="#0b1020">
-
+    <meta name="theme-color" content="#ffffff">
     <meta
         name="description"
         content="CinemaTicket memudahkan kamu menemukan film, memilih jadwal, menentukan kursi, dan memesan tiket bioskop."
@@ -18,137 +16,199 @@
 
     <title>CinemaTicket - Your Movie Experience</title>
 
-    {{-- NAVBAR --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
     @include('layouts.partials.public-navbar-styles')
 
     <style>
-
         /* =========================================
-           GLOBAL
+           TOKEN
         ========================================= */
 
         :root {
-            --bg: #0b1020;
-            --surface: #151e33;
-            --surface-light: #1b2943;
-            --border: #293752;
+            --bg: #fafaf9;
+            --bg-soft: #f4f4f5;
+            --surface: #ffffff;
+            --border: #e7e5e4;
+            --border-strong: #d6d3d1;
 
-            --gold: #f5b942;
-            --gold-light: #ffd477;
+            --text: #1c1917;
+            --text-soft: #44403c;
+            --muted: #78716c;
 
-            --white: #ffffff;
-            --muted: #94a3b8;
+            --primary: #f59e0b;
+            --primary-hover: #d97706;
+            --primary-soft: #fef3c7;
+            --primary-ink: #92400e;
 
-            --container: 1280px;
+            --accent: #6366f1;
+            --accent-soft: #eef2ff;
+            --success: #059669;
+
+            --shadow-xs: 0 1px 2px rgba(28, 25, 23, .04);
+            --shadow-sm: 0 2px 8px rgba(28, 25, 23, .06);
+            --shadow-md: 0 14px 36px rgba(28, 25, 23, .10);
+            --shadow-lg: 0 28px 70px rgba(28, 25, 23, .16);
+
+            --container: 1200px;
+            --radius-lg: 22px;
+            --radius: 16px;
+
+            /* TIPOGRAFI */
+            --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+            --fs-xs: 12px;
+            --fs-sm: 13px;
+            --fs-base: 15px;
+            --fs-md: 17px;
+            --fs-lg: clamp(20px, 2vw, 24px);
+            --fs-xl: clamp(28px, 3.2vw, 40px);
+            --fs-2xl: clamp(40px, 5.4vw, 66px);
+
+            --lh-tight: 1.1;
+            --lh-snug: 1.3;
+            --lh-normal: 1.6;
+            --lh-relaxed: 1.8;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         html {
             scroll-behavior: smooth;
-            scroll-padding-top: 100px;
+            scroll-padding-top: 96px;
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+            font-family: var(--font-sans);
+            font-size: var(--fs-base);
+            font-weight: 400;
+            line-height: var(--lh-normal);
+            color: var(--text);
             background: var(--bg);
-            color: var(--white);
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
 
-        a {
-            color: inherit;
-            text-decoration: none;
+        h1, h2, h3, h4 {
+            font-family: var(--font-sans);
+            font-feature-settings: 'ss01', 'cv11';
         }
 
-        button {
-            font-family: inherit;
-        }
+        a { color: inherit; text-decoration: none; }
+        button { font-family: inherit; }
+        img { display: block; max-width: 100%; }
 
         .container {
-            width: min(var(--container), calc(100% - 80px));
-            margin: auto;
+            width: min(var(--container), calc(100% - 64px));
+            margin: 0 auto;
         }
 
-        .gold {
-            color: var(--gold);
+        /* =========================================
+           UTILITAS
+        ========================================= */
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 13px;
+            background: var(--primary-soft);
+            color: var(--primary-ink);
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
         }
 
-        .section-label {
-            color: var(--gold);
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 3px;
-            margin-bottom: 14px;
+        .eyebrow::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--primary);
         }
 
         .section-title {
-            font-size: clamp(25px, 3vw, 35px);
+            font-size: var(--fs-xl);
+            line-height: var(--lh-snug);
             font-weight: 800;
-            line-height: 1.25;
-            letter-spacing: -.7px;
+            letter-spacing: -0.03em;
+        }
+
+        .section-title .accent {
+            background: linear-gradient(120deg, #f59e0b, #f97316);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .section-description {
             color: var(--muted);
-            font-size: 13px;
-            line-height: 1.9;
-            margin-top: 12px;
+            font-size: var(--fs-base);
+            line-height: var(--lh-relaxed);
+            margin-top: 14px;
         }
 
-
         /* BUTTON */
+
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-
-            min-height: 48px;
-            padding: 0 22px;
-
-            background: var(--gold);
-            color: #10172b;
-
-            border: 1px solid var(--gold);
-            border-radius: 8px;
-
-            font-size: 12px;
-            font-weight: 800;
-
+            min-height: 50px;
+            padding: 0 26px;
+            background: var(--text);
+            color: #ffffff;
+            border: 1px solid var(--text);
+            border-radius: 14px;
+            font-size: var(--fs-sm);
+            font-weight: 700;
+            letter-spacing: 0.01em;
             cursor: pointer;
-
-            transition:
-                transform .25s ease,
-                background .25s ease,
-                box-shadow .25s ease;
+            box-shadow: var(--shadow-sm);
+            transition: transform .2s ease, background .2s ease, box-shadow .2s ease, color .2s ease;
         }
 
         .btn:hover {
-            background: var(--gold-light);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(245, 185, 66, .18);
+            background: #292524;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            border-color: transparent;
+            box-shadow: 0 10px 24px rgba(245, 158, 11, .30);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #d97706, #ea580c);
+            box-shadow: 0 16px 34px rgba(245, 158, 11, .38);
         }
 
         .btn-outline {
-            background: rgba(255,255,255,.04);
-            border-color: rgba(255,255,255,.22);
-            color: white;
+            background: var(--surface);
+            color: var(--text);
+            border-color: var(--border-strong);
         }
 
         .btn-outline:hover {
-            background: rgba(255,255,255,.1);
-            border-color: var(--gold);
-            color: var(--gold);
-            box-shadow: none;
+            background: var(--surface);
+            color: var(--primary-ink);
+            border-color: var(--primary);
         }
 
         .btn-arrow {
-            font-size: 17px;
             transition: transform .2s ease;
         }
 
@@ -156,236 +216,200 @@
             transform: translateX(4px);
         }
 
-
         /* =========================================
-           HERO SECTION
+           HERO
         ========================================= */
 
         .hero {
             position: relative;
-            isolation: isolate;
-
-            min-height: 620px;
-
-            display: flex;
-            align-items: center;
-
             overflow: hidden;
+            isolation: isolate;
+            background: var(--bg);
+            padding: 48px 0 96px;
+            scroll-margin-top: 80px;
+        }
 
-            background:
-                radial-gradient(
-                    circle at 80% 40%,
-                    #263b63,
-                    #10172b 65%
-                );
-
-            scroll-margin-top: 90px;
+        .hero::before,
+        .hero::after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            border-radius: 50%;
+            filter: blur(70px);
+            pointer-events: none;
         }
 
         .hero::before {
-            content: "";
-
-            position: absolute;
-            inset: 0;
-            z-index: -2;
-
-            background-image:
-                linear-gradient(
-                    90deg,
-                    rgba(11,16,32,.98) 0%,
-                    rgba(11,16,32,.91) 38%,
-                    rgba(11,16,32,.55) 72%,
-                    rgba(11,16,32,.75) 100%
-                ),
-                var(
-                    --hero-image,
-                    radial-gradient(circle at center, #263b63, #10172b)
-                );
-
-            background-size: cover;
-            background-position: center 35%;
-
-            filter: saturate(.75);
-
-            transform: scale(1.04);
+            width: 420px;
+            height: 420px;
+            top: -120px;
+            right: -100px;
+            background: radial-gradient(circle, #fde68a 0%, transparent 70%);
+            opacity: .85;
         }
 
         .hero::after {
-            content: "";
-
-            position: absolute;
-            inset: 0;
-            z-index: -1;
-
-            background:
-                linear-gradient(
-                    0deg,
-                    var(--bg) 0%,
-                    transparent 28%,
-                    transparent 75%,
-                    rgba(11,16,32,.35) 100%
-                );
+            width: 380px;
+            height: 380px;
+            bottom: -160px;
+            left: -110px;
+            background: radial-gradient(circle, #c7d2fe 0%, transparent 70%);
+            opacity: .75;
         }
 
         .hero-inner {
-            width: min(var(--container), calc(100% - 80px));
-            margin: auto;
-
-            padding: 80px 0;
-
+            width: min(var(--container), calc(100% - 64px));
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: 1.1fr .9fr;
+            grid-template-columns: 1.05fr .95fr;
             align-items: center;
-
-            gap: 70px;
+            gap: 64px;
         }
 
         .hero-content {
-            max-width: 680px;
+            max-width: 620px;
         }
 
-        .hero-eyebrow {
+        .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-
-            color: var(--gold);
-
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 3px;
-
+            padding: 8px 14px 8px 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            box-shadow: var(--shadow-xs);
+            font-size: var(--fs-sm);
+            font-weight: 600;
+            color: var(--text-soft);
             margin-bottom: 24px;
         }
 
-        .hero-eyebrow::before {
-            content: "";
-            width: 27px;
-            height: 2px;
-            background: var(--gold);
+        .hero-badge-icon {
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 50%;
+            font-size: 12px;
         }
 
         .hero h1 {
-            font-size: clamp(39px, 5.2vw, 67px);
-            line-height: 1.12;
+            font-size: var(--fs-2xl);
+            line-height: var(--lh-tight);
             font-weight: 800;
-            letter-spacing: -2px;
-
-            max-width: 690px;
+            letter-spacing: -0.035em;
         }
 
-        .hero h1 span {
-            color: var(--gold);
+        .hero h1 .accent {
+            background: linear-gradient(120deg, #f59e0b 10%, #f97316 90%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .hero-description {
-            color: #bdc8d9;
-
-            font-size: 14px;
-            line-height: 1.9;
-
+            color: var(--text-soft);
+            font-size: var(--fs-md);
+            line-height: var(--lh-relaxed);
+            font-weight: 400;
             max-width: 520px;
-
-            margin-top: 23px;
+            margin-top: 22px;
         }
 
         .hero-actions {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
-
             margin-top: 32px;
         }
 
-        .hero-note {
+        .hero-stats {
             display: flex;
-            align-items: center;
-            gap: 10px;
-
-            margin-top: 34px;
-
-            color: #94a3b8;
-            font-size: 11px;
+            flex-wrap: wrap;
+            gap: 28px;
+            margin-top: 40px;
+            padding-top: 26px;
+            border-top: 1px solid var(--border);
         }
 
-        .hero-note span {
-            color: var(--gold);
+        .hero-stat strong {
+            display: block;
+            font-size: var(--fs-lg);
+            font-weight: 800;
+            letter-spacing: -0.02em;
         }
 
+        .hero-stat span {
+            font-size: var(--fs-xs);
+            color: var(--muted);
+            font-weight: 600;
+        }
 
-        /* =========================================
-           FEATURED FILM CARD
-        ========================================= */
+        /* FEATURED CARD */
 
         .hero-visual {
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-
             min-width: 0;
         }
 
         .featured-card {
             position: relative;
-
             display: flex;
             align-items: center;
-            gap: 21px;
-
+            gap: 22px;
             width: 100%;
-            max-width: 440px;
-
-            padding: 17px;
-
-            background: rgba(21,30,51,.78);
-            border: 1px solid rgba(255,255,255,.15);
-
-            border-radius: 15px;
-
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-
-            box-shadow: 0 25px 65px rgba(0,0,0,.35);
-
-            transition: transform .3s ease, border-color .3s ease;
+            max-width: 460px;
+            padding: 18px;
+            background: rgba(255, 255, 255, .92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            transition: transform .35s ease, box-shadow .35s ease;
         }
 
         .featured-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(245,185,66,.6);
+            transform: translateY(-6px) rotate(-.4deg);
+            box-shadow: 0 36px 80px rgba(28, 25, 23, .22);
         }
 
         .featured-poster {
-            width: 155px;
-            min-width: 155px;
-
+            width: 150px;
+            min-width: 150px;
             aspect-ratio: 3 / 4;
-
-            background: #10172b;
-
-            border-radius: 9px;
+            background: var(--bg-soft);
+            border-radius: 14px;
             overflow: hidden;
-
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: var(--shadow-md);
         }
 
         .featured-poster img {
             width: 100%;
             height: 100%;
-
-            object-fit: contain;
-            object-position: center;
-
-            display: block;
+            object-fit: cover;
         }
 
         .featured-poster-placeholder {
-            color: var(--gold);
+            color: var(--muted);
             text-align: center;
-            font-size: 12px;
-            padding: 10px;
+            font-size: 30px;
+        }
+
+        .featured-poster-placeholder p {
+            font-size: 9px;
+            margin-top: 8px;
+            letter-spacing: 1px;
         }
 
         .featured-info {
@@ -395,97 +419,86 @@
 
         .featured-tag {
             display: inline-flex;
-            align-items: center;
-            gap: 6px;
-
-            padding: 7px 10px;
-
-            background: rgba(245,185,66,.12);
-            color: var(--gold);
-
-            border-radius: 5px;
-
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 1px;
-
-            margin-bottom: 16px;
+            padding: 6px 10px;
+            background: var(--text);
+            color: #fff;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            margin-bottom: 14px;
         }
 
         .featured-info h2 {
-            font-size: 19px;
-            line-height: 1.4;
-            margin-bottom: 10px;
-
+            font-size: var(--fs-lg);
+            line-height: var(--lh-snug);
+            font-weight: 700;
+            letter-spacing: -0.015em;
+            margin-bottom: 8px;
             overflow-wrap: anywhere;
         }
 
         .featured-genre {
-            color: var(--gold);
-            font-size: 11px;
+            color: var(--accent);
+            font-size: var(--fs-xs);
             font-weight: 700;
-            margin-bottom: 17px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
         }
 
         .featured-meta {
             display: flex;
             flex-wrap: wrap;
-            gap: 7px;
+            gap: 6px;
         }
 
         .featured-meta span {
-            background: rgba(255,255,255,.07);
-            color: #cbd5e1;
-
-            border-radius: 5px;
-            padding: 6px 8px;
-
-            font-size: 9px;
+            background: var(--bg-soft);
+            color: var(--text-soft);
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: var(--fs-xs);
+            font-weight: 600;
         }
 
         .featured-link {
             display: inline-flex;
             align-items: center;
-            gap: 7px;
-
-            color: var(--gold);
-
-            font-size: 11px;
-            font-weight: 800;
-
-            margin-top: 20px;
+            gap: 6px;
+            color: var(--primary-ink);
+            font-size: var(--fs-sm);
+            font-weight: 700;
+            margin-top: 18px;
         }
 
-
-        /* =========================================
-           QUICK INFO STRIP
-        ========================================= */
+        /* QUICK STRIP */
 
         .quick-strip {
             position: relative;
             z-index: 2;
-
-            width: min(var(--container), calc(100% - 80px));
-            margin: -1px auto 0;
-
+            width: min(var(--container), calc(100% - 64px));
+            margin: -48px auto 0;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-
-            background: #111b31;
+            background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 12px;
-
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
             overflow: hidden;
         }
 
         .quick-item {
             display: flex;
             align-items: center;
-            gap: 14px;
-
-            padding: 22px 25px;
-
+            gap: 16px;
+            padding: 22px 26px;
             border-right: 1px solid var(--border);
+            transition: background .2s ease;
+        }
+
+        .quick-item:hover {
+            background: #fffbeb;
         }
 
         .quick-item:last-child {
@@ -493,273 +506,222 @@
         }
 
         .quick-icon {
-            width: 42px;
-            height: 42px;
-            min-width: 42px;
-
+            width: 46px;
+            height: 46px;
+            min-width: 46px;
             display: flex;
             align-items: center;
             justify-content: center;
-
-            background: rgba(245,185,66,.12);
-            color: var(--gold);
-
-            border-radius: 10px;
-
+            background: var(--primary-soft);
+            color: var(--primary-ink);
+            border-radius: 14px;
             font-size: 19px;
         }
 
         .quick-item strong {
             display: block;
-            font-size: 12px;
-            margin-bottom: 5px;
+            font-size: var(--fs-base);
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            margin-bottom: 3px;
         }
 
         .quick-item p {
             color: var(--muted);
-            font-size: 10px;
-            line-height: 1.5;
+            font-size: var(--fs-sm);
+            line-height: var(--lh-normal);
         }
 
-
         /* =========================================
-           FILM SECTION
+           FILM
         ========================================= */
 
         .films {
-            padding: 100px 0 95px;
-            scroll-margin-top: 90px;
+            padding: 72px 0 100px;
+            scroll-margin-top: 80px;
         }
 
         .films-heading {
             display: flex;
-            align-items: end;
+            align-items: flex-end;
             justify-content: space-between;
-
-            gap: 20px;
-
-            margin-bottom: 34px;
+            gap: 24px;
+            margin-bottom: 44px;
         }
 
         .film-count {
-            color: var(--gold);
-            font-size: 12px;
-            font-weight: 700;
-
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             white-space: nowrap;
-
-            padding: 10px 15px;
-
-            background: rgba(245,185,66,.09);
-            border: 1px solid rgba(245,185,66,.2);
-            border-radius: 7px;
+            padding: 10px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            box-shadow: var(--shadow-xs);
+            font-size: var(--fs-xs);
+            font-weight: 600;
+            color: var(--text-soft);
         }
 
-
-        /* =========================================
-           FILM GRID
-        ========================================= */
+        .film-count strong {
+            color: var(--primary-ink);
+        }
 
         .film-list {
             display: grid;
-
             grid-template-columns: repeat(4, minmax(0, 1fr));
-
-            gap: 22px;
-
-            align-items: stretch;
+            gap: 26px;
         }
 
         .film-card {
             display: flex;
             flex-direction: column;
-
             min-width: 0;
-
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 12px;
-
+            border-radius: var(--radius);
             overflow: hidden;
-
-            transition:
-                transform .28s ease,
-                border-color .28s ease,
-                box-shadow .28s ease;
+            box-shadow: var(--shadow-xs);
+            transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
         }
 
         .film-card:hover {
-            transform: translateY(-7px);
-
-            border-color: var(--gold);
-
-            box-shadow: 0 18px 35px rgba(0,0,0,.3);
+            transform: translateY(-8px);
+            border-color: #fcd34d;
+            box-shadow: var(--shadow-lg);
         }
-
-
-        /* POSTER */
 
         .poster {
             position: relative;
-
             width: 100%;
             aspect-ratio: 3 / 4;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
             overflow: hidden;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    #263b63,
-                    #10172b
-                );
-
-            padding: 9px;
+            background: linear-gradient(160deg, #e7e5e4, #d6d3d1);
         }
 
         .poster img {
-            display: block;
-
             width: 100%;
             height: 100%;
-
-            object-fit: contain;
-            object-position: center;
-
-            transition: transform .35s ease;
+            object-fit: cover;
+            transition: transform .5s ease;
         }
 
         .film-card:hover .poster img {
-            transform: scale(1.035);
+            transform: scale(1.06);
+        }
+
+        .poster::after {
+            content: "";
+            position: absolute;
+            inset: auto 0 0 0;
+            height: 45%;
+            background: linear-gradient(to top, rgba(28, 25, 23, .45), transparent);
+            pointer-events: none;
         }
 
         .poster-badge {
             position: absolute;
-            top: 13px;
-            left: 13px;
+            top: 12px;
+            left: 12px;
             z-index: 2;
-
-            padding: 6px 9px;
-
-            background: rgba(11,16,32,.88);
-            border: 1px solid rgba(245,185,66,.35);
-
-            border-radius: 5px;
-
-            color: var(--gold);
-
-            font-size: 8px;
-            font-weight: 800;
-            letter-spacing: .7px;
+            padding: 5px 9px;
+            background: rgba(255, 255, 255, .95);
+            color: var(--primary-ink);
+            border-radius: 8px;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            box-shadow: var(--shadow-xs);
         }
 
         .poster-age {
             position: absolute;
-            right: 13px;
-            top: 13px;
+            top: 12px;
+            right: 12px;
             z-index: 2;
-
-            padding: 6px 8px;
-
-            background: rgba(11,16,32,.85);
-            border-radius: 5px;
-
-            color: white;
-            font-size: 9px;
+            padding: 5px 9px;
+            background: var(--text);
+            color: #fff;
+            border-radius: 8px;
+            font-size: 10px;
             font-weight: 700;
         }
 
         .poster-fallback {
-            color: var(--gold);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
             text-align: center;
             padding: 15px;
         }
 
         .poster-fallback .symbol {
-            font-size: 35px;
+            font-size: 38px;
             margin-bottom: 10px;
         }
 
         .poster-fallback p {
-            color: var(--muted);
             font-size: 9px;
             letter-spacing: 1px;
         }
-
-
-        /* FILM INFO */
 
         .film-info {
             display: flex;
             flex-direction: column;
             flex: 1;
-
-            padding: 17px;
+            padding: 20px;
         }
 
         .film-genre {
-            color: var(--gold);
-
-            font-size: 10px;
-            font-weight: 800;
-
-            letter-spacing: .5px;
-
-            margin-bottom: 9px;
+            color: var(--accent);
+            font-size: var(--fs-xs);
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
         }
 
         .film-info h3 {
-            color: white;
-
-            font-size: 15px;
-            line-height: 1.5;
-
+            font-size: var(--fs-md);
+            font-weight: 700;
+            line-height: var(--lh-snug);
+            letter-spacing: -0.015em;
             margin-bottom: 12px;
-
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
-
             overflow: hidden;
-
-            min-height: 45px;
+            min-height: 43px;
         }
 
         .film-meta {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
-
-            margin-bottom: 13px;
+            margin-bottom: 12px;
         }
 
         .meta-item {
-            background: #202c45;
-            color: #cbd5e1;
-
-            padding: 6px 8px;
-
-            border-radius: 5px;
-
-            font-size: 9px;
+            background: var(--bg-soft);
+            color: var(--text-soft);
+            padding: 5px 9px;
+            border-radius: 7px;
+            font-size: var(--fs-xs);
+            font-weight: 600;
         }
 
         .film-description {
             color: var(--muted);
-
-            font-size: 10px;
-            line-height: 1.7;
-
+            font-size: var(--fs-sm);
+            line-height: var(--lh-relaxed);
             margin-bottom: 16px;
-
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
-
             overflow: hidden;
         }
 
@@ -767,634 +729,487 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-
             gap: 8px;
-
             margin-top: auto;
-            padding-top: 13px;
-
+            padding-top: 14px;
             border-top: 1px solid var(--border);
         }
 
         .film-status {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-
-            color: #4ade80;
-
-            font-size: 9px;
-            font-weight: 700;
+            gap: 7px;
+            color: var(--success);
+            font-size: var(--fs-sm);
+            font-weight: 600;
         }
 
         .film-status::before {
             content: "";
-
-            width: 6px;
-            height: 6px;
-
-            background: #4ade80;
+            width: 7px;
+            height: 7px;
+            background: var(--success);
             border-radius: 50%;
+            box-shadow: 0 0 0 3px #d1fae5;
         }
 
         .film-detail-link {
-            color: var(--gold);
-
-            font-size: 10px;
-            font-weight: 800;
-
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--primary-ink);
+            font-size: var(--fs-sm);
+            font-weight: 700;
             white-space: nowrap;
-
-            transition: color .2s;
+            transition: gap .2s ease;
         }
 
         .film-card:hover .film-detail-link {
-            color: var(--gold-light);
+            gap: 8px;
         }
-
-
-        /* EMPTY FILM */
 
         .empty-films {
             grid-column: 1 / -1;
-
             text-align: center;
-
-            padding: 75px 20px;
-
+            padding: 80px 24px;
             background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 13px;
+            border: 1px dashed var(--border-strong);
+            border-radius: var(--radius-lg);
         }
 
         .empty-icon {
-            font-size: 42px;
-            margin-bottom: 18px;
+            font-size: 44px;
+            margin-bottom: 16px;
         }
 
         .empty-films h3 {
-            font-size: 19px;
-            margin-bottom: 10px;
+            font-size: var(--fs-lg);
+            font-weight: 700;
+            margin-bottom: 8px;
         }
 
         .empty-films p {
             color: var(--muted);
-            font-size: 12px;
-            line-height: 1.8;
+            font-size: var(--fs-base);
+            line-height: var(--lh-relaxed);
         }
 
-
         /* =========================================
-           BOOKING STEPS
+           STEPS
         ========================================= */
 
         .steps-section {
-            padding: 90px 0;
-
-            background:
-                linear-gradient(
-                    115deg,
-                    #111b31,
-                    #10172b
-                );
-
+            position: relative;
+            padding: 110px 0;
+            background: var(--surface);
             border-top: 1px solid var(--border);
             border-bottom: 1px solid var(--border);
         }
 
         .steps-heading {
             text-align: center;
-            max-width: 650px;
-
-            margin: 0 auto 45px;
+            max-width: 660px;
+            margin: 0 auto 60px;
         }
 
         .steps-heading .section-description {
-            max-width: 550px;
+            max-width: 560px;
             margin-left: auto;
             margin-right: auto;
         }
 
         .steps-grid {
+            position: relative;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
 
-            gap: 20px;
+        .steps-grid::before {
+            content: "";
+            position: absolute;
+            top: 52px;
+            left: 16%;
+            right: 16%;
+            height: 2px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--border-strong) 0 8px,
+                transparent 8px 16px
+            );
+            z-index: 0;
         }
 
         .step-card {
             position: relative;
-
-            padding: 28px;
-
-            background: #151e33;
+            z-index: 1;
+            padding: 32px 30px;
+            background: var(--bg);
             border: 1px solid var(--border);
-            border-radius: 12px;
-
-            transition: transform .25s, border-color .25s;
+            border-radius: var(--radius-lg);
+            transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
         }
 
         .step-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--gold);
+            transform: translateY(-6px);
+            border-color: #fcd34d;
+            box-shadow: var(--shadow-md);
         }
 
-        .step-number {
-            color: rgba(245,185,66,.35);
-
-            font-size: 36px;
-            font-weight: 900;
-
-            line-height: 1;
-
-            margin-bottom: 23px;
+        .step-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
         }
 
         .step-icon {
-            width: 48px;
-            height: 48px;
-
+            width: 54px;
+            height: 54px;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: var(--primary-ink);
+            border-radius: 16px;
+            font-size: 22px;
+            box-shadow: 0 6px 16px rgba(245, 158, 11, .18);
+        }
 
-            background: rgba(245,185,66,.12);
-            border-radius: 10px;
-
-            color: var(--gold);
-            font-size: 21px;
-
-            margin-bottom: 19px;
+        .step-number {
+            font-size: var(--fs-xs);
+            font-weight: 700;
+            color: var(--muted);
+            letter-spacing: 0.08em;
         }
 
         .step-card h3 {
-            font-size: 15px;
+            font-size: var(--fs-md);
+            font-weight: 700;
+            letter-spacing: -0.015em;
             margin-bottom: 10px;
         }
 
         .step-card p {
             color: var(--muted);
-
-            font-size: 11px;
-            line-height: 1.8;
+            font-size: var(--fs-sm);
+            line-height: var(--lh-relaxed);
         }
-
 
         /* =========================================
            ADVANTAGES
         ========================================= */
 
         .advantages {
-            padding: 95px 0;
+            padding: 110px 0;
         }
 
         .advantages-heading {
-            margin-bottom: 35px;
+            margin-bottom: 44px;
         }
 
         .advantages-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 24px;
         }
 
         .advantage-card {
-            padding: 25px;
-
+            padding: 30px;
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xs);
+            transition: transform .3s ease, box-shadow .3s ease;
+        }
+
+        .advantage-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
         }
 
         .advantage-icon {
-            font-size: 23px;
-            color: var(--gold);
-            margin-bottom: 17px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-radius: 14px;
+            font-size: 21px;
+            margin-bottom: 20px;
         }
 
         .advantage-card h3 {
-            font-size: 14px;
+            font-size: var(--fs-md);
+            font-weight: 700;
+            letter-spacing: -0.015em;
             margin-bottom: 10px;
         }
 
         .advantage-card p {
             color: var(--muted);
-
-            font-size: 11px;
-            line-height: 1.8;
+            font-size: var(--fs-sm);
+            line-height: var(--lh-relaxed);
         }
-
 
         /* =========================================
            ABOUT
         ========================================= */
 
         .about {
-            padding: 85px 0;
-
-            background:
-                radial-gradient(
-                    circle at 50% 0%,
-                    rgba(245,185,66,.09),
-                    transparent 65%
-                ),
-                #111b31;
-
-            border-top: 1px solid var(--border);
-
+            position: relative;
+            overflow: hidden;
+            padding: 110px 0;
+            background: #1c1917;
+            color: #fafaf9;
             text-align: center;
+            scroll-margin-top: 80px;
+        }
 
-            scroll-margin-top: 90px;
+        .about::before {
+            content: "";
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            top: -260px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: radial-gradient(circle, rgba(245, 158, 11, .35), transparent 70%);
+            filter: blur(40px);
+            pointer-events: none;
         }
 
         .about-inner {
-            max-width: 750px;
-            margin: auto;
+            position: relative;
+            max-width: 740px;
+            margin: 0 auto;
+        }
+
+        .about .eyebrow {
+            background: rgba(245, 158, 11, .15);
+            color: #fcd34d;
         }
 
         .about h2 {
-            font-size: clamp(25px, 3vw, 34px);
-            line-height: 1.3;
-
-            margin-bottom: 19px;
+            font-size: var(--fs-xl);
+            font-weight: 800;
+            line-height: var(--lh-snug);
+            letter-spacing: -0.03em;
+            margin-bottom: 20px;
         }
 
-        .about h2 span {
-            color: var(--gold);
+        .about h2 .accent {
+            color: #fbbf24;
         }
 
         .about p {
-            color: var(--muted);
-
-            font-size: 13px;
-            line-height: 2;
+            color: #d6d3d1;
+            font-size: var(--fs-md);
+            line-height: var(--lh-relaxed);
         }
 
         .about .btn {
-            margin-top: 28px;
+            margin-top: 34px;
+            background: #fafaf9;
+            color: #1c1917;
+            border-color: #fafaf9;
         }
 
+        .about .btn:hover {
+            background: #ffffff;
+        }
 
         /* =========================================
            FOOTER
         ========================================= */
 
         .footer {
-            background: #080d19;
+            background: var(--surface);
             border-top: 1px solid var(--border);
-
-            padding: 45px 0 22px;
+            padding: 56px 0 28px;
         }
 
         .footer-main {
             display: flex;
             justify-content: space-between;
-            gap: 30px;
-
-            padding-bottom: 30px;
+            align-items: flex-start;
+            gap: 40px;
+            padding-bottom: 36px;
         }
 
         .footer-brand {
-            font-size: 22px;
-            font-weight: 900;
+            font-size: var(--fs-lg);
+            font-weight: 800;
+            letter-spacing: -0.02em;
             margin-bottom: 12px;
         }
 
-        .footer-brand span {
-            color: var(--gold);
+        .footer-brand .accent {
+            color: var(--primary);
         }
 
         .footer-description {
-            max-width: 350px;
-
+            max-width: 360px;
             color: var(--muted);
-            font-size: 11px;
-            line-height: 1.9;
+            font-size: var(--fs-sm);
+            line-height: var(--lh-relaxed);
         }
 
         .footer-links {
             display: flex;
-            gap: 20px;
-            align-items: flex-start;
+            gap: 24px;
             flex-wrap: wrap;
         }
 
         .footer-links a {
-            color: #cbd5e1;
-            font-size: 11px;
+            color: var(--text-soft);
+            font-size: var(--fs-sm);
+            font-weight: 600;
             transition: color .2s;
         }
 
         .footer-links a:hover {
-            color: var(--gold);
+            color: var(--primary-ink);
         }
 
         .footer-bottom {
-            padding-top: 20px;
+            padding-top: 24px;
             border-top: 1px solid var(--border);
-
             display: flex;
             justify-content: space-between;
             gap: 15px;
-
-            color: #64748b;
-            font-size: 10px;
+            color: var(--muted);
+            font-size: var(--fs-xs);
         }
-
 
         /* =========================================
            RESPONSIVE
         ========================================= */
 
         @media (max-width: 1100px) {
-
-            .hero-inner {
-                gap: 35px;
-            }
-
-            .hero h1 {
-                font-size: 49px;
-            }
-
             .film-list {
                 grid-template-columns: repeat(3, minmax(0, 1fr));
             }
-
         }
 
-
-        @media (max-width: 800px) {
-
-            .container,
-            .hero-inner,
-            .quick-strip {
-                width: calc(100% - 44px);
-            }
-
+        @media (max-width: 860px) {
             .hero {
-                min-height: auto;
+                padding: 32px 0 80px;
             }
 
             .hero-inner {
                 grid-template-columns: 1fr;
-                gap: 45px;
-                padding: 80px 0 65px;
-            }
-
-            .hero-content {
-                max-width: 650px;
-            }
-
-            .hero h1 {
-                font-size: 51px;
+                gap: 44px;
             }
 
             .hero-visual {
                 justify-content: flex-start;
             }
 
-            .featured-card {
-                max-width: 480px;
-            }
-
-            .quick-item {
-                padding: 17px 13px;
-                gap: 10px;
-            }
-
-            .quick-icon {
-                width: 35px;
-                height: 35px;
-                min-width: 35px;
-                font-size: 16px;
-            }
-
-            .quick-item strong {
-                font-size: 10px;
-            }
-
-            .quick-item p {
-                font-size: 9px;
-            }
-
-            .film-list {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 16px;
-            }
-
-            .steps-grid,
-            .advantages-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-        }
-
-
-        @media (max-width: 560px) {
-
-            .container,
-            .hero-inner,
-            .quick-strip {
-                width: calc(100% - 32px);
-            }
-
-            .hero-inner {
-                padding: 65px 0 50px;
-                gap: 38px;
-            }
-
-            .hero h1 {
-                font-size: 39px;
-                letter-spacing: -1.3px;
-            }
-
-            .hero-description {
-                font-size: 12px;
-            }
-
-            .hero-eyebrow {
-                font-size: 9px;
-            }
-
-            .hero-actions {
-                gap: 9px;
-            }
-
-            .btn {
-                min-height: 44px;
-                padding: 0 15px;
-                font-size: 10px;
-            }
-
-            .hero-note {
-                font-size: 10px;
-            }
-
-            .featured-card {
-                padding: 12px;
-                gap: 13px;
-            }
-
-            .featured-poster {
-                width: 115px;
-                min-width: 115px;
-            }
-
-            .featured-tag {
-                font-size: 8px;
-                margin-bottom: 10px;
-            }
-
-            .featured-info h2 {
-                font-size: 15px;
-            }
-
-            .featured-genre {
-                font-size: 10px;
-                margin-bottom: 10px;
-            }
-
-            .featured-meta span {
-                font-size: 8px;
-                padding: 5px 6px;
-            }
-
-            .featured-link {
-                font-size: 9px;
-                margin-top: 12px;
-            }
-
             .quick-strip {
                 grid-template-columns: 1fr;
+                margin-top: -32px;
             }
 
             .quick-item {
                 border-right: none;
                 border-bottom: 1px solid var(--border);
-                padding: 14px 18px;
             }
 
             .quick-item:last-child {
                 border-bottom: none;
             }
 
-            .films {
-                padding: 70px 0;
-            }
-
-            .films-heading {
-                align-items: flex-start;
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .section-title {
-                font-size: 26px;
-            }
-
-            .film-count {
-                font-size: 10px;
-            }
-
             .film-list {
-                gap: 12px;
-            }
-
-            .poster {
-                padding: 5px;
-            }
-
-            .poster-badge {
-                top: 8px;
-                left: 8px;
-                padding: 5px 6px;
-                font-size: 7px;
-            }
-
-            .poster-age {
-                top: 8px;
-                right: 8px;
-                padding: 5px 6px;
-                font-size: 8px;
-            }
-
-            .film-info {
-                padding: 11px;
-            }
-
-            .film-info h3 {
-                font-size: 12px;
-                min-height: 36px;
-                margin-bottom: 9px;
-            }
-
-            .film-genre {
-                font-size: 9px;
-            }
-
-            .meta-item {
-                font-size: 8px;
-                padding: 5px 6px;
-            }
-
-            .film-description {
-                font-size: 9px;
-            }
-
-            .film-status,
-            .film-detail-link {
-                font-size: 8px;
-            }
-
-            .steps-section,
-            .advantages {
-                padding: 70px 0;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 18px;
             }
 
             .steps-grid,
             .advantages-grid {
                 grid-template-columns: 1fr;
-                gap: 13px;
             }
 
-            .step-card,
-            .advantage-card {
-                padding: 21px;
+            .steps-grid::before {
+                display: none;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .container,
+            .hero-inner,
+            .quick-strip {
+                width: calc(100% - 32px);
             }
 
-            .steps-heading {
-                margin-bottom: 30px;
+            .hero h1 {
+                font-size: 40px;
+                letter-spacing: -0.03em;
             }
 
-            .about {
-                padding: 70px 0;
+            .hero-description {
+                font-size: var(--fs-base);
             }
 
-            .about h2 {
-                font-size: 26px;
+            .hero-stats {
+                gap: 20px;
             }
 
-            .about p {
-                font-size: 11px;
+            .btn {
+                min-height: 46px;
+                padding: 0 20px;
             }
 
-            .footer-main {
+            .featured-card {
+                padding: 12px;
+                gap: 14px;
+            }
+
+            .featured-poster {
+                width: 110px;
+                min-width: 110px;
+            }
+
+            .films {
+                padding: 80px 0;
+            }
+
+            .films-heading {
                 flex-direction: column;
+                align-items: flex-start;
             }
 
-            .footer-links {
-                gap: 16px;
+            .film-list {
+                gap: 14px;
             }
 
+            .film-info {
+                padding: 14px;
+            }
+
+            .film-info h3 {
+                font-size: var(--fs-base);
+            }
+
+            .film-description {
+                display: none;
+            }
+
+            .steps-section,
+            .advantages,
+            .about {
+                padding: 80px 0;
+            }
+
+            .footer-main,
             .footer-bottom {
                 flex-direction: column;
             }
-
         }
 
-
         @media (prefers-reduced-motion: reduce) {
-
             *,
             *::before,
             *::after {
@@ -1402,9 +1217,7 @@
                 animation-duration: .01ms !important;
                 transition-duration: .01ms !important;
             }
-
         }
-
     </style>
 
 </head>
@@ -1412,88 +1225,68 @@
 
 <body>
 
-
-{{-- =========================================
-     NAVBAR
-========================================= --}}
-
 @include('layouts.partials.public-navbar')
 
 
-{{-- =========================================
-     HERO SECTION
-========================================= --}}
+{{-- HERO --}}
 
-<section
-    class="hero"
-    id="home"
-    @if($featuredFilm && $featuredFilm->poster)
-        style="--hero-image: url('{{ asset('storage/' . ltrim($featuredFilm->poster, '/')) }}')"
-    @endif
->
+<section class="hero" id="home">
 
     <div class="hero-inner">
 
-
-        {{-- HERO CONTENT --}}
-
         <div class="hero-content">
 
-            <div class="hero-eyebrow">
-                YOUR MOVIE EXPERIENCE STARTS HERE
+            <div class="hero-badge">
+                <span class="hero-badge-icon">✦</span>
+                Your Movie Experience Starts Here
             </div>
 
             <h1>
                 Cerita Hebat,
-                <span>Pengalaman</span>
+                <span class="accent">Pengalaman</span>
                 Tak Terlupakan.
             </h1>
 
             <p class="hero-description">
-
-                Temukan film favoritmu, pilih jadwal tayang,
-                tentukan kursi terbaik, dan nikmati pengalaman
-                menonton bioskop dengan lebih mudah bersama CinemaTicket.
-
+                Temukan film favoritmu, pilih jadwal tayang, tentukan kursi terbaik,
+                dan nikmati pengalaman menonton bioskop dengan lebih mudah bersama CinemaTicket.
             </p>
-
 
             <div class="hero-actions">
 
-                <a href="#film" class="btn">
-
+                <a href="#film" class="btn btn-primary">
                     Jelajahi Film
-
                     <span class="btn-arrow">→</span>
-
                 </a>
 
                 @if($featuredFilm)
-
-                    <a
-                        href="{{ route('films.show', $featuredFilm) }}"
-                        class="btn btn-outline"
-                    >
+                    <a href="{{ route('films.show', $featuredFilm) }}" class="btn btn-outline">
                         Film Terbaru
                     </a>
-
                 @endif
 
             </div>
 
+            <div class="hero-stats">
 
-            <div class="hero-note">
+                <div class="hero-stat">
+                    <strong>{{ $totalFilms }}</strong>
+                    <span>Film tayang</span>
+                </div>
 
-                <span>✦</span>
+                <div class="hero-stat">
+                    <strong>3 Langkah</strong>
+                    <span>Pesan tiket</span>
+                </div>
 
-                Pemesanan tiket bioskop lebih praktis dan nyaman.
+                <div class="hero-stat">
+                    <strong>QR Code</strong>
+                    <span>E-ticket digital</span>
+                </div>
 
             </div>
 
         </div>
-
-
-        {{-- FEATURED MOVIE --}}
 
         <div class="hero-visual">
 
@@ -1508,57 +1301,35 @@
                     <div class="featured-poster">
 
                         @if($featuredFilm->poster)
-
                             <img
                                 src="{{ asset('storage/' . ltrim($featuredFilm->poster, '/')) }}"
                                 alt="Poster {{ $featuredFilm->judul }}"
                                 fetchpriority="high"
                             >
-
                         @else
-
                             <div class="featured-poster-placeholder">
                                 🎬
                                 <p>POSTER BELUM TERSEDIA</p>
                             </div>
-
                         @endif
 
                     </div>
 
-
                     <div class="featured-info">
 
-                        <div class="featured-tag">
-                            ✦ FILM TERBARU
-                        </div>
+                        <div class="featured-tag">✦ FILM TERBARU</div>
 
-                        <h2>
-                            {{ $featuredFilm->judul }}
-                        </h2>
+                        <h2>{{ $featuredFilm->judul }}</h2>
 
-                        <div class="featured-genre">
-                            {{ $featuredFilm->genre }}
-                        </div>
+                        <div class="featured-genre">{{ $featuredFilm->genre }}</div>
 
                         <div class="featured-meta">
-
-                            <span>
-                                {{ $featuredFilm->durasi_menit }} Menit
-                            </span>
-
-                            <span>
-                                {{ $featuredFilm->rating_usia }}
-                            </span>
-
+                            <span>{{ $featuredFilm->durasi_menit }} Menit</span>
+                            <span>{{ $featuredFilm->rating_usia }}</span>
                         </div>
 
                         <div class="featured-link">
-
-                            Lihat Detail Film
-
-                            <span>→</span>
-
+                            Lihat Detail Film <span>→</span>
                         </div>
 
                     </div>
@@ -1568,24 +1339,13 @@
             @else
 
                 <div class="featured-card">
-
                     <div class="featured-info">
-
-                        <div class="featured-tag">
-                            CINEMATICKET
-                        </div>
-
-                        <h2>
-                            Temukan Film Favoritmu
-                        </h2>
-
+                        <div class="featured-tag">CINEMATICKET</div>
+                        <h2>Temukan Film Favoritmu</h2>
                         <p class="section-description">
-                            Film pilihanmu akan tampil di sini ketika
-                            tersedia.
+                            Film pilihanmu akan tampil di sini ketika tersedia.
                         </p>
-
                     </div>
-
                 </div>
 
             @endif
@@ -1597,129 +1357,64 @@
 </section>
 
 
-
-{{-- =========================================
-     QUICK INFORMATION
-========================================= --}}
+{{-- QUICK INFO --}}
 
 <div class="quick-strip">
 
-
     <div class="quick-item">
-
-        <div class="quick-icon">
-            🎬
-        </div>
-
+        <div class="quick-icon">🎬</div>
         <div>
-
-            <strong>
-                Pilihan Film
-            </strong>
-
-            <p>
-                Temukan film yang sedang tayang.
-            </p>
-
+            <strong>Pilihan Film</strong>
+            <p>Temukan film yang sedang tayang.</p>
         </div>
-
     </div>
 
-
     <div class="quick-item">
-
-        <div class="quick-icon">
-            ◷
-        </div>
-
+        <div class="quick-icon">◷</div>
         <div>
-
-            <strong>
-                Jadwal Fleksibel
-            </strong>
-
-            <p>
-                Pilih jadwal sesuai waktumu.
-            </p>
-
+            <strong>Jadwal Fleksibel</strong>
+            <p>Pilih jadwal sesuai waktumu.</p>
         </div>
-
     </div>
 
-
     <div class="quick-item">
-
-        <div class="quick-icon">
-            ▣
-        </div>
-
+        <div class="quick-icon">▣</div>
         <div>
-
-            <strong>
-                E-Ticket Praktis
-            </strong>
-
-            <p>
-                Akses tiket melalui akunmu.
-            </p>
-
+            <strong>E-Ticket Praktis</strong>
+            <p>Akses tiket melalui akunmu.</p>
         </div>
-
     </div>
-
 
 </div>
 
 
-
-{{-- =========================================
-     FILM SECTION
-========================================= --}}
+{{-- FILM --}}
 
 <section class="films" id="film">
 
     <div class="container">
 
-
         <div class="films-heading">
 
             <div>
-
-                <div class="section-label">
-                    NOW SHOWING
-                </div>
-
+                <div class="eyebrow">NOW SHOWING</div>
                 <h2 class="section-title">
-                    Film Sedang <span class="gold">Tayang.</span>
+                    Film Sedang <span class="accent">Tayang.</span>
                 </h2>
-
                 <p class="section-description">
-
-                    Pilih film favoritmu dan temukan pengalaman
-                    menonton yang menyenangkan.
-
+                    Pilih film favoritmu dan temukan pengalaman menonton yang menyenangkan.
                 </p>
-
             </div>
 
-
             <div class="film-count">
-
-                {{ $totalFilms }} FILM TERSEDIA
-
+                <strong>{{ $totalFilms }}</strong> film tersedia
             </div>
 
         </div>
 
-
-
-        {{-- FILM GRID --}}
-
         <div class="film-list">
 
-
             @forelse($films as $film)
-
 
                 <a
                     href="{{ route('films.show', $film) }}"
@@ -1727,19 +1422,10 @@
                     aria-label="Lihat detail film {{ $film->judul }}"
                 >
 
-
-                    {{-- POSTER --}}
-
                     <div class="poster">
 
-                        <span class="poster-badge">
-                            NOW SHOWING
-                        </span>
-
-                        <span class="poster-age">
-                            {{ $film->rating_usia }}
-                        </span>
-
+                        <span class="poster-badge">NOW SHOWING</span>
+                        <span class="poster-age">{{ $film->rating_usia }}</span>
 
                         @if($film->poster)
 
@@ -1751,117 +1437,62 @@
                                 onerror="this.hidden=true; this.nextElementSibling.hidden=false;"
                             >
 
-                            <div
-                                class="poster-fallback"
-                                hidden
-                            >
-
+                            <div class="poster-fallback" hidden>
                                 <div class="symbol">🎬</div>
-
                                 <p>POSTER TIDAK TERSEDIA</p>
-
                             </div>
 
                         @else
 
                             <div class="poster-fallback">
-
                                 <div class="symbol">🎬</div>
-
                                 <p>POSTER BELUM TERSEDIA</p>
-
                             </div>
 
                         @endif
 
                     </div>
 
-
-
-                    {{-- FILM INFORMATION --}}
-
                     <div class="film-info">
 
+                        <div class="film-genre">{{ $film->genre }}</div>
 
-                        <div class="film-genre">
-                            {{ $film->genre }}
-                        </div>
-
-
-                        <h3>
-                            {{ $film->judul }}
-                        </h3>
-
+                        <h3>{{ $film->judul }}</h3>
 
                         <div class="film-meta">
-
-                            <span class="meta-item">
-                                {{ $film->durasi_menit }} Menit
-                            </span>
-
-                            <span class="meta-item">
-                                {{ $film->rating_usia }}
-                            </span>
-
+                            <span class="meta-item">{{ $film->durasi_menit }} Menit</span>
+                            <span class="meta-item">{{ $film->rating_usia }}</span>
                         </div>
-
 
                         <p class="film-description">
-
                             @if($film->sinopsis)
-
                                 {{ \Illuminate\Support\Str::limit($film->sinopsis, 85) }}
-
                             @else
-
                                 Informasi sinopsis belum tersedia.
-
                             @endif
-
                         </p>
 
-
                         <div class="film-card-bottom">
-
-                            <span class="film-status">
-                                Sedang Tayang
-                            </span>
-
-                            <span class="film-detail-link">
-                                Detail →
-                            </span>
-
+                            <span class="film-status">Sedang Tayang</span>
+                            <span class="film-detail-link">Detail →</span>
                         </div>
-
 
                     </div>
 
                 </a>
 
-
             @empty
 
-
                 <div class="empty-films">
-
-                    <div class="empty-icon">
-                        🎬
-                    </div>
-
-                    <h3>
-                        Belum Ada Film yang Tayang
-                    </h3>
-
+                    <div class="empty-icon">🎬</div>
+                    <h3>Belum Ada Film yang Tayang</h3>
                     <p>
                         Saat ini belum tersedia film dengan status tayang.
                         Silakan kunjungi kembali nanti.
                     </p>
-
                 </div>
 
-
             @endforelse
-
 
         </div>
 
@@ -1870,116 +1501,60 @@
 </section>
 
 
-
-{{-- =========================================
-     HOW TO BOOK
-========================================= --}}
+{{-- STEPS --}}
 
 <section class="steps-section">
 
     <div class="container">
 
-
         <div class="steps-heading">
-
-            <div class="section-label">
-                SIMPLE BOOKING PROCESS
-            </div>
-
+            <div class="eyebrow">SIMPLE BOOKING PROCESS</div>
             <h2 class="section-title">
-                Pesan Tiket dalam <span class="gold">3 Langkah.</span>
+                Pesan Tiket dalam <span class="accent">3 Langkah.</span>
             </h2>
-
             <p class="section-description">
-
-                Nikmati proses pemesanan yang sederhana.
-                Mulai dari memilih film hingga mendapatkan tiket digital.
-
+                Proses pemesanan yang sederhana, dari memilih film
+                hingga mendapatkan tiket digital.
             </p>
-
         </div>
-
-
 
         <div class="steps-grid">
 
-
             <div class="step-card">
-
-                <div class="step-number">
-                    01
+                <div class="step-top">
+                    <div class="step-icon">🎬</div>
+                    <span class="step-number">LANGKAH 01</span>
                 </div>
-
-                <div class="step-icon">
-                    🎬
-                </div>
-
-                <h3>
-                    Pilih Film dan Jadwal
-                </h3>
-
+                <h3>Pilih Film dan Jadwal</h3>
                 <p>
-
-                    Temukan film yang ingin kamu tonton,
-                    kemudian pilih jadwal penayangan
-                    yang paling sesuai.
-
+                    Temukan film yang ingin kamu tonton, kemudian pilih jadwal
+                    penayangan yang paling sesuai.
                 </p>
-
             </div>
 
-
-
             <div class="step-card">
-
-                <div class="step-number">
-                    02
+                <div class="step-top">
+                    <div class="step-icon">▦</div>
+                    <span class="step-number">LANGKAH 02</span>
                 </div>
-
-                <div class="step-icon">
-                    ▦
-                </div>
-
-                <h3>
-                    Tentukan Kursi
-                </h3>
-
+                <h3>Tentukan Kursi</h3>
                 <p>
-
-                    Pilih tempat duduk favoritmu,
-                    lengkapi informasi pemesanan,
+                    Pilih tempat duduk favoritmu, lengkapi data pemesan,
                     dan lanjutkan ke proses pembayaran.
-
                 </p>
-
             </div>
-
-
 
             <div class="step-card">
-
-                <div class="step-number">
-                    03
+                <div class="step-top">
+                    <div class="step-icon">▣</div>
+                    <span class="step-number">LANGKAH 03</span>
                 </div>
-
-                <div class="step-icon">
-                    ▣
-                </div>
-
-                <h3>
-                    Dapatkan E-Ticket
-                </h3>
-
+                <h3>Dapatkan E-Ticket</h3>
                 <p>
-
-                    Setelah pembayaran berhasil,
-                    tiket digital dengan QR Code dapat
-                    diakses kembali melalui akunmu.
-
+                    Setelah pembayaran berhasil, tiket digital dengan QR Code
+                    dapat diakses kembali melalui akunmu.
                 </p>
-
             </div>
-
 
         </div>
 
@@ -1988,105 +1563,50 @@
 </section>
 
 
-
-{{-- =========================================
-     ADVANTAGES
-========================================= --}}
+{{-- ADVANTAGES --}}
 
 <section class="advantages">
 
     <div class="container">
 
-
         <div class="advantages-heading">
-
-            <div class="section-label">
-                WHY CINEMATICKET
-            </div>
-
+            <div class="eyebrow">WHY CINEMATICKET</div>
             <h2 class="section-title">
-                Pengalaman Menonton
-                <span class="gold">Lebih Praktis.</span>
+                Pengalaman Menonton <span class="accent">Lebih Praktis.</span>
             </h2>
-
             <p class="section-description">
-
-                Semua kebutuhan pemesanan tiket bioskop
-                tersedia dalam satu tempat.
-
+                Semua kebutuhan pemesanan tiket bioskop tersedia dalam satu tempat.
             </p>
-
         </div>
-
-
 
         <div class="advantages-grid">
 
-
             <div class="advantage-card">
-
-                <div class="advantage-icon">
-                    ✦
-                </div>
-
-                <h3>
-                    Pemesanan Mudah
-                </h3>
-
+                <div class="advantage-icon">✦</div>
+                <h3>Pemesanan Mudah</h3>
                 <p>
-
-                    Temukan film, tentukan jadwal,
-                    pilih kursi, dan lakukan pemesanan
+                    Temukan film, tentukan jadwal, pilih kursi, dan lakukan pemesanan
                     melalui proses yang sederhana.
-
                 </p>
-
             </div>
 
-
-
             <div class="advantage-card">
-
-                <div class="advantage-icon">
-                    ▣
-                </div>
-
-                <h3>
-                    Tiket Digital
-                </h3>
-
+                <div class="advantage-icon">▣</div>
+                <h3>Tiket Digital</h3>
                 <p>
-
-                    Tiket digital dilengkapi QR Code
-                    sehingga memudahkan proses
+                    Tiket digital dilengkapi QR Code sehingga memudahkan proses
                     pemeriksaan tiket di bioskop.
-
                 </p>
-
             </div>
-
-
 
             <div class="advantage-card">
-
-                <div class="advantage-icon">
-                    ◷
-                </div>
-
-                <h3>
-                    Riwayat Pemesanan
-                </h3>
-
+                <div class="advantage-icon">◷</div>
+                <h3>Riwayat Pemesanan</h3>
                 <p>
-
-                    Lihat kembali transaksi dan
-                    akses tiket yang sudah dibeli
+                    Lihat kembali transaksi dan akses tiket yang sudah dibeli
                     melalui akun customer.
-
                 </p>
-
             </div>
-
 
         </div>
 
@@ -2095,10 +1615,7 @@
 </section>
 
 
-
-{{-- =========================================
-     ABOUT SECTION
-========================================= --}}
+{{-- ABOUT --}}
 
 <section class="about" id="about">
 
@@ -2106,42 +1623,23 @@
 
         <div class="about-inner">
 
-            <div class="section-label">
-                ABOUT US
-            </div>
+            <div class="eyebrow">ABOUT US</div>
 
             <h2>
-
-                Welcome to
-
-                <span>
-                    CinemaTicket.
-                </span>
-
+                Welcome to <span class="accent">CinemaTicket.</span>
             </h2>
 
             <p>
-
-                CinemaTicket merupakan sistem informasi
-                pemesanan tiket bioskop yang dirancang
-                untuk memberikan kemudahan bagi pengguna
-                dalam menemukan film, melihat informasi
-                penayangan, memilih tempat duduk, dan
-                melakukan pemesanan tiket secara praktis.
-
-                Dengan dukungan tiket digital dan akun
-                customer, pengalaman menonton menjadi
-                lebih terorganisasi dan nyaman.
-
+                CinemaTicket merupakan sistem informasi pemesanan tiket bioskop yang
+                dirancang untuk memberikan kemudahan dalam menemukan film, melihat
+                jadwal penayangan, memilih tempat duduk, dan memesan tiket secara
+                praktis. Dengan tiket digital dan akun customer, pengalaman menonton
+                menjadi lebih terorganisasi dan nyaman.
             </p>
 
-
             <a href="#film" class="btn">
-
                 Temukan Film Favoritmu
-
                 <span class="btn-arrow">→</span>
-
             </a>
 
         </div>
@@ -2151,108 +1649,53 @@
 </section>
 
 
-
-{{-- =========================================
-     FOOTER
-========================================= --}}
+{{-- FOOTER --}}
 
 <footer class="footer">
 
     <div class="container">
 
-
         <div class="footer-main">
 
-
             <div>
-
                 <div class="footer-brand">
-
-                    CINEMA<span>TICKET</span>
-
+                    CINEMA<span class="accent">TICKET</span>
                 </div>
-
                 <p class="footer-description">
-
-                    Your movie experience starts here.
-
-                    Temukan film favoritmu dan nikmati
-                    pengalaman menonton yang lebih praktis
-                    bersama CinemaTicket.
-
+                    Your movie experience starts here. Temukan film favoritmu dan
+                    nikmati pengalaman menonton yang lebih praktis bersama CinemaTicket.
                 </p>
-
             </div>
 
+            <nav class="footer-links">
 
-
-            <div class="footer-links">
-
-                <a href="{{ route('home') }}#home">
-                    Home
-                </a>
-
-                <a href="{{ route('home') }}#film">
-                    Film
-                </a>
-
-                <a href="{{ route('home') }}#about">
-                    Tentang
-                </a>
+                <a href="{{ route('home') }}#home">Home</a>
+                <a href="{{ route('home') }}#film">Film</a>
+                <a href="{{ route('home') }}#about">Tentang</a>
 
                 @auth
-
                     @if(auth()->user()->role === 'customer')
-
-                        <a href="{{ route('customer.dashboard') }}">
-                            Akun Saya
-                        </a>
-
+                        <a href="{{ route('customer.dashboard') }}">Akun Saya</a>
                     @elseif(auth()->user()->role === 'admin')
-
-                        <a href="{{ route('admin.dashboard') }}">
-                            Dashboard Admin
-                        </a>
-
+                        <a href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
                     @endif
-
                 @else
-
-                    <a href="{{ route('customer.login') }}">
-                        Login
-                    </a>
-
-                    <a href="{{ route('customer.register') }}">
-                        Daftar
-                    </a>
-
+                    <a href="{{ route('customer.login') }}">Login</a>
+                    <a href="{{ route('customer.register') }}">Daftar</a>
                 @endauth
 
-            </div>
-
+            </nav>
 
         </div>
-
-
 
         <div class="footer-bottom">
-
-            <span>
-                © {{ date('Y') }} CinemaTicket. All Rights Reserved.
-            </span>
-
-            <span>
-                Made for Movie Lovers.
-            </span>
-
+            <span>© {{ date('Y') }} CinemaTicket. All Rights Reserved.</span>
+            <span>Made for Movie Lovers.</span>
         </div>
-
 
     </div>
 
 </footer>
-
-
 
 </body>
 </html>
