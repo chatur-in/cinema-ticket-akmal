@@ -20,9 +20,17 @@ class CustomerAuthController extends Controller
     {
         if (Auth::check()) {
 
-            return Auth::user()->role === 'admin'
-                ? redirect()->route('admin.dashboard')
-                : redirect()->route('customer.dashboard');
+            // Admin yang sedang login tidak boleh membuka form login customer.
+            if (Auth::user()->role === 'admin') {
+                return redirect()
+                    ->route('admin.dashboard')
+                    ->with(
+                        'info',
+                        'Anda sedang login sebagai administrator. Logout terlebih dahulu untuk masuk sebagai customer.'
+                    );
+            }
+
+            return redirect()->route('customer.dashboard');
         }
 
         return view('customer.auth.login');
@@ -73,9 +81,16 @@ class CustomerAuthController extends Controller
     {
         if (Auth::check()) {
 
-            return Auth::user()->role === 'admin'
-                ? redirect()->route('admin.dashboard')
-                : redirect()->route('customer.dashboard');
+            if (Auth::user()->role === 'admin') {
+                return redirect()
+                    ->route('admin.dashboard')
+                    ->with(
+                        'info',
+                        'Anda sedang login sebagai administrator. Logout terlebih dahulu untuk mendaftar akun customer.'
+                    );
+            }
+
+            return redirect()->route('customer.dashboard');
         }
 
         return view('customer.auth.register');

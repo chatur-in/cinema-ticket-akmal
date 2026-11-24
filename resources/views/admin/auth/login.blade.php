@@ -39,6 +39,10 @@
             --success-soft: #d1fae5;
             --success-ink: #065f46;
 
+            --info: #2563eb;
+            --info-soft: #dbeafe;
+            --info-ink: #1e3a8a;
+
             --shadow-lg: 0 28px 70px rgba(28, 25, 23, .14);
             --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
         }
@@ -185,6 +189,12 @@
             color: var(--success-ink);
         }
 
+        .alert-info {
+            background: var(--info-soft);
+            border-color: #bfdbfe;
+            color: var(--info-ink);
+        }
+
         .form-group { margin-bottom: 18px; }
 
         label.field-label {
@@ -307,6 +317,10 @@
         <p class="subtitle">
             Silakan masuk menggunakan akun administrator untuk mengelola CinemaTicket.
         </p>
+
+        @if(session('info'))
+            <div class="alert alert-info" role="status">{{ session('info') }}</div>
+        @endif
 
         @if(session('error'))
             <div class="alert alert-error" role="alert">{{ session('error') }}</div>

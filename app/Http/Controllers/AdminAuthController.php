@@ -11,8 +11,19 @@ class AdminAuthController extends Controller
 {
     public function showLogin(): View|RedirectResponse
     {
-        if (Auth::check() && Auth::user()->role === 'admin') {
-            return redirect()->route('admin.dashboard');
+        if (Auth::check()) {
+
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+
+            // Customer yang sedang login tidak boleh membuka form login admin.
+            return redirect()
+                ->route('customer.dashboard')
+                ->with(
+                    'info',
+                    'Anda sedang login sebagai customer. Logout terlebih dahulu untuk masuk sebagai administrator.'
+                );
         }
 
         return view('admin.auth.login');

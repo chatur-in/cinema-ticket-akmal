@@ -121,6 +121,11 @@
         </header>
 
         <section class="content">
+
+            @if(session('info'))
+                <div class="alert-info" role="status">{{ session('info') }}</div>
+            @endif
+
             @yield('content')
         </section>
 
@@ -134,4 +139,3 @@
 
 </body>
 </html>
-    
