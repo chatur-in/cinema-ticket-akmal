@@ -1,156 +1,158 @@
-<div class="form-grid">
+{{-- Identitas studio --}}
+<div class="form-section">
+    <h3 class="form-section-title">Identitas Studio</h3>
+    <p class="form-section-desc">Nama harus unik. Nama ini tampil pada jadwal dan tiket.</p>
 
-    <div class="form-group full">
+    <div class="form-grid">
 
-        <label for="nama">Nama Studio</label>
-
-        <input
-            type="text"
-            name="nama"
-            id="nama"
-            class="form-control"
-            value="{{ old('nama', $studio->nama ?? '') }}"
-            placeholder="Contoh: Studio 1"
-            required
-        >
-
-        @error('nama')
-            <div class="field-error">{{ $message }}</div>
-        @enderror
-
-    </div>
-
-    <div class="form-group">
-
-        <label for="tipe">Tipe Studio</label>
-
-        <input
-            type="text"
-            name="tipe"
-            id="tipe"
-            class="form-control"
-            value="{{ old('tipe', $studio->tipe ?? 'Reguler') }}"
-            placeholder="Reguler / VIP / Premiere"
-            required
-        >
-
-        @error('tipe')
-            <div class="field-error">{{ $message }}</div>
-        @enderror
-
-    </div>
-
-    <div class="form-group">
-
-        <label for="status">Status Studio</label>
-
-        <select name="status" id="status" class="form-control" required>
-
-            <option
-                value="aktif"
-                @selected(old('status', $studio->status ?? 'aktif') === 'aktif')
+        <div class="form-group">
+            <label for="nama">Nama Studio</label>
+            <input
+                type="text"
+                name="nama"
+                id="nama"
+                class="form-control"
+                value="{{ old('nama', $studio->nama ?? '') }}"
+                placeholder="Contoh: Studio 1"
+                maxlength="100"
+                required
             >
-                Aktif
-            </option>
+            @error('nama')
+                <div class="field-error">{{ $message }}</div>
+            @enderror
+        </div>
 
-            <option
-                value="nonaktif"
-                @selected(old('status', $studio->status ?? '') === 'nonaktif')
+        <div class="form-group">
+            <label for="tipe">Tipe Studio</label>
+            <input
+                type="text"
+                name="tipe"
+                id="tipe"
+                class="form-control"
+                list="tipe-options"
+                value="{{ old('tipe', $studio->tipe ?? 'Reguler') }}"
+                placeholder="Reguler, Premium, VIP"
+                maxlength="50"
+                required
             >
-                Nonaktif
-            </option>
-
-        </select>
-
-        @error('status')
-            <div class="field-error">{{ $message }}</div>
-        @enderror
-
-    </div>
-
-    <div class="form-group">
-
-        <label for="jumlah_baris">Jumlah Baris Kursi</label>
-
-        <input
-            type="number"
-            name="jumlah_baris"
-            id="jumlah_baris"
-            class="form-control"
-            min="1"
-            max="255"
-            value="{{ old('jumlah_baris', $studio->jumlah_baris ?? 5) }}"
-            required
-        >
-
-        @error('jumlah_baris')
-            <div class="field-error">{{ $message }}</div>
-        @enderror
+            <datalist id="tipe-options">
+                <option value="Reguler">
+                <option value="Premium">
+                <option value="VIP">
+                <option value="Premiere">
+            </datalist>
+            @error('tipe')
+                <div class="field-error">{{ $message }}</div>
+            @enderror
+        </div>
 
     </div>
+</div>
 
-    <div class="form-group">
+{{-- Status --}}
+<div class="form-section">
+    <h3 class="form-section-title">Status Operasional</h3>
+    <p class="form-section-desc">Studio nonaktif tidak bisa dipilih untuk jadwal baru.</p>
 
-        <label for="kursi_per_baris">Kursi Per Baris</label>
+    @php
+        $currentStatus = old('status', $studio->status ?? 'aktif');
+    @endphp
 
-        <input
-            type="number"
-            name="kursi_per_baris"
-            id="kursi_per_baris"
-            class="form-control"
-            min="1"
-            max="255"
-            value="{{ old('kursi_per_baris', $studio->kursi_per_baris ?? 8) }}"
-            required
-        >
+    <div class="choice-grid" role="radiogroup" aria-label="Status studio">
+        <label class="choice">
+            <input type="radio" name="status" value="aktif" @checked($currentStatus === 'aktif') required>
+            <span>
+                <strong>Aktif</strong>
+                <small>Dapat dijadwalkan dan tampil pada pemesanan.</small>
+            </span>
+        </label>
 
-        @error('kursi_per_baris')
-            <div class="field-error">{{ $message }}</div>
-        @enderror
-
+        <label class="choice">
+            <input type="radio" name="status" value="nonaktif" @checked($currentStatus === 'nonaktif') required>
+            <span>
+                <strong>Nonaktif</strong>
+                <small>Sementara tidak digunakan untuk penayangan.</small>
+            </span>
+        </label>
     </div>
 
-    <div class="form-group full">
+    @error('status')
+        <div class="field-error" style="margin-top:8px">{{ $message }}</div>
+    @enderror
+</div>
 
-        <label>Kapasitas Studio</label>
+{{-- Denah kursi --}}
+<div class="form-section">
+    <h3 class="form-section-title">Denah Kursi</h3>
+    <p class="form-section-desc">Kapasitas dihitung otomatis dari jumlah baris dikali kursi per baris.</p>
 
-        <input
-            type="text"
-            id="kapasitas_preview"
-            class="form-control"
-            value="{{ old('jumlah_baris', $studio->jumlah_baris ?? 5) * old('kursi_per_baris', $studio->kursi_per_baris ?? 8) }} kursi"
-            readonly
-        >
+    <div class="form-grid-3">
 
-        <p class="form-hint">
-            Kapasitas dihitung otomatis berdasarkan jumlah baris
-            dikalikan kursi per baris.
-        </p>
+        <div class="form-group">
+            <label for="jumlah_baris">Jumlah Baris</label>
+            <input
+                type="number"
+                name="jumlah_baris"
+                id="jumlah_baris"
+                class="form-control"
+                min="1"
+                max="255"
+                inputmode="numeric"
+                value="{{ old('jumlah_baris', $studio->jumlah_baris ?? 5) }}"
+                required
+            >
+            @error('jumlah_baris')
+                <div class="field-error">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="form-group">
+            <label for="kursi_per_baris">Kursi per Baris</label>
+            <input
+                type="number"
+                name="kursi_per_baris"
+                id="kursi_per_baris"
+                class="form-control"
+                min="1"
+                max="255"
+                inputmode="numeric"
+                value="{{ old('kursi_per_baris', $studio->kursi_per_baris ?? 8) }}"
+                required
+            >
+            @error('kursi_per_baris')
+                <div class="field-error">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="preview-box">
+            <small>Kapasitas</small>
+            <strong id="kapasitas_preview">-</strong>
+        </div>
 
     </div>
-
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-
     const baris = document.getElementById('jumlah_baris');
     const kursi = document.getElementById('kursi_per_baris');
-    const kapasitas = document.getElementById('kapasitas_preview');
+    const preview = document.getElementById('kapasitas_preview');
 
-    function hitungKapasitas() {
+    function updateKapasitas() {
+        const jumlahBaris = parseInt(baris.value, 10);
+        const kursiPerBaris = parseInt(kursi.value, 10);
 
-        const jumlahBaris = parseInt(baris.value) || 0;
-        const kursiPerBaris = parseInt(kursi.value) || 0;
+        if (!jumlahBaris || !kursiPerBaris || jumlahBaris < 1 || kursiPerBaris < 1) {
+            preview.textContent = 'Isi baris dan kursi';
+            return;
+        }
 
-        kapasitas.value =
-            (jumlahBaris * kursiPerBaris) + ' kursi';
+        const total = jumlahBaris * kursiPerBaris;
+        preview.textContent = total + ' kursi';
     }
 
-    baris.addEventListener('input', hitungKapasitas);
-    kursi.addEventListener('input', hitungKapasitas);
-
-    hitungKapasitas();
-
+    baris.addEventListener('input', updateKapasitas);
+    kursi.addEventListener('input', updateKapasitas);
+    updateKapasitas();
 });
 </script>

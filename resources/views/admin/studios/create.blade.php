@@ -6,41 +6,36 @@
 
 <div class="page-heading">
     <div>
-        <div class="eyebrow">MANAJEMEN DATA</div>
+        <div class="eyebrow">Manajemen Data</div>
         <h1>Tambah Studio</h1>
-        <p>Tambahkan studio baru ke dalam sistem bioskop.</p>
+        <p>Tambahkan studio baru beserta denah kursinya.</p>
     </div>
+
+    <a href="{{ route('admin.studios.index') }}" class="btn-secondary">← Kembali</a>
 </div>
 
 @if($errors->any())
-    <div class="alert-error">
-        Terdapat kesalahan pada input. Silakan periksa kembali.
+    <div class="alert-error" role="alert">
+        <strong>Studio belum dapat disimpan.</strong>
+        Periksa {{ $errors->count() }} isian berikut, lalu coba kembali.
     </div>
 @endif
 
 <div class="form-card">
 
-    <form
-        action="{{ route('admin.studios.store') }}"
-        method="POST"
-    >
-
+    <form action="{{ route('admin.studios.store') }}" method="POST" novalidate>
         @csrf
 
         @include('admin.studios._form', ['studio' => null])
 
-        <div class="crud-toolbar" style="margin-top:25px;margin-bottom:0">
+        <div class="form-toolbar">
+            <span class="form-hint">Kolom bertanda wajib diisi.</span>
 
-            <a href="{{ route('admin.studios.index') }}" class="btn-secondary">
-                Kembali
-            </a>
-
-            <button type="submit" class="btn-primary">
-                Simpan Studio
-            </button>
-
+            <div class="form-toolbar-actions">
+                <a href="{{ route('admin.studios.index') }}" class="btn-secondary">Batal</a>
+                <button type="submit" class="btn-primary">Simpan Studio</button>
+            </div>
         </div>
-
     </form>
 
 </div>

@@ -6,58 +6,49 @@
 
 <div class="page-heading">
     <div>
-        <div class="eyebrow">MANAJEMEN DATA</div>
+        <div class="eyebrow">Manajemen Data</div>
         <h1>Tambah Jadwal</h1>
-        <p>Tambahkan jadwal penayangan film.</p>
+        <p>Atur penayangan film pada studio dan waktu tertentu.</p>
     </div>
+
+    <a href="{{ route('admin.jadwals.index') }}" class="btn-secondary">← Kembali</a>
 </div>
 
 @if($errors->any())
-    <div class="alert-error">
-        <strong>Jadwal tidak dapat disimpan.</strong>
-
-        <ul style="margin:8px 0 0 18px">
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+    <div class="alert-error" role="alert">
+        <strong>Jadwal belum dapat disimpan.</strong>
+        Periksa {{ $errors->count() }} isian berikut, lalu coba kembali.
     </div>
 @endif
 
 @if($films->isEmpty() || $studios->isEmpty())
-    <div class="alert-error">
-        Jadwal belum dapat dibuat. Pastikan tersedia minimal
-        satu film berstatus tayang dan satu studio berstatus aktif.
+    <div class="alert-error" role="alert">
+        <strong>Jadwal belum dapat dibuat.</strong>
+        Pastikan tersedia minimal satu film berstatus tayang dan satu studio berstatus aktif.
     </div>
 @endif
 
 <div class="form-card">
 
-    <form
-        action="{{ route('admin.jadwals.store') }}"
-        method="POST"
-    >
-
+    <form action="{{ route('admin.jadwals.store') }}" method="POST" novalidate>
         @csrf
 
         @include('admin.jadwals._form', ['jadwal' => null])
 
-        <div class="crud-toolbar" style="margin-top:25px;margin-bottom:0">
+        <div class="form-toolbar">
+            <span class="form-hint">Kolom bertanda wajib diisi.</span>
 
-            <a href="{{ route('admin.jadwals.index') }}" class="btn-secondary">
-                Kembali
-            </a>
-
-            <button
-                type="submit"
-                class="btn-primary"
-                @disabled($films->isEmpty() || $studios->isEmpty())
-            >
-                Simpan Jadwal
-            </button>
-
+            <div class="form-toolbar-actions">
+                <a href="{{ route('admin.jadwals.index') }}" class="btn-secondary">Batal</a>
+                <button
+                    type="submit"
+                    class="btn-primary"
+                    @disabled($films->isEmpty() || $studios->isEmpty())
+                >
+                    Simpan Jadwal
+                </button>
+            </div>
         </div>
-
     </form>
 
 </div>
