@@ -1,337 +1,371 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="color-scheme" content="light">
+    <title>Login Admin - CinemaTicket</title>
 
-    <title>Login Admin | CinemaTicket</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            color-scheme: light;
+
+            --bg: #fafaf9;
+            --surface: #ffffff;
+            --border: #e7e5e4;
+            --border-strong: #d6d3d1;
+            --text: #1c1917;
+            --text-soft: #44403c;
+            --muted: #78716c;
+            --subtle: #a8a29e;
+
+            --primary: #f59e0b;
+            --primary-ink: #92400e;
+            --primary-soft: #fef3c7;
+
+            --danger: #dc2626;
+            --danger-soft: #fef2f2;
+            --danger-ink: #b91c1c;
+
+            --success: #059669;
+            --success-soft: #d1fae5;
+            --success-ink: #065f46;
+
+            --shadow-lg: 0 28px 70px rgba(28, 25, 23, .14);
+            --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { background: var(--bg); }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #0b1020;
-            color: white;
+            font-family: var(--font-sans);
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .container {
+        /* Dekorasi latar, sama dengan halaman publik */
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            z-index: 0;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        body::before {
+            width: 460px;
+            height: 460px;
+            top: -140px;
+            right: -120px;
+            background: radial-gradient(circle, #fde68a 0%, transparent 70%);
+            opacity: .85;
+        }
+
+        body::after {
+            width: 420px;
+            height: 420px;
+            bottom: -160px;
+            left: -120px;
+            background: radial-gradient(circle, #c7d2fe 0%, transparent 70%);
+            opacity: .75;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        button, input { font-family: inherit; }
+
+        .card {
+            position: relative;
+            z-index: 1;
             width: 100%;
-            max-width: 950px;
-            min-height: 550px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            background: #151e33;
-            border: 1px solid #26344f;
-            border-radius: 18px;
-            overflow: hidden;
-        }
-
-        .left-panel {
-            padding: 55px 45px;
-            background: linear-gradient(
-                145deg,
-                #172647,
-                #263b63,
-                #10172b
-            );
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            max-width: 440px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            box-shadow: var(--shadow-lg);
+            padding: 42px 38px 34px;
         }
 
         .logo {
-            font-size: 27px;
-            font-weight: bold;
-            margin-bottom: 55px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
         }
 
-        .logo span {
-            color: #f5b942;
-        }
+        .logo span { color: var(--primary); }
 
-        .left-panel h1 {
-            font-size: 36px;
-            line-height: 1.3;
-            margin-bottom: 20px;
-        }
-
-        .left-panel h1 span {
-            color: #f5b942;
-        }
-
-        .left-panel p {
-            color: #cbd5e1;
-            line-height: 1.8;
-            font-size: 14px;
-        }
-
-        .left-panel small {
-            margin-top: 60px;
-            color: #94a3b8;
-        }
-
-        .right-panel {
-            padding: 55px 45px;
+        .eyebrow {
             display: flex;
-            flex-direction: column;
             justify-content: center;
+            margin-bottom: 14px;
         }
 
-        .right-panel h2 {
-            font-size: 27px;
-            margin-bottom: 10px;
+        .eyebrow span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 13px;
+            background: var(--primary-soft);
+            color: var(--primary-ink);
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow span::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--primary);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            margin-bottom: 8px;
         }
 
         .subtitle {
-            color: #94a3b8;
+            text-align: center;
+            color: var(--muted);
             font-size: 14px;
-            margin-bottom: 35px;
+            line-height: 1.7;
+            margin-bottom: 28px;
         }
 
-        .form-group {
-            margin-bottom: 22px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 10px;
+        .alert {
+            padding: 12px 14px;
+            border-radius: 12px;
             font-size: 13px;
-            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 18px;
+            border: 1px solid transparent;
+        }
+
+        .alert div + div { margin-top: 4px; }
+
+        .alert-error {
+            background: var(--danger-soft);
+            border-color: #fecaca;
+            color: var(--danger-ink);
+        }
+
+        .alert-success {
+            background: var(--success-soft);
+            border-color: #a7f3d0;
+            color: var(--success-ink);
+        }
+
+        .form-group { margin-bottom: 18px; }
+
+        label.field-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-soft);
+            margin-bottom: 8px;
         }
 
         input[type="email"],
         input[type="password"] {
             width: 100%;
-            padding: 14px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            background: #0b1020;
-            color: white;
+            height: 50px;
+            padding: 0 16px;
+            background: var(--surface);
+            border: 1px solid var(--border-strong);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 14px;
             outline: none;
+            transition: border-color .2s ease, box-shadow .2s ease;
         }
 
+        input::placeholder { color: var(--subtle); }
+
         input:focus {
-            border-color: #f5b942;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, .15);
         }
 
         .remember {
             display: flex;
             align-items: center;
-            gap: 9px;
-            color: #cbd5e1;
+            gap: 10px;
             font-size: 13px;
-            margin-bottom: 25px;
-        }
-
-        .remember input {
-            accent-color: #f5b942;
-        }
-
-        button {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 8px;
-            background: #f5b942;
-            color: #10172b;
-            font-weight: bold;
-            font-size: 15px;
+            font-weight: 500;
+            color: var(--muted);
+            margin: 4px 0 24px;
             cursor: pointer;
         }
 
-        button:hover {
-            background: #e5a928;
+        .remember input {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary);
         }
 
-        .error {
-            background: #7f1d1d;
-            color: #fecaca;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 13px;
+        .btn {
+            width: 100%;
+            height: 52px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 24px rgba(245, 158, 11, .30);
+            transition: transform .2s ease, box-shadow .2s ease;
         }
 
-        .success {
-            background: #14532d;
-            color: #bbf7d0;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 13px;
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 32px rgba(245, 158, 11, .38);
         }
 
-        .back-home {
+        .btn:focus-visible,
+        .remember input:focus-visible,
+        .back:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 3px;
+        }
+
+        .back {
+            display: block;
+            margin-top: 20px;
             text-align: center;
-            margin-top: 25px;
+            color: var(--muted);
             font-size: 13px;
+            font-weight: 600;
+            transition: color .2s ease;
         }
 
-        .back-home a {
-            color: #f5b942;
-            text-decoration: none;
-        }
+        .back:hover { color: var(--text); }
 
         .copyright {
+            margin-top: 26px;
+            padding-top: 18px;
+            border-top: 1px solid var(--border);
             text-align: center;
-            color: #64748b;
-            font-size: 11px;
-            margin-top: 35px;
+            color: var(--subtle);
+            font-size: 12px;
         }
 
-        @media (max-width: 700px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 480px) {
+            body { padding: 20px 14px; }
+            .card { padding: 32px 24px 26px; border-radius: 18px; }
+            h1 { font-size: 24px; }
+        }
 
-            .left-panel {
-                padding: 30px;
-            }
-
-            .left-panel h1 {
-                font-size: 27px;
-            }
-
-            .logo {
-                margin-bottom: 25px;
-            }
-
-            .left-panel small {
-                margin-top: 25px;
-            }
-
-            .right-panel {
-                padding: 35px 25px;
-            }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { transition-duration: .01ms !important; }
         }
     </style>
 </head>
 
 <body>
 
-<div class="container">
+    <main class="card">
 
-    <div class="left-panel">
+        <div class="logo">CINEMA<span>TICKET</span></div>
 
-        <div class="logo">
-            CINEMA<span>TICKET</span>
+        <div class="eyebrow">
+            <span>Administrator</span>
         </div>
 
-        <h1>
-            Welcome Back to
-            <span>CinemaTicket.</span>
-        </h1>
-
-        <p>
-            Kelola sistem pemesanan tiket bioskop dengan
-            mudah melalui dashboard administrator.
-            Pantau film, studio, jadwal tayang,
-            dan transaksi pemesanan.
-        </p>
-
-        <small>
-            ADMINISTRATOR ACCESS ONLY
-        </small>
-
-    </div>
-
-    <div class="right-panel">
-
-        <h2>Admin Login</h2>
+        <h1>Masuk ke Dashboard</h1>
 
         <p class="subtitle">
-            Silakan masuk menggunakan akun administrator.
+            Silakan masuk menggunakan akun administrator untuk mengelola CinemaTicket.
         </p>
 
-        @if (session('error'))
-            <div class="error">
-                {{ session('error') }}
-            </div>
+        @if(session('error'))
+            <div class="alert alert-error" role="alert">{{ session('error') }}</div>
         @endif
 
-        @if (session('success'))
-            <div class="success">
-                {{ session('success') }}
-            </div>
+        @if(session('success'))
+            <div class="alert alert-success" role="status">{{ session('success') }}</div>
         @endif
 
-        @if ($errors->any())
-            <div class="error">
-                @foreach ($errors->all() as $error)
+        @if($errors->any())
+            <div class="alert alert-error" role="alert">
+                @foreach($errors->all() as $error)
                     <div>{{ $error }}</div>
                 @endforeach
             </div>
         @endif
 
-        <form method="POST" action="{{ route('admin.login.process') }}">
-
+        <form method="POST" action="{{ route('admin.login.process') }}" novalidate>
             @csrf
 
             <div class="form-group">
-                <label for="email">Email Administrator</label>
-
+                <label class="field-label" for="email">Email Administrator</label>
                 <input
                     type="email"
                     id="email"
                     name="email"
                     placeholder="admin@cinematicket.test"
                     value="{{ old('email') }}"
+                    autocomplete="username"
                     required
                     autofocus
                 >
             </div>
 
             <div class="form-group">
-                <label for="password">Password</label>
-
+                <label class="field-label" for="password">Password</label>
                 <input
                     type="password"
                     id="password"
                     name="password"
                     placeholder="Masukkan password"
+                    autocomplete="current-password"
                     required
                 >
             </div>
 
             <label class="remember">
-                <input
-                    type="checkbox"
-                    name="remember"
-                    value="1"
-                >
-                Ingat saya
+                <input type="checkbox" name="remember" value="1">
+                Ingat saya di perangkat ini
             </label>
 
-            <button type="submit">
-                LOGIN TO DASHBOARD
-            </button>
-
+            <button type="submit" class="btn">Masuk ke Dashboard →</button>
         </form>
 
-        <div class="back-home">
-            <a href="{{ route('home') }}">
-                ← Kembali ke Homepage
-            </a>
-        </div>
+        <a href="{{ route('home') }}" class="back">← Kembali ke Homepage</a>
 
-        <div class="copyright">
-            © 2026 CinemaTicket. All Rights Reserved.
-        </div>
+        <div class="copyright">© {{ date('Y') }} CinemaTicket. All Rights Reserved.</div>
 
-    </div>
-
-</div>
+    </main>
 
 </body>
 </html>
