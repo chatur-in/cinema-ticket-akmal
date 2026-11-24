@@ -4,156 +4,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="theme-color" content="#ffffff">
     <title>Ringkasan Pembayaran - CinemaTicket</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    @include('layouts.partials.public-navbar-styles')
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg: #fafaf9;
+            --bg-soft: #f4f4f5;
+            --surface: #ffffff;
+            --border: #e7e5e4;
+            --border-strong: #d6d3d1;
+            --text: #1c1917;
+            --text-soft: #44403c;
+            --muted: #78716c;
+            --primary: #f59e0b;
+            --primary-soft: #fef3c7;
+            --primary-ink: #92400e;
+            --success: #059669;
+            --success-soft: #d1fae5;
+            --danger: #dc2626;
+            --danger-soft: #fef2f2;
+            --shadow-md: 0 14px 36px rgba(28, 25, 23, .10);
+            --radius: 16px;
+            --radius-lg: 22px;
+            --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #0b1020;
-            color: white;
+            font-family: var(--font-sans);
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
             min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            min-height: 76px;
-            padding: 20px 8%;
-            background: #10172b;
-            border-bottom: 1px solid #26344f;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 23px;
-            font-weight: bold;
-        }
-
-        .logo span {
-            color: #f5b942;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 25px;
-        }
-
-        .nav-links a {
-            color: #cbd5e1;
-            font-size: 13px;
-        }
-
-        .nav-links a:hover {
-            color: #f5b942;
-        }
+        a { color: inherit; text-decoration: none; }
 
         .container {
-            width: min(1000px, 90%);
-            margin: 45px auto 75px;
+            width: min(1040px, calc(100% - 64px));
+            margin: 40px auto 96px;
         }
 
         .back-link {
-            display: inline-block;
-            color: #f5b942;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--primary-ink);
             font-size: 13px;
-            margin-bottom: 28px;
+            font-weight: 700;
+            margin-bottom: 24px;
         }
 
+        .back-link:hover { text-decoration: underline; }
+
         .eyebrow {
-            color: #f5b942;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: var(--primary-soft);
+            color: var(--primary-ink);
+            border-radius: 999px;
             font-size: 11px;
-            font-weight: bold;
-            letter-spacing: 3px;
-            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--primary);
         }
 
         h1 {
-            font-size: 30px;
-            margin-bottom: 12px;
+            font-size: clamp(28px, 3.4vw, 36px);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 10px;
         }
 
         .subtitle {
-            color: #94a3b8;
-            font-size: 13px;
-            line-height: 1.8;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.75;
         }
 
         .content-grid {
             display: grid;
             grid-template-columns: 1.2fr .8fr;
             gap: 22px;
-            margin-top: 30px;
+            margin-top: 32px;
+            align-items: start;
         }
 
         .card {
-            background: #151e33;
-            border: 1px solid #26344f;
-            border-radius: 13px;
-            padding: 25px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow-md);
             margin-bottom: 20px;
         }
 
         .card h2 {
             font-size: 17px;
-            margin-bottom: 20px;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            margin-bottom: 18px;
         }
 
         .booking-code {
             padding: 20px;
-            border-radius: 9px;
-            background: #202c45;
-            border: 1px dashed #f5b942;
-            margin-bottom: 22px;
+            border-radius: 16px;
+            background: var(--bg-soft);
+            border: 1.5px dashed var(--primary);
+            margin-bottom: 20px;
         }
 
         .booking-code small {
             display: block;
-            color: #94a3b8;
-            font-size: 10px;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
         }
 
         .booking-code strong {
-            color: #f5b942;
-            font-size: 19px;
+            color: var(--primary-ink);
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
             overflow-wrap: anywhere;
         }
 
         .detail-row {
             display: flex;
             justify-content: space-between;
-            gap: 15px;
-            padding: 14px 0;
-            border-bottom: 1px solid #26344f;
+            align-items: center;
+            gap: 16px;
+            padding: 13px 0;
+            border-bottom: 1px solid var(--border);
         }
 
-        .detail-row:last-child {
-            border-bottom: none;
-        }
+        .detail-row:last-child { border-bottom: none; }
 
         .detail-row span {
-            color: #94a3b8;
-            font-size: 12px;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
         }
 
         .detail-row strong {
-            font-size: 12px;
+            font-size: 14px;
+            font-weight: 700;
             text-align: right;
             overflow-wrap: anywhere;
         }
@@ -162,114 +185,121 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: flex-end;
-            gap: 7px;
+            gap: 6px;
         }
 
         .seat-tag {
-            padding: 7px 10px;
-            border-radius: 6px;
-            background: #263b63;
-            color: #f5b942;
-            font-size: 11px;
-            font-weight: bold;
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: var(--primary-soft);
+            color: var(--primary-ink);
+            font-size: 12px;
+            font-weight: 800;
         }
 
         .price-row {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             gap: 12px;
-            padding: 15px 0;
-            border-bottom: 1px solid #26344f;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
         }
 
         .price-row span {
-            color: #94a3b8;
-            font-size: 12px;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
         }
 
-        .price-row strong {
-            font-size: 13px;
-        }
+        .price-row strong { font-size: 14px; font-weight: 700; }
 
         .total-box {
-            margin-top: 20px;
+            margin-top: 18px;
             padding: 20px;
-            border-radius: 9px;
-            background: #202c45;
+            border-radius: 16px;
+            background: var(--bg-soft);
         }
 
         .total-box span {
             display: block;
-            color: #94a3b8;
-            font-size: 12px;
-            margin-bottom: 10px;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
         }
 
         .total-box strong {
             display: block;
-            color: #f5b942;
-            font-size: 27px;
+            color: var(--primary-ink);
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
         }
 
         .status {
-            display: inline-block;
-            padding: 7px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status::before {
+            content: "";
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: currentColor;
         }
 
         .status-booking,
         .status-menunggu {
-            background: rgba(245,185,66,.12);
-            color: #f5b942;
+            background: var(--primary-soft);
+            color: var(--primary-ink);
         }
 
         .status-lunas,
         .status-berhasil {
-            background: rgba(34,197,94,.12);
-            color: #4ade80;
+            background: var(--success-soft);
+            color: #065f46;
         }
 
         .status-gagal,
         .status-dibatalkan,
         .status-kedaluwarsa {
-            background: rgba(239,68,68,.12);
-            color: #f87171;
+            background: var(--danger-soft);
+            color: #b91c1c;
         }
 
-        .payment-info {
-            padding: 18px;
-            border-radius: 9px;
-            background: rgba(245,185,66,.08);
-            border: 1px solid rgba(245,185,66,.3);
-            color: #f5b942;
-            font-size: 12px;
-            line-height: 1.8;
-        }
-
-        .payment-info strong {
-            display: block;
-            margin-bottom: 6px;
-        }
-
-        .payment-method {
-            margin-top: 18px;
-            padding: 18px;
-            background: #202c45;
-            border: 1px solid #34435e;
-            border-radius: 9px;
-        }
-
-        .payment-method small {
-            color: #94a3b8;
-            font-size: 11px;
-        }
-
-        .payment-method strong {
-            display: block;
-            margin-top: 8px;
+        .info-box {
+            padding: 16px 18px;
+            border-radius: 14px;
+            background: var(--primary-soft);
+            border: 1px solid #fde68a;
+            color: var(--primary-ink);
             font-size: 13px;
+            line-height: 1.7;
+            margin-top: 18px;
+        }
+
+        .info-box strong {
+            display: block;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .info-box.success {
+            background: var(--success-soft);
+            border-color: #a7f3d0;
+            color: #065f46;
+        }
+
+        .info-box.danger {
+            background: var(--danger-soft);
+            border-color: #fecaca;
+            color: #b91c1c;
         }
 
         .actions {
@@ -280,122 +310,80 @@
 
         .btn {
             flex: 1;
-            display: flex;
-            justify-content: center;
+            display: inline-flex;
             align-items: center;
-            padding: 14px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: bold;
-            transition: .2s;
+            justify-content: center;
+            min-height: 50px;
+            padding: 0 20px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: transform .2s ease, box-shadow .2s ease;
         }
+
+        .btn:hover { transform: translateY(-2px); }
 
         .btn-primary {
-            background: #f5b942;
-            color: #10172b;
-        }
-
-        .btn-primary:hover {
-            background: #ffd477;
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            color: #ffffff;
+            box-shadow: 0 10px 24px rgba(245, 158, 11, .30);
         }
 
         .btn-secondary {
-            background: #26344f;
-            color: white;
+            background: var(--surface);
+            border: 1px solid var(--border-strong);
+            color: var(--text-soft);
         }
 
         .btn-secondary:hover {
-            background: #34435e;
+            border-color: var(--primary);
+            color: var(--primary-ink);
         }
 
         footer {
-            padding: 25px;
+            padding: 28px 24px;
             text-align: center;
-            background: #10172b;
-            border-top: 1px solid #26344f;
-            color: #94a3b8;
-            font-size: 12px;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 13px;
         }
 
-        @media(max-width: 750px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .container {
-                margin-top: 30px;
-            }
-
-            h1 {
-                font-size: 25px;
-            }
+        @media (max-width: 860px) {
+            .content-grid { grid-template-columns: 1fr; }
+            .container { width: calc(100% - 32px); margin-top: 28px; }
+            h1 { font-size: 26px; }
         }
 
-        @media(max-width: 500px) {
-            .navbar {
-                padding: 17px 5%;
-                flex-wrap: wrap;
-                gap: 12px;
-            }
+        @media (max-width: 500px) {
+            .card { padding: 22px; }
+            .actions { flex-direction: column; }
+        }
 
-            .logo {
-                font-size: 20px;
-            }
-
-            .nav-links {
-                gap: 15px;
-            }
-
-            .nav-links a {
-                font-size: 11px;
-            }
-
-            .card {
-                padding: 19px;
-            }
-
-            .actions {
-                flex-direction: column;
-            }
-
-            .total-box strong {
-                font-size: 23px;
-            }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { transition-duration: .01ms !important; }
         }
     </style>
-
-    @include('layouts.partials.public-navbar-styles')
 
 </head>
 
 <body>
 
-    {{-- NAVBAR --}}
-
     @include('layouts.partials.public-navbar')
-
 
     <main class="container">
 
-        <a
-            href="{{ route('booking.success', $pemesanan->kode_booking) }}"
-            class="back-link"
-        >
-            &larr; Kembali ke konfirmasi booking
+        <a href="{{ route('booking.success', $pemesanan->kode_booking) }}" class="back-link">
+            ← Kembali ke konfirmasi booking
         </a>
 
-
-        <div class="eyebrow">
-            PAYMENT SUMMARY
-        </div>
+        <div class="eyebrow">Payment Summary</div>
 
         <h1>Ringkasan Pembayaran</h1>
 
         <p class="subtitle">
-            Periksa kembali informasi pemesanan dan rincian
-            pembayaran sebelum melanjutkan ke tahap berikutnya.
+            Periksa kembali informasi pemesanan dan rincian pembayaran sebelum melanjutkan.
         </p>
-
 
         <div class="content-grid">
 
@@ -403,230 +391,116 @@
 
             <div>
 
-                {{-- INFORMASI BOOKING --}}
-
                 <section class="card">
 
                     <h2>Informasi Pemesanan</h2>
 
                     <div class="booking-code">
-
-                        <small>KODE BOOKING</small>
-
-                        <strong>
-                            {{ $pemesanan->kode_booking }}
-                        </strong>
-
+                        <small>Kode Booking</small>
+                        <strong>{{ $pemesanan->kode_booking }}</strong>
                     </div>
 
-
                     <div class="detail-row">
-
                         <span>Nama Pemesan</span>
-
-                        <strong>
-                            {{ $pemesanan->nama_pemesan }}
-                        </strong>
-
+                        <strong>{{ $pemesanan->nama_pemesan }}</strong>
                     </div>
 
-
                     <div class="detail-row">
-
                         <span>Nomor HP</span>
-
-                        <strong>
-                            {{ $pemesanan->no_hp }}
-                        </strong>
-
+                        <strong>{{ $pemesanan->no_hp }}</strong>
                     </div>
 
-
                     <div class="detail-row">
-
                         <span>Status Booking</span>
-
                         <strong>
-
                             <span class="status status-{{ $pemesanan->status }}">
                                 {{ ucfirst($pemesanan->status) }}
                             </span>
-
                         </strong>
-
                     </div>
 
                 </section>
-
-
-                {{-- INFORMASI FILM --}}
 
                 <section class="card">
 
                     <h2>Informasi Penayangan</h2>
 
                     <div class="detail-row">
-
                         <span>Judul Film</span>
-
-                        <strong>
-                            {{ $pemesanan->jadwal->film->judul }}
-                        </strong>
-
+                        <strong>{{ $pemesanan->jadwal->film->judul }}</strong>
                     </div>
 
-
                     <div class="detail-row">
-
                         <span>Genre</span>
-
-                        <strong>
-                            {{ $pemesanan->jadwal->film->genre }}
-                        </strong>
-
+                        <strong>{{ $pemesanan->jadwal->film->genre }}</strong>
                     </div>
 
-
                     <div class="detail-row">
-
                         <span>Tanggal Tayang</span>
-
-                        <strong>
-                            {{ \Carbon\Carbon::parse(
-                                $pemesanan->jadwal->tanggal_tayang
-                            )->format('d M Y') }}
-                        </strong>
-
+                        <strong>{{ \Carbon\Carbon::parse($pemesanan->jadwal->tanggal_tayang)->format('d M Y') }}</strong>
                     </div>
 
-
                     <div class="detail-row">
-
                         <span>Jam Tayang</span>
-
                         <strong>
-                            {{ date('H:i', strtotime(
-                                $pemesanan->jadwal->jam_mulai
-                            )) }}
+                            {{ date('H:i', strtotime($pemesanan->jadwal->jam_mulai)) }}
                             -
-                            {{ date('H:i', strtotime(
-                                $pemesanan->jadwal->jam_selesai
-                            )) }}
+                            {{ date('H:i', strtotime($pemesanan->jadwal->jam_selesai)) }}
                         </strong>
-
                     </div>
 
-
                     <div class="detail-row">
-
                         <span>Studio</span>
-
-                        <strong>
-                            {{ $pemesanan->jadwal->studio->nama }}
-                        </strong>
-
+                        <strong>{{ $pemesanan->jadwal->studio->nama }}</strong>
                     </div>
 
-
                     <div class="detail-row">
-
                         <span>Kursi</span>
-
                         <div class="seat-list">
-
                             @foreach($pemesanan->detailKursis as $detail)
-
-                                <span class="seat-tag">
-                                    {{ $detail->no_kursi }}
-                                </span>
-
+                                <span class="seat-tag">{{ $detail->no_kursi }}</span>
                             @endforeach
-
                         </div>
-
                     </div>
 
-
                     <div class="detail-row">
-
                         <span>Jumlah Tiket</span>
-
-                        <strong>
-                            {{ $pemesanan->detailKursis->count() }} Tiket
-                        </strong>
-
+                        <strong>{{ $pemesanan->detailKursis->count() }} Tiket</strong>
                     </div>
 
                 </section>
 
             </div>
 
-
             {{-- KOLOM KANAN --}}
 
             <div>
-
-                {{-- RINCIAN HARGA --}}
 
                 <section class="card">
 
                     <h2>Rincian Pembayaran</h2>
 
                     <div class="price-row">
-
                         <span>Harga per Tiket</span>
-
-                        <strong>
-                            Rp {{ number_format(
-                                (float) $pemesanan->jadwal->harga,
-                                0,
-                                ',',
-                                '.'
-                            ) }}
-                        </strong>
-
+                        <strong>Rp {{ number_format((float) $pemesanan->jadwal->harga, 0, ',', '.') }}</strong>
                     </div>
 
-
                     <div class="price-row">
-
                         <span>Jumlah Tiket</span>
-
-                        <strong>
-                            {{ $pemesanan->detailKursis->count() }} Tiket
-                        </strong>
-
+                        <strong>{{ $pemesanan->detailKursis->count() }} Tiket</strong>
                     </div>
-
 
                     <div class="price-row">
-
                         <span>Biaya Tambahan</span>
-
                         <strong>Rp 0</strong>
-
                     </div>
-
 
                     <div class="total-box">
-
                         <span>Total yang Harus Dibayar</span>
-
-                        <strong>
-                            Rp {{ number_format(
-                                (float) $pemesanan->total_harga,
-                                0,
-                                ',',
-                                '.'
-                            ) }}
-                        </strong>
-
+                        <strong>Rp {{ number_format((float) $pemesanan->total_harga, 0, ',', '.') }}</strong>
                     </div>
 
                 </section>
-
-
-                {{-- STATUS PEMBAYARAN --}}
 
                 <section class="card">
 
@@ -635,147 +509,90 @@
                     @if($pemesanan->pembayaran)
 
                         <div class="detail-row">
-
                             <span>Metode Pembayaran</span>
-
                             <strong>
-                                {{ strtoupper(
-                                    str_replace(
-                                        '_',
-                                        ' ',
-                                        $pemesanan->pembayaran->metode_pembayaran
-                                    )
-                                ) }}
+                                {{ strtoupper(str_replace('_', ' ', $pemesanan->pembayaran->metode_pembayaran)) }}
                             </strong>
-
                         </div>
 
                         <div class="detail-row">
-
                             <span>Kode Referensi</span>
-
-                            <strong>
-                                {{ $pemesanan->pembayaran->kode_referensi ?? '-' }}
-                            </strong>
-
+                            <strong>{{ $pemesanan->pembayaran->kode_referensi ?? '-' }}</strong>
                         </div>
 
                         <div class="detail-row">
-
                             <span>Status Pembayaran</span>
-
                             <strong>
-
                                 <span class="status status-{{ $pemesanan->pembayaran->status }}">
                                     {{ ucfirst($pemesanan->pembayaran->status) }}
                                 </span>
-
                             </strong>
-
                         </div>
 
                     @else
 
-                        <div class="payment-info">
-
+                        <div class="info-box">
                             <strong>Belum Ada Pembayaran</strong>
-
-                            Kamu sudah berhasil melakukan booking.
-                            Silakan lanjutkan ke tahap pemilihan
-                            metode pembayaran.
-
+                            Kamu sudah berhasil melakukan booking. Silakan lanjutkan ke tahap
+                            pemilihan metode pembayaran.
                         </div>
 
                     @endif
 
                 </section>
 
+                @if($pemesanan->status === 'lunas' && $pemesanan->pembayaran?->status === 'berhasil')
 
-                {{-- INFORMASI --}}
-                @if(
-                    $pemesanan->status === 'lunas'
-                    && $pemesanan->pembayaran?->status === 'berhasil'
-                )
-
-                    <div class="payment-info">
+                    <div class="info-box success">
                         <strong>✓ Pembayaran Berhasil</strong>
-
-                        Pembayaran telah terverifikasi dan pemesanan
-                        sudah berstatus lunas. E-ticket kamu sudah
-                        tersedia dan dapat dicetak.
+                        Pembayaran telah terverifikasi dan pemesanan sudah berstatus lunas.
+                        E-ticket kamu sudah tersedia dan dapat dicetak.
                     </div>
 
                 @elseif($pemesanan->pembayaran?->status === 'gagal')
 
-                    <div class="payment-info">
+                    <div class="info-box danger">
                         <strong>Pembayaran Gagal</strong>
-
-                        Pembayaran belum berhasil. Kamu masih dapat
-                        mencoba kembali melalui proses pembayaran.
+                        Pembayaran belum berhasil. Kamu masih dapat mencoba kembali.
                     </div>
 
                 @elseif($pemesanan->pembayaran)
 
-                    <div class="payment-info">
+                    <div class="info-box">
                         <strong>Pembayaran Menunggu</strong>
-
-                        Metode pembayaran telah dipilih. Silakan
-                        lanjutkan proses pembayaran.
+                        Metode pembayaran telah dipilih. Silakan lanjutkan proses pembayaran.
                     </div>
 
                 @else
 
-                    <div class="payment-info">
+                    <div class="info-box">
                         <strong>Belum Ada Pembayaran</strong>
-
-                        Silakan pilih metode pembayaran untuk
-                        menyelesaikan transaksi.
+                        Silakan pilih metode pembayaran untuk menyelesaikan transaksi.
                     </div>
 
                 @endif
 
-
-
-                {{-- TOMBOL --}}
-
-                
                 <div class="actions">
 
-                    <a
-                        href="{{ route('booking.success', $pemesanan->kode_booking) }}"
-                        class="btn btn-secondary"
-                    >
+                    <a href="{{ route('booking.success', $pemesanan->kode_booking) }}" class="btn btn-secondary">
                         Kembali
                     </a>
 
+                    @if($pemesanan->status === 'lunas' && $pemesanan->pembayaran?->status === 'berhasil')
 
-                    @if(
-                        $pemesanan->status === 'lunas'
-                        && $pemesanan->pembayaran?->status === 'berhasil'
-                    )
-
-                        <a
-                            href="{{ route('booking.tickets.index', $pemesanan->kode_booking) }}"
-                            class="btn btn-primary"
-                        >
+                        <a href="{{ route('booking.tickets.index', $pemesanan->kode_booking) }}" class="btn btn-primary">
                             Lihat E-Ticket
                         </a>
 
                     @elseif($pemesanan->status === 'booking' && $pemesanan->pembayaran)
 
-                        <a
-                            href="{{ route('booking.payment.process', $pemesanan->kode_booking) }}"
-                            class="btn btn-primary"
-                        >
+                        <a href="{{ route('booking.payment.process', $pemesanan->kode_booking) }}" class="btn btn-primary">
                             Lanjutkan Pembayaran
                         </a>
 
                     @elseif($pemesanan->status === 'booking')
 
-                        <a
-                            href="{{ route('booking.payment.methods', $pemesanan->kode_booking) }}"
-                            class="btn btn-primary"
-                        >
+                        <a href="{{ route('booking.payment.methods', $pemesanan->kode_booking) }}" class="btn btn-primary">
                             Pilih Metode Pembayaran
                         </a>
 
@@ -783,19 +600,14 @@
 
                 </div>
 
-
             </div>
 
         </div>
 
     </main>
 
-
     <footer>
-
-        &copy; {{ date('Y') }} CinemaTicket.
-        Sistem Pemesanan Tiket Bioskop.
-
+        © {{ date('Y') }} CinemaTicket. Sistem Pemesanan Tiket Bioskop.
     </footer>
 
 </body>

@@ -1,127 +1,146 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
     <title>Metode Pembayaran - CinemaTicket</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    @include('layouts.partials.public-navbar-styles')
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg: #fafaf9;
+            --bg-soft: #f4f4f5;
+            --surface: #ffffff;
+            --border: #e7e5e4;
+            --border-strong: #d6d3d1;
+            --text: #1c1917;
+            --text-soft: #44403c;
+            --muted: #78716c;
+            --primary: #f59e0b;
+            --primary-soft: #fef3c7;
+            --primary-ink: #92400e;
+            --danger: #dc2626;
+            --danger-soft: #fef2f2;
+            --shadow-md: 0 14px 36px rgba(28, 25, 23, .10);
+            --radius: 16px;
+            --radius-lg: 22px;
+            --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #0b1020;
-            color: white;
+            font-family: var(--font-sans);
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
             min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            min-height: 76px;
-            padding: 20px 8%;
-            background: #10172b;
-            border-bottom: 1px solid #26344f;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 23px;
-            font-weight: bold;
-        }
-
-        .logo span {
-            color: #f5b942;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 25px;
-        }
-
-        .nav-links a {
-            color: #cbd5e1;
-            font-size: 13px;
-        }
-
-        .nav-links a:hover {
-            color: #f5b942;
-        }
+        a { color: inherit; text-decoration: none; }
+        button { font-family: inherit; }
 
         .container {
-            width: min(1000px, 90%);
-            margin: 45px auto 75px;
+            width: min(1040px, calc(100% - 64px));
+            margin: 40px auto 96px;
         }
 
         .back-link {
-            display: inline-block;
-            color: #f5b942;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--primary-ink);
             font-size: 13px;
-            margin-bottom: 28px;
+            font-weight: 700;
+            margin-bottom: 24px;
         }
 
+        .back-link:hover { text-decoration: underline; }
+
         .eyebrow {
-            color: #f5b942;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: var(--primary-soft);
+            color: var(--primary-ink);
+            border-radius: 999px;
             font-size: 11px;
-            font-weight: bold;
-            letter-spacing: 3px;
-            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--primary);
         }
 
         h1 {
-            font-size: 30px;
-            margin-bottom: 12px;
+            font-size: clamp(28px, 3.4vw, 36px);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 10px;
         }
 
         .subtitle {
-            color: #94a3b8;
-            font-size: 13px;
-            line-height: 1.8;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.75;
         }
 
         .content-grid {
             display: grid;
             grid-template-columns: 1.2fr .8fr;
             gap: 22px;
-            margin-top: 30px;
+            margin-top: 32px;
             align-items: start;
         }
 
         .card {
-            background: #151e33;
-            border: 1px solid #26344f;
-            border-radius: 13px;
-            padding: 25px;
-            margin-bottom: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow-md);
         }
 
         .card h2 {
             font-size: 17px;
-            margin-bottom: 10px;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            margin-bottom: 8px;
         }
 
         .card-description {
-            color: #94a3b8;
-            font-size: 12px;
+            color: var(--muted);
+            font-size: 13px;
             line-height: 1.7;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
+
+        /* OPSI METODE */
 
         .method-list {
             display: grid;
-            gap: 13px;
+            gap: 12px;
         }
 
         .method-option {
@@ -139,25 +158,26 @@
         .method-content {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 16px;
             padding: 18px;
-            border: 1px solid #34435e;
-            background: #202c45;
-            border-radius: 10px;
-            transition: .2s;
+            border: 1.5px solid var(--border);
+            background: var(--surface);
+            border-radius: 14px;
+            transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
         }
 
         .method-option:hover .method-content {
-            border-color: #f5b942;
+            border-color: #fcd34d;
         }
 
         .method-option input:checked + .method-content {
-            border: 2px solid #f5b942;
-            background: rgba(245,185,66,.09);
+            border-color: var(--primary);
+            background: #fffbeb;
+            box-shadow: 0 6px 18px rgba(245, 158, 11, .12);
         }
 
         .method-option input:focus-visible + .method-content {
-            outline: 2px solid white;
+            outline: 2px solid var(--primary);
             outline-offset: 3px;
         }
 
@@ -166,88 +186,154 @@
             height: 48px;
             flex-shrink: 0;
             display: flex;
-            justify-content: center;
             align-items: center;
-            background: #26344f;
-            border-radius: 9px;
-            font-size: 23px;
+            justify-content: center;
+            background: var(--bg-soft);
+            border-radius: 12px;
+            font-size: 22px;
         }
 
-        .method-text {
-            flex: 1;
-        }
+        .method-text { flex: 1; }
 
         .method-text strong {
             display: block;
-            font-size: 14px;
-            margin-bottom: 6px;
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 4px;
         }
 
         .method-text small {
-            color: #94a3b8;
-            font-size: 11px;
+            color: var(--muted);
+            font-size: 13px;
             line-height: 1.6;
         }
 
         .radio-indicator {
-            width: 19px;
-            height: 19px;
-            border: 2px solid #64748b;
-            border-radius: 50%;
+            width: 20px;
+            height: 20px;
             flex-shrink: 0;
+            border: 2px solid var(--border-strong);
+            border-radius: 50%;
+            transition: border-color .2s ease;
         }
 
         .method-option input:checked + .method-content .radio-indicator {
-            border: 6px solid #f5b942;
+            border: 6px solid var(--primary);
         }
 
         .error-message {
-            color: #f87171;
-            font-size: 12px;
-            margin-top: 12px;
+            color: var(--danger);
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 14px;
         }
+
+        .info-box {
+            margin-top: 22px;
+            padding: 16px 18px;
+            border-radius: 14px;
+            background: var(--primary-soft);
+            border: 1px solid #fde68a;
+            color: var(--primary-ink);
+            font-size: 13px;
+            line-height: 1.75;
+        }
+
+        .info-box strong {
+            display: block;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .btn {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 50px;
+            padding: 0 20px;
+            border: none;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+        }
+
+        .btn:hover { transform: translateY(-2px); }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            color: #ffffff;
+            box-shadow: 0 10px 24px rgba(245, 158, 11, .30);
+        }
+
+        .btn-primary:hover { box-shadow: 0 16px 32px rgba(245, 158, 11, .38); }
+
+        .btn-secondary {
+            background: var(--surface);
+            border: 1px solid var(--border-strong);
+            color: var(--text-soft);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary-ink);
+        }
+
+        /* RINGKASAN KANAN */
 
         .booking-code {
             padding: 18px;
-            border-radius: 9px;
-            background: #202c45;
-            border: 1px dashed #f5b942;
-            margin-bottom: 20px;
+            border-radius: 14px;
+            background: var(--bg-soft);
+            border: 1.5px dashed var(--primary);
+            margin-bottom: 18px;
         }
 
         .booking-code small {
             display: block;
-            color: #94a3b8;
-            font-size: 10px;
-            letter-spacing: 2px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
             margin-bottom: 8px;
         }
 
         .booking-code strong {
-            color: #f5b942;
-            font-size: 17px;
+            color: var(--primary-ink);
+            font-size: 18px;
+            font-weight: 800;
             overflow-wrap: anywhere;
         }
 
         .detail-row {
             display: flex;
             justify-content: space-between;
-            gap: 15px;
-            padding: 13px 0;
-            border-bottom: 1px solid #26344f;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
         }
 
-        .detail-row:last-child {
-            border-bottom: none;
-        }
+        .detail-row:last-child { border-bottom: none; }
 
         .detail-row span {
-            color: #94a3b8;
-            font-size: 12px;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
         }
 
         .detail-row strong {
-            font-size: 12px;
+            font-size: 14px;
+            font-weight: 700;
             text-align: right;
             overflow-wrap: anywhere;
         }
@@ -260,145 +346,62 @@
         }
 
         .seat-tag {
-            padding: 6px 9px;
-            border-radius: 5px;
-            background: #263b63;
-            color: #f5b942;
-            font-size: 11px;
-            font-weight: bold;
+            padding: 5px 9px;
+            border-radius: 7px;
+            background: var(--primary-soft);
+            color: var(--primary-ink);
+            font-size: 12px;
+            font-weight: 800;
         }
 
         .total-box {
-            margin-top: 20px;
+            margin-top: 18px;
             padding: 20px;
-            border-radius: 9px;
-            background: #202c45;
+            border-radius: 14px;
+            background: var(--bg-soft);
         }
 
         .total-box span {
             display: block;
-            color: #94a3b8;
-            font-size: 12px;
-            margin-bottom: 9px;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
         }
 
         .total-box strong {
             display: block;
-            color: #f5b942;
-            font-size: 25px;
-        }
-
-        .info-box {
-            padding: 16px;
-            border-radius: 9px;
-            background: rgba(245,185,66,.08);
-            border: 1px solid rgba(245,185,66,.3);
-            color: #f5b942;
-            font-size: 11px;
-            line-height: 1.8;
-            margin-top: 18px;
-        }
-
-        .info-box strong {
-            display: block;
-            margin-bottom: 6px;
-        }
-
-        .actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .btn {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: .2s;
-        }
-
-        .btn-primary {
-            background: #f5b942;
-            color: #10172b;
-        }
-
-        .btn-primary:hover {
-            background: #ffd477;
-        }
-
-        .btn-secondary {
-            background: #26344f;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #34435e;
+            color: var(--primary-ink);
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
         }
 
         footer {
-            padding: 25px;
+            padding: 28px 24px;
             text-align: center;
-            background: #10172b;
-            border-top: 1px solid #26344f;
-            color: #94a3b8;
-            font-size: 12px;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 13px;
         }
 
-        @media(max-width: 750px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .container {
-                margin-top: 30px;
-            }
-
-            h1 {
-                font-size: 25px;
-            }
+        @media (max-width: 860px) {
+            .content-grid { grid-template-columns: 1fr; }
+            .container { width: calc(100% - 32px); margin-top: 28px; }
+            h1 { font-size: 26px; }
         }
 
-        @media(max-width: 500px) {
-            .navbar {
-                padding: 17px 5%;
-                flex-wrap: wrap;
-                gap: 12px;
-            }
+        @media (max-width: 500px) {
+            .card { padding: 22px; }
+            .actions { flex-direction: column; }
+            .method-content { padding: 14px; }
+        }
 
-            .logo {
-                font-size: 20px;
-            }
-
-            .nav-links {
-                gap: 15px;
-            }
-
-            .nav-links a {
-                font-size: 11px;
-            }
-
-            .card {
-                padding: 19px;
-            }
-
-            .actions {
-                flex-direction: column;
-            }
-
-            .method-content {
-                padding: 14px;
-            }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { transition-duration: .01ms !important; }
         }
     </style>
-
-    @include('layouts.partials.public-navbar-styles')
 
 </head>
 
@@ -408,20 +411,16 @@
 
     <main class="container">
 
-        <a
-            href="{{ route('booking.payment.summary', $pemesanan->kode_booking) }}"
-            class="back-link"
-        >
-            &larr; Kembali ke ringkasan pembayaran
+        <a href="{{ route('booking.payment.summary', $pemesanan->kode_booking) }}" class="back-link">
+            ← Kembali ke ringkasan pembayaran
         </a>
 
-        <div class="eyebrow">PAYMENT METHOD</div>
+        <div class="eyebrow">Payment Method</div>
 
         <h1>Pilih Metode Pembayaran</h1>
 
         <p class="subtitle">
-            Pilih metode pembayaran yang ingin kamu gunakan
-            untuk menyelesaikan transaksi pemesanan tiket.
+            Pilih metode pembayaran yang ingin kamu gunakan untuk menyelesaikan transaksi.
         </p>
 
         <div class="content-grid">
@@ -430,10 +429,7 @@
 
             <div>
 
-                <form
-                    action="{{ route('booking.payment.store-method', $pemesanan->kode_booking) }}"
-                    method="POST"
-                >
+                <form action="{{ route('booking.payment.store-method', $pemesanan->kode_booking) }}" method="POST">
 
                     @csrf
 
@@ -442,133 +438,85 @@
                         <h2>Metode Pembayaran</h2>
 
                         <p class="card-description">
-                            Silakan pilih salah satu metode pembayaran
-                            berikut.
+                            Silakan pilih salah satu metode pembayaran berikut.
                         </p>
 
                         <div class="method-list">
 
                             <label class="method-option">
-
                                 <input
                                     type="radio"
                                     name="metode_pembayaran"
                                     value="transfer_bank"
                                     @checked(old('metode_pembayaran', $pemesanan->pembayaran?->metode_pembayaran) === 'transfer_bank')
                                 >
-
                                 <span class="method-content">
-
-                                    <span class="method-icon">
-                                        🏦
-                                    </span>
-
+                                    <span class="method-icon">🏦</span>
                                     <span class="method-text">
                                         <strong>Transfer Bank</strong>
-                                        <small>
-                                            Pembayaran melalui transfer bank.
-                                        </small>
+                                        <small>Pembayaran melalui transfer bank.</small>
                                     </span>
-
                                     <span class="radio-indicator"></span>
-
                                 </span>
-
                             </label>
 
-
                             <label class="method-option">
-
                                 <input
                                     type="radio"
                                     name="metode_pembayaran"
                                     value="qris"
                                     @checked(old('metode_pembayaran', $pemesanan->pembayaran?->metode_pembayaran) === 'qris')
                                 >
-
                                 <span class="method-content">
-
-                                    <span class="method-icon">
-                                        ▦
-                                    </span>
-
+                                    <span class="method-icon">▦</span>
                                     <span class="method-text">
                                         <strong>QRIS</strong>
-                                        <small>
-                                            Pembayaran menggunakan kode QR.
-                                        </small>
+                                        <small>Pembayaran menggunakan kode QR.</small>
                                     </span>
-
                                     <span class="radio-indicator"></span>
-
                                 </span>
-
                             </label>
 
-
                             <label class="method-option">
-
                                 <input
                                     type="radio"
                                     name="metode_pembayaran"
                                     value="e_wallet"
                                     @checked(old('metode_pembayaran', $pemesanan->pembayaran?->metode_pembayaran) === 'e_wallet')
                                 >
-
                                 <span class="method-content">
-
-                                    <span class="method-icon">
-                                        📱
-                                    </span>
-
+                                    <span class="method-icon">📱</span>
                                     <span class="method-text">
                                         <strong>E-Wallet</strong>
-                                        <small>
-                                            Pembayaran menggunakan dompet digital.
-                                        </small>
+                                        <small>Pembayaran menggunakan dompet digital.</small>
                                     </span>
-
                                     <span class="radio-indicator"></span>
-
                                 </span>
-
                             </label>
 
                         </div>
 
                         @error('metode_pembayaran')
-                            <div class="error-message">
-                                {{ $message }}
-                            </div>
+                            <div class="error-message">{{ $message }}</div>
                         @enderror
 
                         @error('pembayaran')
-                            <div class="error-message">
-                                {{ $message }}
-                            </div>
+                            <div class="error-message">{{ $message }}</div>
                         @enderror
 
                         <div class="info-box">
                             <strong>Informasi Pembayaran</strong>
-
-                            Sistem CinemaTicket menggunakan simulasi
-                            pembayaran untuk keperluan pengujian aplikasi.
-                            Tidak ada transaksi uang sungguhan pada tahap ini.
+                            Sistem CinemaTicket menggunakan simulasi pembayaran untuk keperluan
+                            pengujian aplikasi. Tidak ada transaksi uang sungguhan pada tahap ini.
                         </div>
 
                         <div class="actions">
 
-                            <a
-                                href="{{ route('booking.payment.summary', $pemesanan->kode_booking) }}"
-                                class="btn btn-secondary"
-                            >
+                            <a href="{{ route('booking.payment.summary', $pemesanan->kode_booking) }}" class="btn btn-secondary">
                                 Kembali
                             </a>
 
-                            <button
-                                type="submit"
-                                class="btn btn-primary"
-                            >
+                            <button type="submit" class="btn btn-primary">
                                 Simpan Metode
                             </button>
 
@@ -580,7 +528,6 @@
 
             </div>
 
-
             {{-- KOLOM KANAN --}}
 
             <div>
@@ -590,86 +537,52 @@
                     <h2>Informasi Pemesanan</h2>
 
                     <div class="booking-code">
-
-                        <small>KODE BOOKING</small>
-
-                        <strong>
-                            {{ $pemesanan->kode_booking }}
-                        </strong>
-
+                        <small>Kode Booking</small>
+                        <strong>{{ $pemesanan->kode_booking }}</strong>
                     </div>
 
                     <div class="detail-row">
                         <span>Nama Pemesan</span>
-                        <strong>
-                            {{ $pemesanan->nama_pemesan }}
-                        </strong>
+                        <strong>{{ $pemesanan->nama_pemesan }}</strong>
                     </div>
 
                     <div class="detail-row">
                         <span>Film</span>
-                        <strong>
-                            {{ $pemesanan->jadwal->film->judul }}
-                        </strong>
+                        <strong>{{ $pemesanan->jadwal->film->judul }}</strong>
                     </div>
 
                     <div class="detail-row">
                         <span>Tanggal Tayang</span>
-                        <strong>
-                            {{ \Carbon\Carbon::parse($pemesanan->jadwal->tanggal_tayang)->format('d M Y') }}
-                        </strong>
+                        <strong>{{ \Carbon\Carbon::parse($pemesanan->jadwal->tanggal_tayang)->format('d M Y') }}</strong>
                     </div>
 
                     <div class="detail-row">
                         <span>Jam Tayang</span>
-                        <strong>
-                            {{ substr($pemesanan->jadwal->jam_mulai, 0, 5) }}
-                        </strong>
+                        <strong>{{ substr($pemesanan->jadwal->jam_mulai, 0, 5) }}</strong>
                     </div>
 
                     <div class="detail-row">
                         <span>Studio</span>
-                        <strong>
-                            {{ $pemesanan->jadwal->studio->nama }}
-                        </strong>
+                        <strong>{{ $pemesanan->jadwal->studio->nama }}</strong>
                     </div>
 
                     <div class="detail-row">
                         <span>Kursi</span>
-
                         <div class="seat-list">
-
                             @foreach($pemesanan->detailKursis as $detail)
-
-                                <span class="seat-tag">
-                                    {{ $detail->no_kursi }}
-                                </span>
-
+                                <span class="seat-tag">{{ $detail->no_kursi }}</span>
                             @endforeach
-
                         </div>
                     </div>
 
                     <div class="detail-row">
                         <span>Jumlah Tiket</span>
-                        <strong>
-                            {{ $pemesanan->detailKursis->count() }} Tiket
-                        </strong>
+                        <strong>{{ $pemesanan->detailKursis->count() }} Tiket</strong>
                     </div>
 
                     <div class="total-box">
-
                         <span>Total Pembayaran</span>
-
-                        <strong>
-                            Rp {{ number_format(
-                                (float) $pemesanan->total_harga,
-                                0,
-                                ',',
-                                '.'
-                            ) }}
-                        </strong>
-
+                        <strong>Rp {{ number_format((float) $pemesanan->total_harga, 0, ',', '.') }}</strong>
                     </div>
 
                 </section>
@@ -681,8 +594,7 @@
     </main>
 
     <footer>
-        &copy; {{ date('Y') }} CinemaTicket.
-        Sistem Pemesanan Tiket Bioskop.
+        © {{ date('Y') }} CinemaTicket. Sistem Pemesanan Tiket Bioskop.
     </footer>
 
 </body>

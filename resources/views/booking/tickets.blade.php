@@ -4,178 +4,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="theme-color" content="#ffffff">
     <title>E-Ticket - CinemaTicket</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    @include('layouts.partials.public-navbar-styles')
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg: #fafaf9;
+            --bg-soft: #f4f4f5;
+            --surface: #ffffff;
+            --border: #e7e5e4;
+            --border-strong: #d6d3d1;
+            --text: #1c1917;
+            --text-soft: #44403c;
+            --muted: #78716c;
+            --primary: #f59e0b;
+            --primary-soft: #fef3c7;
+            --primary-ink: #92400e;
+            --success: #059669;
+            --success-soft: #d1fae5;
+            --shadow-md: 0 14px 36px rgba(28, 25, 23, .10);
+            --radius: 16px;
+            --radius-lg: 22px;
+            --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #0b1020;
-            color: white;
+            font-family: var(--font-sans);
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
             min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            min-height: 76px;
-            padding: 20px 8%;
-            background: #10172b;
-            border-bottom: 1px solid #26344f;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 23px;
-            font-weight: bold;
-        }
-
-        .logo span {
-            color: #f5b942;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 25px;
-        }
-
-        .nav-links a {
-            color: #cbd5e1;
-            font-size: 13px;
-        }
+        a { color: inherit; text-decoration: none; }
+        button { font-family: inherit; }
 
         .container {
-            width: min(950px, 90%);
-            margin: 45px auto 75px;
+            width: min(960px, calc(100% - 64px));
+            margin: 40px auto 96px;
         }
 
         .eyebrow {
-            color: #f5b942;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: var(--primary-soft);
+            color: var(--primary-ink);
+            border-radius: 999px;
             font-size: 11px;
-            font-weight: bold;
-            letter-spacing: 3px;
-            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--primary);
         }
 
         h1 {
-            font-size: 30px;
-            margin-bottom: 12px;
+            font-size: clamp(28px, 3.4vw, 36px);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 10px;
         }
 
         .subtitle {
-            color: #94a3b8;
-            font-size: 13px;
-            line-height: 1.8;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.75;
         }
 
         .success-alert {
-            margin: 25px 0;
-            padding: 17px;
-            border: 1px solid rgba(34,197,94,.35);
-            background: rgba(34,197,94,.08);
-            border-radius: 9px;
-            color: #4ade80;
-            font-size: 12px;
+            margin: 26px 0;
+            padding: 16px 18px;
+            border-radius: 14px;
+            background: var(--success-soft);
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+            font-size: 14px;
             line-height: 1.7;
         }
 
+        .success-alert strong { font-weight: 800; }
+
+        /* KARTU TIKET */
+
         .ticket-card {
-            background: #ffffff;
-            color: #10172b;
-            border-radius: 15px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
             overflow: hidden;
-            margin: 28px 0;
-            box-shadow: 0 15px 35px rgba(0,0,0,.2);
+            margin: 24px 0;
+            box-shadow: var(--shadow-md);
             break-inside: avoid;
             page-break-inside: avoid;
         }
 
         .ticket-header {
-            background: #10172b;
-            color: white;
-            padding: 23px 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 15px;
+            gap: 16px;
+            padding: 22px 28px;
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            color: #ffffff;
         }
 
         .ticket-brand {
-            color: #f5b942;
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            opacity: .9;
+            margin-bottom: 6px;
         }
 
         .ticket-header h2 {
-            font-size: 21px;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
         }
 
         .paid-badge {
-            background: rgba(34,197,94,.15);
-            color: #4ade80;
-            border: 1px solid rgba(34,197,94,.4);
-            border-radius: 20px;
-            padding: 8px 13px;
-            font-size: 10px;
-            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 13px;
+            background: rgba(255, 255, 255, .22);
+            border: 1px solid rgba(255, 255, 255, .5);
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
             white-space: nowrap;
         }
 
         .ticket-body {
             display: grid;
-            grid-template-columns: 1fr 245px;
-            gap: 25px;
+            grid-template-columns: 1fr 240px;
+            gap: 26px;
             padding: 28px;
         }
 
         .ticket-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 23px 18px;
+            gap: 20px 18px;
         }
 
         .info-item small {
             display: block;
-            color: #64748b;
-            font-size: 10px;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
         }
 
         .info-item strong {
             display: block;
             font-size: 14px;
+            font-weight: 700;
             overflow-wrap: anywhere;
         }
 
         .ticket-code {
-            color: #b7791f;
+            color: var(--primary-ink);
             font-size: 15px !important;
+            font-weight: 800 !important;
         }
 
         .seat-highlight {
             display: inline-block;
-            padding: 9px 15px;
-            background: #fef3c7;
-            color: #92400e;
-            border-radius: 6px;
-            font-size: 19px !important;
+            padding: 8px 14px;
+            background: var(--primary-soft);
+            color: var(--primary-ink);
+            border-radius: 10px;
+            font-size: 20px !important;
+            font-weight: 800 !important;
         }
 
         .qr-panel {
@@ -183,38 +210,43 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 15px;
-            background: #f8fafc;
-            border: 1px dashed #cbd5e1;
-            border-radius: 10px;
+            padding: 18px;
+            background: var(--bg-soft);
+            border: 1.5px dashed var(--border-strong);
+            border-radius: 16px;
             text-align: center;
         }
 
-        .qr-panel small {
-            color: #64748b;
-            font-size: 10px;
-            margin-top: 12px;
-            line-height: 1.6;
-        }
-
         .qr-frame {
-            background: white;
-            padding: 8px;
-            border-radius: 5px;
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
+        .qr-panel small {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 12px;
+            line-height: 1.6;
+        }
+
         .ticket-footer {
-            border-top: 1px dashed #cbd5e1;
-            padding: 17px 28px;
             display: flex;
             justify-content: space-between;
             gap: 15px;
-            color: #64748b;
-            font-size: 10px;
+            padding: 16px 28px;
+            border-top: 1.5px dashed var(--border-strong);
+            color: var(--muted);
+            font-size: 12px;
             line-height: 1.6;
+        }
+
+        .ticket-footer strong {
+            color: var(--primary-ink);
+            font-weight: 800;
         }
 
         .actions {
@@ -225,62 +257,57 @@
 
         .btn {
             flex: 1;
-            display: flex;
+            display: inline-flex;
             justify-content: center;
             align-items: center;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: bold;
+            min-height: 50px;
+            padding: 0 18px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 700;
             border: none;
             cursor: pointer;
-            transition: .2s;
+            transition: transform .2s ease, box-shadow .2s ease;
         }
+
+        .btn:hover { transform: translateY(-2px); }
 
         .btn-primary {
-            background: #f5b942;
-            color: #10172b;
-        }
-
-        .btn-primary:hover {
-            background: #ffd477;
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            color: #ffffff;
+            box-shadow: 0 10px 24px rgba(245, 158, 11, .30);
         }
 
         .btn-secondary {
-            background: #26344f;
-            color: white;
+            background: var(--surface);
+            border: 1px solid var(--border-strong);
+            color: var(--text-soft);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary-ink);
         }
 
         footer {
-            padding: 25px;
+            padding: 28px 24px;
             text-align: center;
-            background: #10172b;
-            border-top: 1px solid #26344f;
-            color: #94a3b8;
-            font-size: 12px;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 13px;
         }
 
-        @media(max-width: 650px) {
-            .ticket-body {
-                grid-template-columns: 1fr;
-            }
-
-            .qr-panel {
-                min-height: 240px;
-            }
-
-            .ticket-info {
-                gap: 18px 12px;
-            }
-
-            .ticket-header h2 {
-                font-size: 17px;
-            }
-
-            .actions {
-                flex-direction: column;
-            }
+        @media (max-width: 650px) {
+            .container { width: calc(100% - 32px); margin-top: 28px; }
+            .ticket-body { grid-template-columns: 1fr; }
+            .qr-panel { min-height: 240px; }
+            .ticket-info { gap: 16px 12px; }
+            .ticket-header h2 { font-size: 17px; }
+            .actions { flex-direction: column; }
         }
+
+        /* CETAK: latar putih, QR tetap tajam */
 
         @media print {
             @page {
@@ -289,15 +316,18 @@
             }
 
             body {
-                background: white;
-                color: #10172b;
+                background: #ffffff;
+                color: #1c1917;
             }
 
             .navbar,
-            .page-heading,
+            .ct-site-header,
             .success-alert,
             .actions,
-            footer {
+            footer,
+            .eyebrow,
+            .subtitle,
+            h1 {
                 display: none !important;
             }
 
@@ -308,7 +338,7 @@
 
             .ticket-card {
                 box-shadow: none;
-                border: 1px solid #cbd5e1;
+                border: 1px solid #d6d3d1;
                 margin: 0;
                 border-radius: 0;
                 break-after: page;
@@ -320,11 +350,7 @@
                 page-break-after: auto;
             }
 
-            .ticket-header {
-                print-color-adjust: exact;
-                -webkit-print-color-adjust: exact;
-            }
-
+            .ticket-header,
             .paid-badge,
             .qr-panel,
             .seat-highlight {
@@ -332,9 +358,11 @@
                 -webkit-print-color-adjust: exact;
             }
         }
-    </style>
 
-    @include('layouts.partials.public-navbar-styles')
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { transition-duration: .01ms !important; }
+        }
+    </style>
 
 </head>
 
@@ -342,92 +370,60 @@
 
     @include('layouts.partials.public-navbar')
 
-
     <main class="container">
 
-        <div class="page-heading">
-            <div class="eyebrow">YOUR DIGITAL TICKET</div>
+        <div class="eyebrow">Your Digital Ticket</div>
 
-            <h1>E-Ticket CinemaTicket</h1>
+        <h1>E-Ticket CinemaTicket</h1>
 
-            <p class="subtitle">
-                Pembayaran berhasil. Berikut tiket elektronik
-                untuk setiap kursi yang kamu pesan.
-            </p>
-        </div>
-
+        <p class="subtitle">
+            Pembayaran berhasil. Berikut tiket elektronik untuk setiap kursi yang kamu pesan.
+        </p>
 
         <div class="success-alert">
             <strong>✓ Pembayaran terverifikasi!</strong>
-            Semua tiket di bawah ini telah diterbitkan.
-            Simpan atau cetak tiket sebelum datang ke bioskop.
+            Semua tiket di bawah ini telah diterbitkan. Simpan atau cetak tiket sebelum datang ke bioskop.
         </div>
-
 
         @foreach($pemesanan->detailKursis as $detail)
 
             <section class="ticket-card">
 
                 <div class="ticket-header">
-
                     <div>
-                        <div class="ticket-brand">
-                            CINEMATICKET
-                        </div>
-
-                        <h2>
-                            {{ $pemesanan->jadwal->film->judul }}
-                        </h2>
+                        <div class="ticket-brand">CinemaTicket</div>
+                        <h2>{{ $pemesanan->jadwal->film->judul }}</h2>
                     </div>
 
-                    <span class="paid-badge">
-                        PAID / LUNAS
-                    </span>
-
+                    <span class="paid-badge">PAID / LUNAS</span>
                 </div>
-
 
                 <div class="ticket-body">
 
                     <div class="ticket-info">
 
                         <div class="info-item">
-                            <small>KODE TIKET</small>
-
-                            <strong class="ticket-code">
-                                {{ $detail->kode_tiket }}
-                            </strong>
+                            <small>Kode Tiket</small>
+                            <strong class="ticket-code">{{ $detail->kode_tiket }}</strong>
                         </div>
 
                         <div class="info-item">
-                            <small>KODE BOOKING</small>
-
-                            <strong>
-                                {{ $pemesanan->kode_booking }}
-                            </strong>
+                            <small>Kode Booking</small>
+                            <strong>{{ $pemesanan->kode_booking }}</strong>
                         </div>
 
                         <div class="info-item">
-                            <small>NAMA PEMESAN</small>
-
-                            <strong>
-                                {{ $pemesanan->nama_pemesan }}
-                            </strong>
+                            <small>Nama Pemesan</small>
+                            <strong>{{ $pemesanan->nama_pemesan }}</strong>
                         </div>
 
                         <div class="info-item">
-                            <small>TANGGAL TAYANG</small>
-
-                            <strong>
-                                {{ \Carbon\Carbon::parse(
-                                    $pemesanan->jadwal->tanggal_tayang
-                                )->format('d M Y') }}
-                            </strong>
+                            <small>Tanggal Tayang</small>
+                            <strong>{{ \Carbon\Carbon::parse($pemesanan->jadwal->tanggal_tayang)->format('d M Y') }}</strong>
                         </div>
 
                         <div class="info-item">
-                            <small>JAM TAYANG</small>
-
+                            <small>Jam Tayang</small>
                             <strong>
                                 {{ substr($pemesanan->jadwal->jam_mulai, 0, 5) }}
                                 -
@@ -436,91 +432,57 @@
                         </div>
 
                         <div class="info-item">
-                            <small>STUDIO</small>
-
-                            <strong>
-                                {{ $pemesanan->jadwal->studio->nama }}
-                            </strong>
+                            <small>Studio</small>
+                            <strong>{{ $pemesanan->jadwal->studio->nama }}</strong>
                         </div>
 
                         <div class="info-item">
-                            <small>NOMOR KURSI</small>
-
-                            <strong class="seat-highlight">
-                                {{ $detail->no_kursi }}
-                            </strong>
+                            <small>Nomor Kursi</small>
+                            <strong class="seat-highlight">{{ $detail->no_kursi }}</strong>
                         </div>
 
                         <div class="info-item">
-                            <small>HARGA TIKET</small>
-
-                            <strong>
-                                Rp {{ number_format(
-                                    (float) $detail->harga,
-                                    0,
-                                    ',',
-                                    '.'
-                                ) }}
-                            </strong>
+                            <small>Harga Tiket</small>
+                            <strong>Rp {{ number_format((float) $detail->harga, 0, ',', '.') }}</strong>
                         </div>
 
                     </div>
 
-
                     <div class="qr-panel">
 
                         <div class="qr-frame">
-
                             <x-qr-code
                                 :data="route('booking.ticket.show', $detail->kode_tiket)"
                                 size="210"
-                                color="#10172b"
+                                color="#1c1917"
                                 margin="2"
                             />
-
                         </div>
 
                         <small>
-                            Pindai QR Code untuk membuka
-                            halaman verifikasi tiket.
+                            Pindai QR Code untuk membuka halaman verifikasi tiket.
                         </small>
 
                     </div>
 
                 </div>
 
-
                 <div class="ticket-footer">
-
-                    <span>
-                        Tunjukkan QR Code saat memasuki bioskop.
-                    </span>
-
-                    <strong>
-                        CINEMATICKET
-                    </strong>
-
+                    <span>Tunjukkan QR Code saat memasuki bioskop.</span>
+                    <strong>CINEMATICKET</strong>
                 </div>
 
             </section>
 
         @endforeach
 
+        <div class="actions">
 
-        <div class="actions no-print">
-
-            <button
-                type="button"
-                class="btn btn-primary"
-                onclick="window.print()"
-            >
+            <button type="button" class="btn btn-primary" onclick="window.print()">
                 Cetak Semua E-Ticket
             </button>
 
-            <a
-                href="{{ route('booking.payment.summary', $pemesanan->kode_booking) }}"
-                class="btn btn-secondary"
-            >
+            <a href="{{ route('booking.payment.summary', $pemesanan->kode_booking) }}" class="btn btn-secondary">
                 Kembali ke Ringkasan
             </a>
 
@@ -528,10 +490,8 @@
 
     </main>
 
-
     <footer>
-        &copy; {{ date('Y') }} CinemaTicket.
-        Sistem Pemesanan Tiket Bioskop.
+        © {{ date('Y') }} CinemaTicket. Sistem Pemesanan Tiket Bioskop.
     </footer>
 
 </body>

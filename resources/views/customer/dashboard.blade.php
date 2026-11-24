@@ -2,444 +2,346 @@
 <html lang="id">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="theme-color" content="#ffffff">
     <title>Dashboard Customer - CinemaTicket</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    @include('layouts.partials.public-navbar-styles')
+
     <style>
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         :root {
-            --bg: #0b1020;
-            --surface: #151e33;
-            --surface-2: #10172b;
-            --border: #26344f;
-            --gold: #f5b942;
-            --gold-hover: #ffd16a;
-            --text: #ffffff;
-            --muted: #94a3b8;
-            --green: #4ade80;
-            --red: #fb7185;
+            --bg: #fafaf9;
+            --bg-soft: #f4f4f5;
+            --surface: #ffffff;
+            --border: #e7e5e4;
+            --border-strong: #d6d3d1;
+            --text: #1c1917;
+            --text-soft: #44403c;
+            --muted: #78716c;
+            --primary: #f59e0b;
+            --primary-soft: #fef3c7;
+            --primary-ink: #92400e;
+            --accent: #6366f1;
+            --accent-soft: #eef2ff;
+            --success: #059669;
+            --success-soft: #d1fae5;
+            --danger: #dc2626;
+            --danger-soft: #fef2f2;
+            --info: #2563eb;
+            --info-soft: #dbeafe;
+            --shadow-xs: 0 1px 2px rgba(28, 25, 23, .04);
+            --shadow-md: 0 14px 36px rgba(28, 25, 23, .10);
+            --radius: 16px;
+            --radius-lg: 22px;
+            --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: Arial, sans-serif;
-            background: var(--bg);
+            font-family: var(--font-sans);
+            font-size: 15px;
+            line-height: 1.6;
             color: var(--text);
+            background: var(--bg);
             min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        button {
-            font-family: inherit;
-        }
-
-        /* NAVBAR */
-
-        .navbar {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            padding: 19px 8%;
-
-            background: rgba(16, 23, 43, .97);
-            backdrop-filter: blur(12px);
-
-            border-bottom: 1px solid var(--border);
-        }
-
-        .logo {
-            font-size: 23px;
-            font-weight: bold;
-            letter-spacing: .5px;
-        }
-
-        .logo span {
-            color: var(--gold);
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-
-        .nav-links a {
-            color: #cbd5e1;
-            font-size: 13px;
-            transition: .2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--gold);
-        }
-
-        .logout {
-            background: transparent;
-            border: 1px solid #34435e;
-            border-radius: 7px;
-            color: white;
-            padding: 10px 16px;
-            cursor: pointer;
-            transition: .2s;
-        }
-
-        .logout:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-        }
-
-
-        /* MAIN CONTAINER */
+        a { color: inherit; text-decoration: none; }
+        button { font-family: inherit; }
 
         .container {
-            width: min(1180px, 90%);
-            margin: 38px auto 80px;
+            width: min(1180px, calc(100% - 64px));
+            margin: 40px auto 96px;
         }
-
 
         /* WELCOME */
 
         .welcome {
             position: relative;
             overflow: hidden;
-
-            padding: 36px;
-
-            background:
-                linear-gradient(
-                    110deg,
-                    #263b63,
-                    #151e33
-                );
-
-            border: 1px solid #34435e;
-            border-radius: 15px;
-
-            margin-bottom: 30px;
+            padding: 34px 36px;
+            background: linear-gradient(120deg, #fef3c7 0%, #ffffff 65%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 28px;
         }
 
         .welcome::after {
             content: "";
-
             position: absolute;
-
             width: 260px;
             height: 260px;
-
-            border-radius: 50%;
-
-            background: rgba(245,185,66,.07);
-
             right: -80px;
             top: -110px;
-
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(245, 158, 11, .25), transparent 70%);
             pointer-events: none;
         }
 
         .eyebrow {
-            color: var(--gold);
-            letter-spacing: 3px;
-            font-size: 10px;
-            margin-bottom: 13px;
-            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: var(--surface);
+            color: var(--primary-ink);
+            border: 1px solid #fde68a;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
         }
 
         .welcome h1 {
-            font-size: 31px;
-            margin-bottom: 12px;
-            line-height: 1.3;
+            font-size: clamp(26px, 3vw, 32px);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            margin-bottom: 10px;
         }
 
-        .welcome h1 span {
-            color: var(--gold);
-        }
+        .welcome h1 span { color: var(--primary); }
 
         .welcome p {
-            color: #cbd5e1;
-            font-size: 13px;
-            line-height: 1.8;
+            color: var(--text-soft);
+            font-size: 14px;
+            line-height: 1.75;
             max-width: 600px;
         }
 
         .welcome-action {
             display: inline-flex;
             align-items: center;
-
-            margin-top: 23px;
-
-            background: var(--gold);
-            color: #10172b;
-
-            padding: 12px 19px;
-            border-radius: 7px;
-
-            font-size: 12px;
-            font-weight: bold;
-
-            transition: .2s;
+            margin-top: 20px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 10px 24px rgba(245, 158, 11, .30);
+            transition: transform .2s ease, box-shadow .2s ease;
         }
 
         .welcome-action:hover {
-            background: var(--gold-hover);
             transform: translateY(-2px);
+            box-shadow: 0 16px 32px rgba(245, 158, 11, .38);
         }
 
-
-        /* FLASH MESSAGE */
+        /* FLASH */
 
         .alert {
-            padding: 14px 17px;
-            border-radius: 8px;
+            padding: 14px 18px;
+            border-radius: 14px;
             margin-bottom: 20px;
-            font-size: 13px;
+            font-size: 14px;
+            line-height: 1.6;
+            border: 1px solid transparent;
         }
 
         .alert.success {
-            background: rgba(34,197,94,.12);
-            border: 1px solid rgba(34,197,94,.2);
-            color: var(--green);
+            background: var(--success-soft);
+            border-color: #a7f3d0;
+            color: #065f46;
         }
 
         .alert.error {
-            background: rgba(239,68,68,.12);
-            border: 1px solid rgba(239,68,68,.2);
-            color: #fca5a5;
+            background: var(--danger-soft);
+            border-color: #fecaca;
+            color: #b91c1c;
         }
 
         .alert.info {
-            background: rgba(59,130,246,.12);
-            border: 1px solid rgba(59,130,246,.2);
-            color: #93c5fd;
+            background: var(--info-soft);
+            border-color: #bfdbfe;
+            color: #1e3a8a;
         }
 
-
-        /* STATISTICS */
+        /* STATISTIK / FILTER KARTU */
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(5, minmax(0, 1fr));
             gap: 14px;
-
-            margin-bottom: 37px;
+            margin-bottom: 36px;
         }
 
         .stat-card {
             display: block;
-
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 11px;
-
-            padding: 19px;
-
-            transition: .2s;
+            border-radius: 16px;
+            padding: 18px 20px;
+            box-shadow: var(--shadow-xs);
+            transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
         }
 
         .stat-card:hover {
-            border-color: var(--gold);
             transform: translateY(-3px);
+            border-color: #fcd34d;
+            box-shadow: var(--shadow-md);
         }
 
         .stat-card.active {
-            border-color: var(--gold);
-            background: #1d2b45;
+            border-color: var(--primary);
+            background: #fffbeb;
         }
 
         .stat-label {
             color: var(--muted);
-            font-size: 11px;
-            margin-bottom: 13px;
-            line-height: 1.5;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            margin-bottom: 10px;
+            line-height: 1.4;
         }
 
         .stat-number {
-            font-size: 27px;
-            font-weight: bold;
-            color: white;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--text);
         }
 
-        .stat-card.active .stat-number {
-            color: var(--gold);
-        }
+        .stat-card.active .stat-number { color: var(--primary-ink); }
 
         .stat-description {
-            color: #64748b;
-            font-size: 10px;
-            margin-top: 7px;
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 6px;
         }
 
-
-        /* SECTION HEADING */
+        /* RIWAYAT */
 
         .section-heading {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            gap: 15px;
-
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .section-heading h2 {
-            font-size: 21px;
-            margin-bottom: 7px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
         }
 
         .section-heading p {
             color: var(--muted);
-            font-size: 12px;
+            font-size: 14px;
         }
-
-
-        /* FILTER TABS */
 
         .filter-tabs {
             display: flex;
-            gap: 9px;
-
+            gap: 8px;
             overflow-x: auto;
-
-            padding-bottom: 12px;
-            margin-bottom: 15px;
+            padding-bottom: 6px;
+            margin-bottom: 16px;
         }
 
         .filter-tab {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 9px;
-
+            gap: 8px;
             white-space: nowrap;
-
-            padding: 11px 15px;
-
+            padding: 10px 14px;
             background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 7px;
-
-            color: #cbd5e1;
-
-            font-size: 11px;
-            font-weight: bold;
-
-            transition: .2s;
+            border: 1px solid var(--border-strong);
+            border-radius: 12px;
+            color: var(--text-soft);
+            font-size: 13px;
+            font-weight: 700;
+            transition: border-color .2s ease, color .2s ease, background .2s ease;
         }
 
         .filter-tab:hover {
-            border-color: var(--gold);
-            color: var(--gold);
+            border-color: var(--primary);
+            color: var(--primary-ink);
         }
 
         .filter-tab.active {
-            background: var(--gold);
-            border-color: var(--gold);
-            color: #10172b;
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            border-color: transparent;
+            color: #ffffff;
         }
 
         .filter-count {
-            min-width: 19px;
-            height: 19px;
-
+            min-width: 22px;
+            height: 22px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-
-            padding: 0 5px;
-
-            background: rgba(148,163,184,.15);
-            border-radius: 20px;
-
-            font-size: 10px;
+            padding: 0 6px;
+            background: var(--bg-soft);
+            border-radius: 999px;
+            font-size: 11px;
+            color: var(--text-soft);
         }
 
         .filter-tab.active .filter-count {
-            background: rgba(16,23,43,.15);
+            background: rgba(255, 255, 255, .25);
+            color: #ffffff;
         }
 
-
-        /* BOOKING CARD */
+        /* KARTU BOOKING */
 
         .booking-card {
             display: flex;
-            gap: 23px;
-
+            gap: 22px;
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 13px;
-
-            padding: 21px;
-
+            border-radius: var(--radius);
+            padding: 20px;
             margin-bottom: 16px;
-
-            transition: .2s;
+            box-shadow: var(--shadow-xs);
+            transition: border-color .2s ease, box-shadow .2s ease;
         }
 
         .booking-card:hover {
-            border-color: #425778;
+            border-color: #fcd34d;
+            box-shadow: var(--shadow-md);
         }
 
-
-        /* POSTER */
-
         .poster-wrap {
-            width: 105px;
-            min-width: 105px;
-            height: 150px;
-
+            width: 100px;
+            min-width: 100px;
+            height: 140px;
             overflow: hidden;
-
-            background: #0b1020;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            background: var(--bg-soft);
+            border-radius: 12px;
         }
 
         .poster {
             width: 100%;
             height: 100%;
-
-            object-fit: contain;
-
+            object-fit: cover;
             display: block;
         }
 
         .poster-fallback {
             width: 100%;
             height: 100%;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             text-align: center;
-
-            color: var(--gold);
-            font-size: 12px;
-            font-weight: bold;
-
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
             padding: 10px;
         }
-
-
-        /* BOOKING CONTENT */
 
         .booking-content {
             flex: 1;
@@ -450,103 +352,94 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-
             gap: 15px;
-
-            margin-bottom: 17px;
+            margin-bottom: 16px;
         }
 
         .movie-title {
-            font-size: 18px;
-            line-height: 1.4;
-            margin-bottom: 7px;
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            line-height: 1.35;
+            margin-bottom: 6px;
         }
 
         .booking-code {
             color: var(--muted);
-            font-size: 11px;
+            font-size: 12px;
+            font-weight: 600;
             overflow-wrap: anywhere;
         }
-
-
-        /* CATEGORY BADGE */
 
         .status {
             display: inline-flex;
             align-items: center;
-
-            padding: 7px 11px;
-
-            border-radius: 20px;
-
-            font-size: 9px;
-            font-weight: bold;
-
+            gap: 6px;
+            padding: 6px 11px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
             white-space: nowrap;
         }
 
+        .status::before {
+            content: "";
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
         .status.upcoming {
-            background: rgba(59,130,246,.13);
-            color: #60a5fa;
+            background: var(--info-soft);
+            color: var(--info);
         }
 
         .status.completed {
-            background: rgba(34,197,94,.13);
-            color: var(--green);
+            background: var(--success-soft);
+            color: #065f46;
         }
 
         .status.pending {
-            background: rgba(245,185,66,.13);
-            color: var(--gold);
+            background: var(--primary-soft);
+            color: var(--primary-ink);
         }
 
         .status.cancelled {
-            background: rgba(251,113,133,.13);
-            color: var(--red);
+            background: var(--danger-soft);
+            color: #b91c1c;
         }
 
         .status.other {
-            background: rgba(148,163,184,.13);
-            color: #cbd5e1;
+            background: var(--bg-soft);
+            color: var(--text-soft);
         }
-
-
-        /* BOOKING DETAILS */
 
         .details {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-
-            gap: 19px;
-
-            padding: 17px 0;
-
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px 18px;
+            padding: 16px 0;
             border-top: 1px solid var(--border);
             border-bottom: 1px solid var(--border);
         }
 
         .detail small {
             display: block;
-
             color: var(--muted);
-
-            font-size: 10px;
-            margin-bottom: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
         }
 
         .detail strong {
             display: block;
-
-            color: #e2e8f0;
-
-            font-size: 12px;
-            line-height: 1.6;
-
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.5;
             overflow-wrap: anywhere;
         }
-
-
-        /* SEATS */
 
         .seat-list {
             display: flex;
@@ -555,1047 +448,458 @@
         }
 
         .seat {
-            background: #263b63;
-            color: var(--gold);
-
-            border-radius: 5px;
-
-            padding: 5px 8px;
-
-            font-size: 10px;
-            font-weight: bold;
+            background: var(--primary-soft);
+            color: var(--primary-ink);
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: 800;
         }
-
-
-        /* BOOKING BOTTOM */
 
         .booking-bottom {
             display: flex;
             justify-content: space-between;
             align-items: center;
-
             gap: 15px;
-
-            margin-top: 17px;
+            margin-top: 16px;
         }
 
         .total-label {
             color: var(--muted);
-            font-size: 10px;
-            margin-bottom: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 4px;
         }
 
         .total {
-            color: var(--gold);
+            color: var(--primary-ink);
             font-size: 19px;
-            font-weight: bold;
+            font-weight: 800;
+            letter-spacing: -0.02em;
         }
 
         .action {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-
-            background: var(--gold);
-            color: #10172b;
-
-            padding: 11px 16px;
-
-            border-radius: 7px;
-
-            font-size: 11px;
-            font-weight: bold;
-
-            transition: .2s;
+            min-height: 42px;
+            padding: 0 18px;
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            color: #ffffff;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(245, 158, 11, .25);
+            transition: transform .2s ease, box-shadow .2s ease;
         }
 
         .action:hover {
-            background: var(--gold-hover);
             transform: translateY(-2px);
+            box-shadow: 0 14px 28px rgba(245, 158, 11, .32);
         }
 
         .action.disabled {
-            background: #26344f;
-            color: #94a3b8;
+            background: var(--bg-soft);
+            color: var(--muted);
+            box-shadow: none;
             cursor: default;
             transform: none;
         }
 
-
-        /* EMPTY STATE */
+        /* KOSONG */
 
         .empty {
             background: var(--surface);
-            border: 1px solid var(--border);
-
-            padding: 65px 20px;
-
-            border-radius: 13px;
-
+            border: 1px dashed var(--border-strong);
+            border-radius: var(--radius-lg);
+            padding: 64px 20px;
             text-align: center;
         }
 
         .empty-icon {
-            width: 65px;
-            height: 65px;
-
+            width: 64px;
+            height: 64px;
             display: flex;
             align-items: center;
             justify-content: center;
-
-            margin: 0 auto 20px;
-
+            margin: 0 auto 18px;
             border-radius: 50%;
-
-            background: #263b63;
-
-            color: var(--gold);
-
-            font-size: 25px;
+            background: var(--primary-soft);
+            font-size: 26px;
         }
 
         .empty h3 {
-            font-size: 18px;
-            margin-bottom: 10px;
+            font-size: 19px;
+            font-weight: 800;
+            margin-bottom: 8px;
         }
 
         .empty p {
             color: var(--muted);
-            font-size: 12px;
-            line-height: 1.8;
-
-            max-width: 430px;
-
-            margin: 0 auto 23px;
+            font-size: 14px;
+            line-height: 1.75;
+            max-width: 440px;
+            margin: 0 auto 22px;
         }
 
-
-        /* PAGINATION */
-
-        .pagination {
-            margin-top: 25px;
-        }
-
-
-        /* FOOTER */
+        .pagination { margin-top: 24px; }
 
         footer {
-            padding: 26px;
-
+            padding: 28px 24px;
             text-align: center;
-
-            background: var(--surface-2);
-
-            color: var(--muted);
-
-            font-size: 11px;
-
+            background: var(--surface);
             border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 13px;
         }
-
 
         /* RESPONSIVE */
 
-        @media(max-width: 1050px) {
-
-            .stats-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
+        @media (max-width: 1050px) {
+            .stats-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         }
 
-
-        @media(max-width: 700px) {
-
-            .navbar {
-                padding: 16px 5%;
-            }
-
-            .logo {
-                font-size: 19px;
-            }
-
-            .nav-links {
-                gap: 12px;
-            }
-
-            .nav-links a {
-                font-size: 11px;
-            }
-
-            .logout {
-                padding: 8px 11px;
-                font-size: 11px;
-            }
-
-            .container {
-                width: 92%;
-                margin-top: 25px;
-            }
-
-            .welcome {
-                padding: 25px;
-            }
-
-            .welcome h1 {
-                font-size: 25px;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-
-            .stat-card {
-                padding: 15px;
-            }
-
-            .stat-number {
-                font-size: 23px;
-            }
-
-            .booking-card {
-                padding: 16px;
-                gap: 14px;
-            }
-
-            .poster-wrap {
-                width: 83px;
-                min-width: 83px;
-                height: 123px;
-            }
-
-            .movie-title {
-                font-size: 15px;
-            }
-
-            .booking-top {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .details {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 16px;
-            }
-
-            .booking-bottom {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            .action {
-                width: 100%;
-            }
-
+        @media (max-width: 700px) {
+            .container { width: calc(100% - 32px); margin-top: 28px; }
+            .welcome { padding: 24px; }
+            .welcome h1 { font-size: 24px; }
+            .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+            .stat-card { padding: 14px; }
+            .stat-number { font-size: 22px; }
+            .booking-card { padding: 16px; gap: 14px; }
+            .poster-wrap { width: 78px; min-width: 78px; height: 112px; }
+            .movie-title { font-size: 15px; }
+            .booking-top { flex-direction: column; gap: 10px; }
+            .details { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .booking-bottom { align-items: flex-start; flex-direction: column; }
+            .action { width: 100%; }
         }
 
-
-        @media(max-width: 430px) {
-
-            .navbar {
-                padding: 14px 4%;
-            }
-
-            .nav-links {
-                gap: 9px;
-            }
-
-            .nav-links a {
-                font-size: 10px;
-            }
-
-            .logo {
-                font-size: 16px;
-            }
-
-            .welcome {
-                padding: 21px;
-            }
-
-            .welcome h1 {
-                font-size: 22px;
-            }
-
-            .section-heading h2 {
-                font-size: 18px;
-            }
-
-            .booking-card {
-                gap: 11px;
-                padding: 13px;
-            }
-
-            .poster-wrap {
-                width: 70px;
-                min-width: 70px;
-                height: 105px;
-            }
-
-            .details {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .status {
-                font-size: 8px;
-            }
-
+        @media (max-width: 430px) {
+            .booking-card { flex-direction: column; }
+            .poster-wrap { width: 100%; min-width: 0; height: 180px; }
+            .details { grid-template-columns: 1fr 1fr; }
         }
 
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { transition-duration: .01ms !important; }
+        }
     </style>
-
-    @include('layouts.partials.public-navbar-styles')
 
 </head>
 
-
 <body>
 
+    @include('layouts.partials.public-navbar')
 
-{{-- NAVBAR --}}
+    <main class="container">
 
-@include('layouts.partials.public-navbar')
+        {{-- WELCOME --}}
 
+        <section class="welcome">
 
-<main class="container">
+            <div class="eyebrow">Customer Dashboard</div>
 
+            <h1>Halo, <span>{{ auth()->user()->name }}</span>!</h1>
 
-    {{-- WELCOME SECTION --}}
+            <p>
+                Selamat datang kembali di CinemaTicket. Kelola semua pemesanan,
+                pantau status pembayaran, dan akses tiket bioskopmu kapan saja melalui akun ini.
+            </p>
 
-    <section class="welcome">
+            <a href="{{ route('home') }}#film" class="welcome-action">
+                Jelajahi Film →
+            </a>
 
-        <div class="eyebrow">
-            CUSTOMER DASHBOARD
-        </div>
+        </section>
 
-        <h1>
-            Halo, <span>{{ auth()->user()->name }}</span>!
-        </h1>
+        {{-- FLASH --}}
 
-        <p>
-            Selamat datang kembali di CinemaTicket.
-
-            Kelola semua pemesanan, pantau status pembayaran,
-            dan akses tiket bioskopmu kapan saja melalui akun ini.
-        </p>
-
-        <a
-            href="{{ route('home') }}#film"
-            class="welcome-action"
-        >
-            Jelajahi Film →
-        </a>
-
-    </section>
-
-
-    {{-- FLASH MESSAGE --}}
-
-    @if(session('success'))
-
-        <div class="alert success">
-            {{ session('success') }}
-        </div>
-
-    @endif
-
-
-    @if(session('error'))
-
-        <div class="alert error">
-            {{ session('error') }}
-        </div>
-
-    @endif
-
-
-    @if(session('info'))
-
-        <div class="alert info">
-            {{ session('info') }}
-        </div>
-
-    @endif
-
-
-    {{-- STATISTICS --}}
-
-    <section class="stats-grid">
-
-        <a
-            href="{{ route('customer.dashboard', ['filter' => 'all']) }}"
-            class="stat-card {{ $filter === 'all' ? 'active' : '' }}"
-        >
-
-            <div class="stat-label">
-                Total Pemesanan
-            </div>
-
-            <div class="stat-number">
-                {{ $filterCounts['all'] }}
-            </div>
-
-            <div class="stat-description">
-                Semua transaksi
-            </div>
-
-        </a>
-
-
-        <a
-            href="{{ route('customer.dashboard', ['filter' => 'upcoming']) }}"
-            class="stat-card {{ $filter === 'upcoming' ? 'active' : '' }}"
-        >
-
-            <div class="stat-label">
-                Upcoming
-            </div>
-
-            <div class="stat-number">
-                {{ $filterCounts['upcoming'] }}
-            </div>
-
-            <div class="stat-description">
-                Akan / sedang tayang
-            </div>
-
-        </a>
-
-
-        <a
-            href="{{ route('customer.dashboard', ['filter' => 'pending']) }}"
-            class="stat-card {{ $filter === 'pending' ? 'active' : '' }}"
-        >
-
-            <div class="stat-label">
-                Pending Payment
-            </div>
-
-            <div class="stat-number">
-                {{ $filterCounts['pending'] }}
-            </div>
-
-            <div class="stat-description">
-                Menunggu pembayaran
-            </div>
-
-        </a>
-
-
-        <a
-            href="{{ route('customer.dashboard', ['filter' => 'completed']) }}"
-            class="stat-card {{ $filter === 'completed' ? 'active' : '' }}"
-        >
-
-            <div class="stat-label">
-                Completed
-            </div>
-
-            <div class="stat-number">
-                {{ $filterCounts['completed'] }}
-            </div>
-
-            <div class="stat-description">
-                Film sudah selesai tayang
-            </div>
-
-        </a>
-
-
-        <a
-            href="{{ route('customer.dashboard', ['filter' => 'cancelled']) }}"
-            class="stat-card {{ $filter === 'cancelled' ? 'active' : '' }}"
-        >
-
-            <div class="stat-label">
-                Cancelled / Expired
-            </div>
-
-            <div class="stat-number">
-                {{ $filterCounts['cancelled'] }}
-            </div>
-
-            <div class="stat-description">
-                Transaksi tidak aktif
-            </div>
-
-        </a>
-
-    </section>
-
-
-    {{-- BOOKING HISTORY --}}
-
-    <section>
-
-
-        <div class="section-heading">
-
-            <div>
-
-                <h2>
-                    Riwayat Pemesanan
-                </h2>
-
-                <p>
-                    Semua transaksi tiket yang terhubung dengan akunmu.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        {{-- FILTER TABS --}}
-
-        @php
-
-            $tabs = [
-
-                'all' => 'Semua',
-
-                'upcoming' => 'Upcoming',
-
-                'pending' => 'Pending Payment',
-
-                'completed' => 'Completed',
-
-                'cancelled' => 'Cancelled',
-
-            ];
-
-        @endphp
-
-
-        <div class="filter-tabs">
-
-            @foreach($tabs as $key => $label)
-
-                <a
-                    href="{{ route('customer.dashboard', ['filter' => $key]) }}"
-                    class="filter-tab {{ $filter === $key ? 'active' : '' }}"
-                >
-
-                    {{ $label }}
-
-                    <span class="filter-count">
-                        {{ $filterCounts[$key] }}
-                    </span>
-
-                </a>
-
-            @endforeach
-
-        </div>
-
-
-        {{-- TRANSACTION LIST --}}
-
-        @forelse($pemesanans as $pemesanan)
-
-
-            @php
-
-                $jadwal = $pemesanan->jadwal;
-
-                $film = $jadwal?->film;
-
-                $studio = $jadwal?->studio;
-
-                $showAt = $jadwal
-                    ? \Carbon\Carbon::parse(
-                        $jadwal->tanggal_tayang . ' ' . $jadwal->jam_mulai,
-                        'Asia/Jakarta'
-                    )
-                    : null;
-
-                $showEnd = $jadwal
-                    ? \Carbon\Carbon::parse(
-                        $jadwal->tanggal_tayang . ' ' . $jadwal->jam_selesai,
-                        'Asia/Jakarta'
-                    )
-                    : null;
-
-
-                $isCompleted = $showEnd
-                    ? $showEnd->lt(now('Asia/Jakarta'))
-                    : false;
-
-
-                $isPaid = (
-                    $pemesanan->status === 'lunas'
-                    && $pemesanan->pembayaran?->status === 'berhasil'
-                );
-
-
-                /*
-                | KATEGORI TRANSAKSI
-                */
-
-                $category = match($pemesanan->status) {
-
-                    'lunas' => $isCompleted
-                        ? 'completed'
-                        : 'upcoming',
-
-                    'booking' => 'pending',
-
-                    'dibatalkan',
-                    'kedaluwarsa' => 'cancelled',
-
-                    default => 'other',
-
-                };
-
-
-                /*
-                | LABEL KATEGORI
-                */
-
-                $categoryLabel = match($category) {
-
-                    'upcoming' => 'BELUM SELESAI',
-
-                    'completed' => 'SELESAI',
-
-                    'pending' => 'MENUNGGU PEMBAYARAN',
-
-                    'cancelled' => 'TIDAK AKTIF',
-
-                    default => 'LAINNYA',
-
-                };
-
-
-                /*
-                | STATUS PEMBAYARAN
-                */
-
-                $paymentLabel = match($pemesanan->status) {
-
-                    'lunas' => 'LUNAS',
-
-                    'booking' => match($pemesanan->pembayaran?->status) {
-
-                        'gagal' => 'PEMBAYARAN GAGAL',
-
-                        'menunggu' => 'MENUNGGU PEMBAYARAN',
-
-                        default => 'BELUM DIBAYAR',
-
-                    },
-
-                    'dibatalkan' => 'DIBATALKAN',
-
-                    'kedaluwarsa' => 'KEDALUWARSA',
-
-                    default => strtoupper($pemesanan->status),
-
-                };
-
-
-                $seatCount = $pemesanan->detailKursis->count();
-
-                $paymentMethod = $pemesanan->pembayaran?->metode_pembayaran;
-
-            @endphp
-
-
-            <article class="booking-card">
-
-
-                {{-- POSTER FILM --}}
-
-                <div class="poster-wrap">
-
-                    @if($film && $film->poster)
-
-                        <img
-                            src="{{ asset('storage/' . ltrim($film->poster, '/')) }}"
-                            alt="{{ $film->judul }}"
-                            class="poster"
-                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                        >
-
-                        <div
-                            class="poster-fallback"
-                            style="display:none;"
-                        >
-                            CINEMA<br>TICKET
-                        </div>
-
-                    @else
-
-                        <div class="poster-fallback">
-                            CINEMA<br>TICKET
-                        </div>
-
-                    @endif
-
-                </div>
-
-
-                {{-- BOOKING CONTENT --}}
-
-                <div class="booking-content">
-
-
-                    {{-- TOP --}}
-
-                    <div class="booking-top">
-
-                        <div>
-
-                            <h3 class="movie-title">
-                                {{ $film?->judul ?? 'Film tidak tersedia' }}
-                            </h3>
-
-                            <div class="booking-code">
-                                Booking:
-                                {{ $pemesanan->kode_booking }}
-                            </div>
-
-                        </div>
-
-
-                        <span class="status {{ $category }}">
-
-                            {{ $categoryLabel }}
-
-                        </span>
-
-                    </div>
-
-
-                    {{-- DETAILS --}}
-
-                    <div class="details">
-
-
-                        <div class="detail">
-
-                            <small>
-                                Tanggal Tayang
-                            </small>
-
-                            <strong>
-
-                                {{ $jadwal
-                                    ? \Carbon\Carbon::parse($jadwal->tanggal_tayang)->locale('id')->translatedFormat('d F Y')
-                                    : '-'
-                                }}
-
-                            </strong>
-
-                        </div>
-
-
-                        <div class="detail">
-
-                            <small>
-                                Jam Tayang
-                            </small>
-
-                            <strong>
-
-                                {{ $jadwal
-                                    ? substr($jadwal->jam_mulai, 0, 5) . ' WIB'
-                                    : '-'
-                                }}
-
-                            </strong>
-
-                        </div>
-
-
-                        <div class="detail">
-
-                            <small>
-                                Studio
-                            </small>
-
-                            <strong>
-                                {{ $studio?->nama ?? '-' }}
-                            </strong>
-
-                        </div>
-
-
-                        <div class="detail">
-
-                            <small>
-                                Nomor Kursi
-                            </small>
-
-                            <div class="seat-list">
-
-                                @forelse($pemesanan->detailKursis as $detail)
-
-                                    <span class="seat">
-                                        {{ $detail->no_kursi }}
-                                    </span>
-
-                                @empty
-
-                                    <strong>-</strong>
-
-                                @endforelse
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="detail">
-
-                            <small>
-                                Jumlah Tiket
-                            </small>
-
-                            <strong>
-                                {{ $seatCount }} Tiket
-                            </strong>
-
-                        </div>
-
-
-                        <div class="detail">
-
-                            <small>
-                                Metode Pembayaran
-                            </small>
-
-                            <strong>
-
-                                {{ $paymentMethod
-                                    ? strtoupper(str_replace('_', ' ', $paymentMethod))
-                                    : '-'
-                                }}
-
-                            </strong>
-
-                        </div>
-
-
-                        <div class="detail">
-
-                            <small>
-                                Status Pembayaran
-                            </small>
-
-                            <strong>
-                                {{ $paymentLabel }}
-                            </strong>
-
-                        </div>
-
-
-                        <div class="detail">
-
-                            <small>
-                                Tanggal Pemesanan
-                            </small>
-
-                            <strong>
-
-                                {{ $pemesanan->created_at
-                                    ? $pemesanan->created_at->timezone('Asia/Jakarta')->format('d/m/Y H:i')
-                                    : '-'
-                                }}
-
-                            </strong>
-
-                        </div>
-
-
-                    </div>
-
-
-                    {{-- BOTTOM --}}
-
-                    <div class="booking-bottom">
-
-
-                        <div>
-
-                            <div class="total-label">
-                                Total Pembayaran
-                            </div>
-
-                            <div class="total">
-
-                                Rp {{ number_format(
-                                    (float) $pemesanan->total_harga,
-                                    0,
-                                    ',',
-                                    '.'
-                                ) }}
-
-                            </div>
-
-                        </div>
-
-
-                        {{-- ACTION BUTTON --}}
-
-                        @if($isPaid)
-
-                            <a
-                                href="{{ route('booking.tickets.index', $pemesanan->kode_booking) }}"
-                                class="action"
-                            >
-                                Lihat E-Ticket →
-                            </a>
-
-
-                        @elseif($pemesanan->status === 'booking')
-
-                            <a
-                                href="{{ route('booking.payment.summary', $pemesanan->kode_booking) }}"
-                                class="action"
-                            >
-                                Lanjutkan Pembayaran →
-                            </a>
-
-
-                        @elseif(
-                            in_array(
-                                $pemesanan->status,
-                                ['dibatalkan', 'kedaluwarsa']
-                            )
-                        )
-
-                            <span class="action disabled">
-                                Transaksi Tidak Aktif
-                            </span>
-
-
-                        @endif
-
-
-                    </div>
-
-
-                </div>
-
-            </article>
-
-
-        @empty
-
-
-            {{-- EMPTY STATE --}}
-
-            <div class="empty">
-
-                <div class="empty-icon">
-                    🎬
-                </div>
-
-
-                @if($filter === 'all')
-
-                    <h3>
-                        Belum Ada Riwayat Pemesanan
-                    </h3>
-
-                    <p>
-                        Kamu belum memiliki transaksi tiket.
-
-                        Yuk, temukan film favoritmu dan mulai pengalaman
-                        menonton bersama CinemaTicket!
-                    </p>
-
-                @elseif($filter === 'upcoming')
-
-                    <h3>
-                        Belum Ada Tiket Upcoming
-                    </h3>
-
-                    <p>
-                        Kamu belum memiliki tiket lunas untuk jadwal
-                        yang akan atau sedang berlangsung.
-                    </p>
-
-                @elseif($filter === 'pending')
-
-                    <h3>
-                        Tidak Ada Pembayaran Tertunda
-                    </h3>
-
-                    <p>
-                        Semua transaksi pembayaranmu sudah tidak memiliki
-                        status menunggu.
-                    </p>
-
-                @elseif($filter === 'completed')
-
-                    <h3>
-                        Belum Ada Riwayat Film Selesai
-                    </h3>
-
-                    <p>
-                        Tiket untuk film yang sudah selesai ditayangkan
-                        akan muncul di sini.
-                    </p>
-
-                @elseif($filter === 'cancelled')
-
-                    <h3>
-                        Tidak Ada Transaksi Dibatalkan
-                    </h3>
-
-                    <p>
-                        Kamu belum memiliki transaksi yang dibatalkan
-                        atau kedaluwarsa.
-                    </p>
-
-                @endif
-
-
-                <a
-                    href="{{ route('home') }}#film"
-                    class="action"
-                >
-                    Jelajahi Film →
-                </a>
-
-            </div>
-
-
-        @endforelse
-
-
-        {{-- PAGINATION --}}
-
-        @if($pemesanans->hasPages())
-
-            <div class="pagination">
-
-                {{ $pemesanans->links() }}
-
-            </div>
-
+        @if(session('success'))
+            <div class="alert success">{{ session('success') }}</div>
         @endif
 
+        @if(session('error'))
+            <div class="alert error">{{ session('error') }}</div>
+        @endif
 
-    </section>
+        @if(session('info'))
+            <div class="alert info">{{ session('info') }}</div>
+        @endif
 
+        {{-- STATISTIK --}}
 
-</main>
+        <section class="stats-grid">
 
+            <a href="{{ route('customer.dashboard', ['filter' => 'all']) }}"
+               class="stat-card {{ $filter === 'all' ? 'active' : '' }}">
+                <div class="stat-label">Total Pemesanan</div>
+                <div class="stat-number">{{ $filterCounts['all'] }}</div>
+                <div class="stat-description">Semua transaksi</div>
+            </a>
 
-{{-- FOOTER --}}
+            <a href="{{ route('customer.dashboard', ['filter' => 'upcoming']) }}"
+               class="stat-card {{ $filter === 'upcoming' ? 'active' : '' }}">
+                <div class="stat-label">Upcoming</div>
+                <div class="stat-number">{{ $filterCounts['upcoming'] }}</div>
+                <div class="stat-description">Akan / sedang tayang</div>
+            </a>
 
-<footer>
+            <a href="{{ route('customer.dashboard', ['filter' => 'pending']) }}"
+               class="stat-card {{ $filter === 'pending' ? 'active' : '' }}">
+                <div class="stat-label">Pending Payment</div>
+                <div class="stat-number">{{ $filterCounts['pending'] }}</div>
+                <div class="stat-description">Menunggu pembayaran</div>
+            </a>
 
-    &copy; {{ date('Y') }} CinemaTicket.
+            <a href="{{ route('customer.dashboard', ['filter' => 'completed']) }}"
+               class="stat-card {{ $filter === 'completed' ? 'active' : '' }}">
+                <div class="stat-label">Completed</div>
+                <div class="stat-number">{{ $filterCounts['completed'] }}</div>
+                <div class="stat-description">Film sudah selesai tayang</div>
+            </a>
 
-    Sistem Pemesanan Tiket Bioskop.
+            <a href="{{ route('customer.dashboard', ['filter' => 'cancelled']) }}"
+               class="stat-card {{ $filter === 'cancelled' ? 'active' : '' }}">
+                <div class="stat-label">Cancelled / Expired</div>
+                <div class="stat-number">{{ $filterCounts['cancelled'] }}</div>
+                <div class="stat-description">Transaksi tidak aktif</div>
+            </a>
 
-</footer>
+        </section>
 
+        {{-- RIWAYAT --}}
+
+        <section>
+
+            <div class="section-heading">
+                <h2>Riwayat Pemesanan</h2>
+                <p>Semua transaksi tiket yang terhubung dengan akunmu.</p>
+            </div>
+
+            @php
+                $tabs = [
+                    'all' => 'Semua',
+                    'upcoming' => 'Upcoming',
+                    'pending' => 'Pending Payment',
+                    'completed' => 'Completed',
+                    'cancelled' => 'Cancelled',
+                ];
+            @endphp
+
+            <div class="filter-tabs">
+                @foreach($tabs as $key => $label)
+                    <a href="{{ route('customer.dashboard', ['filter' => $key]) }}"
+                       class="filter-tab {{ $filter === $key ? 'active' : '' }}">
+                        {{ $label }}
+                        <span class="filter-count">{{ $filterCounts[$key] }}</span>
+                    </a>
+                @endforeach
+            </div>
+
+            @forelse($pemesanans as $pemesanan)
+
+                @php
+                    $jadwal = $pemesanan->jadwal;
+                    $film = $jadwal?->film;
+                    $studio = $jadwal?->studio;
+
+                    $showEnd = $jadwal
+                        ? \Carbon\Carbon::parse($jadwal->tanggal_tayang . ' ' . $jadwal->jam_selesai, 'Asia/Jakarta')
+                        : null;
+
+                    $isCompleted = $showEnd ? $showEnd->lt(now('Asia/Jakarta')) : false;
+
+                    $isPaid = (
+                        $pemesanan->status === 'lunas'
+                        && $pemesanan->pembayaran?->status === 'berhasil'
+                    );
+
+                    $category = match($pemesanan->status) {
+                        'lunas' => $isCompleted ? 'completed' : 'upcoming',
+                        'booking' => 'pending',
+                        'dibatalkan', 'kedaluwarsa' => 'cancelled',
+                        default => 'other',
+                    };
+
+                    $categoryLabel = match($category) {
+                        'upcoming' => 'Belum Selesai',
+                        'completed' => 'Selesai',
+                        'pending' => 'Menunggu Pembayaran',
+                        'cancelled' => 'Tidak Aktif',
+                        default => 'Lainnya',
+                    };
+
+                    $paymentLabel = match($pemesanan->status) {
+                        'lunas' => 'Lunas',
+                        'booking' => match($pemesanan->pembayaran?->status) {
+                            'gagal' => 'Pembayaran Gagal',
+                            'menunggu' => 'Menunggu Pembayaran',
+                            default => 'Belum Dibayar',
+                        },
+                        'dibatalkan' => 'Dibatalkan',
+                        'kedaluwarsa' => 'Kedaluwarsa',
+                        default => ucfirst($pemesanan->status),
+                    };
+
+                    $seatCount = $pemesanan->detailKursis->count();
+                    $paymentMethod = $pemesanan->pembayaran?->metode_pembayaran;
+                @endphp
+
+                <article class="booking-card">
+
+                    <div class="poster-wrap">
+                        @if($film && $film->poster)
+                            <img
+                                src="{{ asset('storage/' . ltrim($film->poster, '/')) }}"
+                                alt="{{ $film->judul }}"
+                                class="poster"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                            >
+                            <div class="poster-fallback" style="display:none;">CINEMA<br>TICKET</div>
+                        @else
+                            <div class="poster-fallback">CINEMA<br>TICKET</div>
+                        @endif
+                    </div>
+
+                    <div class="booking-content">
+
+                        <div class="booking-top">
+                            <div>
+                                <h3 class="movie-title">{{ $film?->judul ?? 'Film tidak tersedia' }}</h3>
+                                <div class="booking-code">Booking: {{ $pemesanan->kode_booking }}</div>
+                            </div>
+
+                            <span class="status {{ $category }}">{{ $categoryLabel }}</span>
+                        </div>
+
+                        <div class="details">
+
+                            <div class="detail">
+                                <small>Tanggal Tayang</small>
+                                <strong>
+                                    {{ $jadwal
+                                        ? \Carbon\Carbon::parse($jadwal->tanggal_tayang)->locale('id')->translatedFormat('d F Y')
+                                        : '-' }}
+                                </strong>
+                            </div>
+
+                            <div class="detail">
+                                <small>Jam Tayang</small>
+                                <strong>{{ $jadwal ? substr($jadwal->jam_mulai, 0, 5) . ' WIB' : '-' }}</strong>
+                            </div>
+
+                            <div class="detail">
+                                <small>Studio</small>
+                                <strong>{{ $studio?->nama ?? '-' }}</strong>
+                            </div>
+
+                            <div class="detail">
+                                <small>Nomor Kursi</small>
+                                <div class="seat-list">
+                                    @forelse($pemesanan->detailKursis as $detail)
+                                        <span class="seat">{{ $detail->no_kursi }}</span>
+                                    @empty
+                                        <strong>-</strong>
+                                    @endforelse
+                                </div>
+                            </div>
+
+                            <div class="detail">
+                                <small>Jumlah Tiket</small>
+                                <strong>{{ $seatCount }} Tiket</strong>
+                            </div>
+
+                            <div class="detail">
+                                <small>Metode Pembayaran</small>
+                                <strong>{{ $paymentMethod ? strtoupper(str_replace('_', ' ', $paymentMethod)) : '-' }}</strong>
+                            </div>
+
+                            <div class="detail">
+                                <small>Status Pembayaran</small>
+                                <strong>{{ $paymentLabel }}</strong>
+                            </div>
+
+                            <div class="detail">
+                                <small>Tanggal Pemesanan</small>
+                                <strong>
+                                    {{ $pemesanan->created_at
+                                        ? $pemesanan->created_at->timezone('Asia/Jakarta')->format('d/m/Y H:i')
+                                        : '-' }}
+                                </strong>
+                            </div>
+
+                        </div>
+
+                        <div class="booking-bottom">
+
+                            <div>
+                                <div class="total-label">Total Pembayaran</div>
+                                <div class="total">
+                                    Rp {{ number_format((float) $pemesanan->total_harga, 0, ',', '.') }}
+                                </div>
+                            </div>
+
+                            @if($isPaid)
+                                <a href="{{ route('booking.tickets.index', $pemesanan->kode_booking) }}" class="action">
+                                    Lihat E-Ticket →
+                                </a>
+                            @elseif($pemesanan->status === 'booking')
+                                <a href="{{ route('booking.payment.summary', $pemesanan->kode_booking) }}" class="action">
+                                    Lanjutkan Pembayaran →
+                                </a>
+                            @elseif(in_array($pemesanan->status, ['dibatalkan', 'kedaluwarsa']))
+                                <span class="action disabled">Transaksi Tidak Aktif</span>
+                            @endif
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            @empty
+
+                <div class="empty">
+
+                    <div class="empty-icon">🎬</div>
+
+                    @if($filter === 'all')
+                        <h3>Belum Ada Riwayat Pemesanan</h3>
+                        <p>Kamu belum memiliki transaksi tiket. Yuk, temukan film favoritmu dan mulai pengalaman menonton bersama CinemaTicket!</p>
+                    @elseif($filter === 'upcoming')
+                        <h3>Belum Ada Tiket Upcoming</h3>
+                        <p>Kamu belum memiliki tiket lunas untuk jadwal yang akan atau sedang berlangsung.</p>
+                    @elseif($filter === 'pending')
+                        <h3>Tidak Ada Pembayaran Tertunda</h3>
+                        <p>Semua transaksi pembayaranmu sudah tidak memiliki status menunggu.</p>
+                    @elseif($filter === 'completed')
+                        <h3>Belum Ada Riwayat Film Selesai</h3>
+                        <p>Tiket untuk film yang sudah selesai ditayangkan akan muncul di sini.</p>
+                    @elseif($filter === 'cancelled')
+                        <h3>Tidak Ada Transaksi Dibatalkan</h3>
+                        <p>Kamu belum memiliki transaksi yang dibatalkan atau kedaluwarsa.</p>
+                    @endif
+
+                    <a href="{{ route('home') }}#film" class="action">Jelajahi Film →</a>
+
+                </div>
+
+            @endforelse
+
+            @if($pemesanans->hasPages())
+                <div class="pagination">
+                    {{ $pemesanans->links() }}
+                </div>
+            @endif
+
+        </section>
+
+    </main>
+
+    <footer>
+        © {{ date('Y') }} CinemaTicket. Sistem Pemesanan Tiket Bioskop.
+    </footer>
 
 </body>
-
 </html>
