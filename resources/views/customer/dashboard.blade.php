@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,14 +28,15 @@
             --primary: #f59e0b;
             --primary-soft: #fef3c7;
             --primary-ink: #92400e;
-            --accent: #6366f1;
-            --accent-soft: #eef2ff;
             --success: #059669;
             --success-soft: #d1fae5;
+            --success-ink: #065f46;
             --danger: #dc2626;
             --danger-soft: #fef2f2;
+            --danger-ink: #b91c1c;
             --info: #2563eb;
             --info-soft: #dbeafe;
+            --info-ink: #1e3a8a;
             --shadow-xs: 0 1px 2px rgba(28, 25, 23, .04);
             --shadow-md: 0 14px 36px rgba(28, 25, 23, .10);
             --radius: 16px;
@@ -65,7 +65,7 @@
             margin: 40px auto 96px;
         }
 
-        /* WELCOME */
+        /* ---------- WELCOME ---------- */
 
         .welcome {
             position: relative;
@@ -123,11 +123,12 @@
             max-width: 600px;
         }
 
-        .welcome-action {
+        .btn-gradient {
             display: inline-flex;
             align-items: center;
-            margin-top: 20px;
-            padding: 12px 20px;
+            justify-content: center;
+            min-height: 44px;
+            padding: 0 20px;
             border-radius: 12px;
             background: linear-gradient(135deg, #f59e0b, #f97316);
             color: #ffffff;
@@ -137,12 +138,14 @@
             transition: transform .2s ease, box-shadow .2s ease;
         }
 
-        .welcome-action:hover {
+        .btn-gradient:hover {
             transform: translateY(-2px);
             box-shadow: 0 16px 32px rgba(245, 158, 11, .38);
         }
 
-        /* FLASH */
+        .welcome .btn-gradient { margin-top: 20px; }
+
+        /* ---------- FLASH ---------- */
 
         .alert {
             padding: 14px 18px;
@@ -153,25 +156,11 @@
             border: 1px solid transparent;
         }
 
-        .alert.success {
-            background: var(--success-soft);
-            border-color: #a7f3d0;
-            color: #065f46;
-        }
+        .alert-success { background: var(--success-soft); border-color: #a7f3d0; color: var(--success-ink); }
+        .alert-error   { background: var(--danger-soft);  border-color: #fecaca; color: var(--danger-ink); }
+        .alert-info    { background: var(--info-soft);    border-color: #bfdbfe; color: var(--info-ink); }
 
-        .alert.error {
-            background: var(--danger-soft);
-            border-color: #fecaca;
-            color: #b91c1c;
-        }
-
-        .alert.info {
-            background: var(--info-soft);
-            border-color: #bfdbfe;
-            color: #1e3a8a;
-        }
-
-        /* STATISTIK / FILTER KARTU */
+        /* ---------- STATISTIK / FILTER KARTU ---------- */
 
         .stats-grid {
             display: grid;
@@ -181,13 +170,14 @@
         }
 
         .stat-card {
-            display: block;
+            display: flex;
+            flex-direction: column;
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 18px 20px;
             box-shadow: var(--shadow-xs);
-            transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+            transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease;
         }
 
         .stat-card:hover {
@@ -196,7 +186,7 @@
             box-shadow: var(--shadow-md);
         }
 
-        .stat-card.active {
+        .stat-card.is-active {
             border-color: var(--primary);
             background: #fffbeb;
         }
@@ -205,31 +195,28 @@
             color: var(--muted);
             font-size: 12px;
             font-weight: 700;
-            letter-spacing: 0.02em;
-            margin-bottom: 10px;
             line-height: 1.4;
+            margin-bottom: 10px;
         }
 
         .stat-number {
             font-size: 26px;
             font-weight: 800;
             letter-spacing: -0.02em;
-            color: var(--text);
+            line-height: 1.1;
         }
 
-        .stat-card.active .stat-number { color: var(--primary-ink); }
+        .stat-card.is-active .stat-number { color: var(--primary-ink); }
 
-        .stat-description {
+        .stat-desc {
             color: var(--muted);
             font-size: 11px;
             margin-top: 6px;
         }
 
-        /* RIWAYAT */
+        /* ---------- RIWAYAT ---------- */
 
-        .section-heading {
-            margin-bottom: 18px;
-        }
+        .section-heading { margin-bottom: 18px; }
 
         .section-heading h2 {
             font-size: 22px;
@@ -249,7 +236,10 @@
             overflow-x: auto;
             padding-bottom: 6px;
             margin-bottom: 16px;
+            scrollbar-width: none;
         }
+
+        .filter-tabs::-webkit-scrollbar { display: none; }
 
         .filter-tab {
             display: inline-flex;
@@ -271,7 +261,7 @@
             color: var(--primary-ink);
         }
 
-        .filter-tab.active {
+        .filter-tab.is-active {
             background: linear-gradient(135deg, #f59e0b, #f97316);
             border-color: transparent;
             color: #ffffff;
@@ -290,12 +280,12 @@
             color: var(--text-soft);
         }
 
-        .filter-tab.active .filter-count {
+        .filter-tab.is-active .filter-count {
             background: rgba(255, 255, 255, .25);
             color: #ffffff;
         }
 
-        /* KARTU BOOKING */
+        /* ---------- KARTU BOOKING ---------- */
 
         .booking-card {
             display: flex;
@@ -315,6 +305,7 @@
         }
 
         .poster-wrap {
+            position: relative;
             width: 100px;
             min-width: 100px;
             height: 140px;
@@ -323,7 +314,7 @@
             border-radius: 12px;
         }
 
-        .poster {
+        .poster-wrap img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -331,17 +322,22 @@
         }
 
         .poster-fallback {
-            width: 100%;
-            height: 100%;
-            display: flex;
+            position: absolute;
+            inset: 0;
+            display: none;
             align-items: center;
             justify-content: center;
             text-align: center;
             color: var(--muted);
             font-size: 11px;
             font-weight: 700;
+            letter-spacing: 0.04em;
             padding: 10px;
+            line-height: 1.4;
         }
+
+        .poster-wrap.is-fallback img { display: none; }
+        .poster-wrap.is-fallback .poster-fallback { display: flex; }
 
         .booking-content {
             flex: 1;
@@ -362,6 +358,7 @@
             letter-spacing: -0.01em;
             line-height: 1.35;
             margin-bottom: 6px;
+            overflow-wrap: anywhere;
         }
 
         .booking-code {
@@ -371,7 +368,7 @@
             overflow-wrap: anywhere;
         }
 
-        .status {
+        .badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -382,37 +379,18 @@
             white-space: nowrap;
         }
 
-        .status::before {
+        .badge::before {
             content: "";
-            width: 6px; height: 6px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background: currentColor;
         }
 
-        .status.upcoming {
-            background: var(--info-soft);
-            color: var(--info);
-        }
-
-        .status.completed {
-            background: var(--success-soft);
-            color: #065f46;
-        }
-
-        .status.pending {
-            background: var(--primary-soft);
-            color: var(--primary-ink);
-        }
-
-        .status.cancelled {
-            background: var(--danger-soft);
-            color: #b91c1c;
-        }
-
-        .status.other {
-            background: var(--bg-soft);
-            color: var(--text-soft);
-        }
+        .badge-upcoming  { background: var(--info-soft);    color: var(--info); }
+        .badge-completed { background: var(--success-soft); color: var(--success-ink); }
+        .badge-pending   { background: var(--primary-soft); color: var(--primary-ink); }
+        .badge-cancelled { background: var(--danger-soft);  color: var(--danger-ink); }
 
         .details {
             display: grid;
@@ -468,7 +446,7 @@
             color: var(--muted);
             font-size: 12px;
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .total {
@@ -478,7 +456,7 @@
             letter-spacing: -0.02em;
         }
 
-        .action {
+        .btn-action {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -493,20 +471,19 @@
             transition: transform .2s ease, box-shadow .2s ease;
         }
 
-        .action:hover {
+        .btn-action:hover {
             transform: translateY(-2px);
             box-shadow: 0 14px 28px rgba(245, 158, 11, .32);
         }
 
-        .action.disabled {
+        .btn-action.is-disabled {
             background: var(--bg-soft);
             color: var(--muted);
             box-shadow: none;
-            cursor: default;
             transform: none;
         }
 
-        /* KOSONG */
+        /* ---------- KOSONG ---------- */
 
         .empty {
             background: var(--surface);
@@ -542,7 +519,46 @@
             margin: 0 auto 22px;
         }
 
-        .pagination { margin-top: 24px; }
+        /* ---------- PAGINATION ---------- */
+
+        .pager {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .pager-btn {
+            display: inline-flex;
+            align-items: center;
+            min-height: 42px;
+            padding: 0 16px;
+            background: var(--surface);
+            border: 1px solid var(--border-strong);
+            border-radius: 12px;
+            color: var(--text-soft);
+            font-size: 13px;
+            font-weight: 700;
+            transition: border-color .2s ease, color .2s ease;
+        }
+
+        .pager-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary-ink);
+        }
+
+        .pager-btn.is-disabled {
+            opacity: .45;
+            pointer-events: none;
+        }
+
+        .pager-info {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+        }
 
         footer {
             padding: 28px 24px;
@@ -553,7 +569,7 @@
             font-size: 13px;
         }
 
-        /* RESPONSIVE */
+        /* ---------- RESPONSIVE ---------- */
 
         @media (max-width: 1050px) {
             .stats-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -572,32 +588,56 @@
             .booking-top { flex-direction: column; gap: 10px; }
             .details { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .booking-bottom { align-items: flex-start; flex-direction: column; }
-            .action { width: 100%; }
+            .btn-action { width: 100%; }
         }
 
         @media (max-width: 430px) {
             .booking-card { flex-direction: column; }
             .poster-wrap { width: 100%; min-width: 0; height: 180px; }
-            .details { grid-template-columns: 1fr 1fr; }
         }
 
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { transition-duration: .01ms !important; }
         }
     </style>
-
 </head>
 
 <body>
 
     @include('layouts.partials.public-navbar')
 
+    @php
+        $now = now('Asia/Jakarta');
+
+        $tabs = [
+            'all'       => 'Semua',
+            'upcoming'  => 'Upcoming',
+            'pending'   => 'Pending Payment',
+            'completed' => 'Completed',
+            'cancelled' => 'Cancelled',
+        ];
+
+        $statCards = [
+            'all'       => ['Total Pemesanan',     'Semua transaksi'],
+            'upcoming'  => ['Upcoming',            'Lunas, belum selesai tayang'],
+            'pending'   => ['Pending Payment',     'Menunggu pembayaran'],
+            'completed' => ['Completed',           'Film sudah selesai tayang'],
+            'cancelled' => ['Cancelled / Expired', 'Transaksi tidak aktif'],
+        ];
+
+        $emptyMessages = [
+            'all'       => ['Belum Ada Riwayat Pemesanan', 'Kamu belum memiliki transaksi tiket. Yuk, temukan film favoritmu dan mulai pengalaman menonton bersama CinemaTicket!'],
+            'upcoming'  => ['Belum Ada Tiket Upcoming', 'Kamu belum memiliki tiket lunas untuk jadwal yang akan atau sedang berlangsung.'],
+            'pending'   => ['Tidak Ada Pembayaran Tertunda', 'Semua transaksi pembayaranmu sudah tidak menunggu pembayaran.'],
+            'completed' => ['Belum Ada Riwayat Film Selesai', 'Tiket untuk film yang sudah selesai ditayangkan akan muncul di sini.'],
+            'cancelled' => ['Tidak Ada Transaksi Dibatalkan', 'Kamu belum memiliki transaksi yang dibatalkan atau kedaluwarsa.'],
+        ];
+    @endphp
+
     <main class="container">
 
         {{-- WELCOME --}}
-
         <section class="welcome">
-
             <div class="eyebrow">Customer Dashboard</div>
 
             <h1>Halo, <span>{{ auth()->user()->name }}</span>!</h1>
@@ -607,69 +647,36 @@
                 pantau status pembayaran, dan akses tiket bioskopmu kapan saja melalui akun ini.
             </p>
 
-            <a href="{{ route('home') }}#film" class="welcome-action">
-                Jelajahi Film →
-            </a>
-
+            <a href="{{ route('home') }}#film" class="btn-gradient">Jelajahi Film →</a>
         </section>
 
         {{-- FLASH --}}
-
         @if(session('success'))
-            <div class="alert success">{{ session('success') }}</div>
+            <div class="alert alert-success" role="status">{{ session('success') }}</div>
         @endif
-
         @if(session('error'))
-            <div class="alert error">{{ session('error') }}</div>
+            <div class="alert alert-error" role="alert">{{ session('error') }}</div>
         @endif
-
         @if(session('info'))
-            <div class="alert info">{{ session('info') }}</div>
+            <div class="alert alert-info" role="status">{{ session('info') }}</div>
         @endif
 
         {{-- STATISTIK --}}
-
-        <section class="stats-grid">
-
-            <a href="{{ route('customer.dashboard', ['filter' => 'all']) }}"
-               class="stat-card {{ $filter === 'all' ? 'active' : '' }}">
-                <div class="stat-label">Total Pemesanan</div>
-                <div class="stat-number">{{ $filterCounts['all'] }}</div>
-                <div class="stat-description">Semua transaksi</div>
-            </a>
-
-            <a href="{{ route('customer.dashboard', ['filter' => 'upcoming']) }}"
-               class="stat-card {{ $filter === 'upcoming' ? 'active' : '' }}">
-                <div class="stat-label">Upcoming</div>
-                <div class="stat-number">{{ $filterCounts['upcoming'] }}</div>
-                <div class="stat-description">Akan / sedang tayang</div>
-            </a>
-
-            <a href="{{ route('customer.dashboard', ['filter' => 'pending']) }}"
-               class="stat-card {{ $filter === 'pending' ? 'active' : '' }}">
-                <div class="stat-label">Pending Payment</div>
-                <div class="stat-number">{{ $filterCounts['pending'] }}</div>
-                <div class="stat-description">Menunggu pembayaran</div>
-            </a>
-
-            <a href="{{ route('customer.dashboard', ['filter' => 'completed']) }}"
-               class="stat-card {{ $filter === 'completed' ? 'active' : '' }}">
-                <div class="stat-label">Completed</div>
-                <div class="stat-number">{{ $filterCounts['completed'] }}</div>
-                <div class="stat-description">Film sudah selesai tayang</div>
-            </a>
-
-            <a href="{{ route('customer.dashboard', ['filter' => 'cancelled']) }}"
-               class="stat-card {{ $filter === 'cancelled' ? 'active' : '' }}">
-                <div class="stat-label">Cancelled / Expired</div>
-                <div class="stat-number">{{ $filterCounts['cancelled'] }}</div>
-                <div class="stat-description">Transaksi tidak aktif</div>
-            </a>
-
-        </section>
+        <nav class="stats-grid" aria-label="Filter riwayat pemesanan">
+            @foreach($statCards as $key => [$label, $desc])
+                <a
+                    href="{{ route('customer.dashboard', ['filter' => $key]) }}"
+                    class="stat-card {{ $filter === $key ? 'is-active' : '' }}"
+                    @if($filter === $key) aria-current="true" @endif
+                >
+                    <span class="stat-label">{{ $label }}</span>
+                    <span class="stat-number">{{ $filterCounts[$key] }}</span>
+                    <span class="stat-desc">{{ $desc }}</span>
+                </a>
+            @endforeach
+        </nav>
 
         {{-- RIWAYAT --}}
-
         <section>
 
             <div class="section-heading">
@@ -677,20 +684,14 @@
                 <p>Semua transaksi tiket yang terhubung dengan akunmu.</p>
             </div>
 
-            @php
-                $tabs = [
-                    'all' => 'Semua',
-                    'upcoming' => 'Upcoming',
-                    'pending' => 'Pending Payment',
-                    'completed' => 'Completed',
-                    'cancelled' => 'Cancelled',
-                ];
-            @endphp
-
-            <div class="filter-tabs">
+            <div class="filter-tabs" role="tablist">
                 @foreach($tabs as $key => $label)
-                    <a href="{{ route('customer.dashboard', ['filter' => $key]) }}"
-                       class="filter-tab {{ $filter === $key ? 'active' : '' }}">
+                    <a
+                        href="{{ route('customer.dashboard', ['filter' => $key]) }}"
+                        class="filter-tab {{ $filter === $key ? 'is-active' : '' }}"
+                        role="tab"
+                        aria-selected="{{ $filter === $key ? 'true' : 'false' }}"
+                    >
                         {{ $label }}
                         <span class="filter-count">{{ $filterCounts[$key] }}</span>
                     </a>
@@ -700,66 +701,71 @@
             @forelse($pemesanans as $pemesanan)
 
                 @php
-                    $jadwal = $pemesanan->jadwal;
-                    $film = $jadwal?->film;
-                    $studio = $jadwal?->studio;
+                    $jadwal  = $pemesanan->jadwal;
+                    $film    = $jadwal?->film;
+                    $studio  = $jadwal?->studio;
+                    $seats   = $pemesanan->detailKursis;
+                    $payment = $pemesanan->pembayaran;
 
                     $showEnd = $jadwal
                         ? \Carbon\Carbon::parse($jadwal->tanggal_tayang . ' ' . $jadwal->jam_selesai, 'Asia/Jakarta')
                         : null;
 
-                    $isCompleted = $showEnd ? $showEnd->lt(now('Asia/Jakarta')) : false;
+                    $isEnded = $showEnd ? $showEnd->lt($now) : false;
 
-                    $isPaid = (
-                        $pemesanan->status === 'lunas'
-                        && $pemesanan->pembayaran?->status === 'berhasil'
-                    );
+                    $isPaid = $pemesanan->status === 'lunas'
+                        && $payment?->status === 'berhasil';
 
-                    $category = match($pemesanan->status) {
-                        'lunas' => $isCompleted ? 'completed' : 'upcoming',
-                        'booking' => 'pending',
-                        'dibatalkan', 'kedaluwarsa' => 'cancelled',
-                        default => 'other',
-                    };
+                    if ($pemesanan->status === 'lunas') {
+                        $category = $isEnded ? 'completed' : 'upcoming';
+                    } elseif ($pemesanan->status === 'booking') {
+                        $category = 'pending';
+                    } else {
+                        $category = 'cancelled';
+                    }
 
-                    $categoryLabel = match($category) {
-                        'upcoming' => 'Belum Selesai',
+                    $categoryLabel = [
+                        'upcoming'  => 'Akan Tayang',
                         'completed' => 'Selesai',
-                        'pending' => 'Menunggu Pembayaran',
+                        'pending'   => 'Menunggu Bayar',
                         'cancelled' => 'Tidak Aktif',
-                        default => 'Lainnya',
+                    ][$category];
+
+                    $paymentLabel = match (true) {
+                        $isPaid                                                    => 'Lunas',
+                        $pemesanan->status === 'booking' && $payment?->status === 'gagal' => 'Gagal, coba lagi',
+                        $pemesanan->status === 'booking' && $payment !== null      => 'Menunggu konfirmasi',
+                        $pemesanan->status === 'booking'                           => 'Belum dibayar',
+                        $pemesanan->status === 'dibatalkan'                        => 'Dibatalkan',
+                        default                                                    => 'Kedaluwarsa',
                     };
 
-                    $paymentLabel = match($pemesanan->status) {
-                        'lunas' => 'Lunas',
-                        'booking' => match($pemesanan->pembayaran?->status) {
-                            'gagal' => 'Pembayaran Gagal',
-                            'menunggu' => 'Menunggu Pembayaran',
-                            default => 'Belum Dibayar',
-                        },
-                        'dibatalkan' => 'Dibatalkan',
-                        'kedaluwarsa' => 'Kedaluwarsa',
-                        default => ucfirst($pemesanan->status),
-                    };
+                    $paymentMethod = $payment
+                        ? strtoupper(str_replace('_', ' ', $payment->metode_pembayaran))
+                        : '-';
 
-                    $seatCount = $pemesanan->detailKursis->count();
-                    $paymentMethod = $pemesanan->pembayaran?->metode_pembayaran;
+                    $tanggal = $jadwal
+                        ? \Carbon\Carbon::parse($jadwal->tanggal_tayang)->locale('id')->translatedFormat('l, d M Y')
+                        : '-';
+
+                    $jamTayang = $jadwal
+                        ? substr($jadwal->jam_mulai, 0, 5) . ' - ' . substr($jadwal->jam_selesai, 0, 5) . ' WIB'
+                        : '-';
                 @endphp
 
                 <article class="booking-card">
 
                     <div class="poster-wrap">
-                        @if($film && $film->poster)
+                        @if($film?->poster)
                             <img
                                 src="{{ asset('storage/' . ltrim($film->poster, '/')) }}"
-                                alt="{{ $film->judul }}"
-                                class="poster"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                alt="Poster {{ $film->judul }}"
+                                loading="lazy"
+                                decoding="async"
+                                onerror="this.closest('.poster-wrap').classList.add('is-fallback')"
                             >
-                            <div class="poster-fallback" style="display:none;">CINEMA<br>TICKET</div>
-                        @else
-                            <div class="poster-fallback">CINEMA<br>TICKET</div>
                         @endif
+                        <div class="poster-fallback">CINEMA<br>TICKET</div>
                     </div>
 
                     <div class="booking-content">
@@ -767,26 +773,22 @@
                         <div class="booking-top">
                             <div>
                                 <h3 class="movie-title">{{ $film?->judul ?? 'Film tidak tersedia' }}</h3>
-                                <div class="booking-code">Booking: {{ $pemesanan->kode_booking }}</div>
+                                <div class="booking-code">Kode Booking: {{ $pemesanan->kode_booking }}</div>
                             </div>
 
-                            <span class="status {{ $category }}">{{ $categoryLabel }}</span>
+                            <span class="badge badge-{{ $category }}">{{ $categoryLabel }}</span>
                         </div>
 
                         <div class="details">
 
                             <div class="detail">
                                 <small>Tanggal Tayang</small>
-                                <strong>
-                                    {{ $jadwal
-                                        ? \Carbon\Carbon::parse($jadwal->tanggal_tayang)->locale('id')->translatedFormat('d F Y')
-                                        : '-' }}
-                                </strong>
+                                <strong>{{ $tanggal }}</strong>
                             </div>
 
                             <div class="detail">
                                 <small>Jam Tayang</small>
-                                <strong>{{ $jadwal ? substr($jadwal->jam_mulai, 0, 5) . ' WIB' : '-' }}</strong>
+                                <strong>{{ $jamTayang }}</strong>
                             </div>
 
                             <div class="detail">
@@ -797,7 +799,7 @@
                             <div class="detail">
                                 <small>Nomor Kursi</small>
                                 <div class="seat-list">
-                                    @forelse($pemesanan->detailKursis as $detail)
+                                    @forelse($seats as $detail)
                                         <span class="seat">{{ $detail->no_kursi }}</span>
                                     @empty
                                         <strong>-</strong>
@@ -807,12 +809,12 @@
 
                             <div class="detail">
                                 <small>Jumlah Tiket</small>
-                                <strong>{{ $seatCount }} Tiket</strong>
+                                <strong>{{ $seats->count() }} Tiket</strong>
                             </div>
 
                             <div class="detail">
                                 <small>Metode Pembayaran</small>
-                                <strong>{{ $paymentMethod ? strtoupper(str_replace('_', ' ', $paymentMethod)) : '-' }}</strong>
+                                <strong>{{ $paymentMethod }}</strong>
                             </div>
 
                             <div class="detail">
@@ -822,11 +824,7 @@
 
                             <div class="detail">
                                 <small>Tanggal Pemesanan</small>
-                                <strong>
-                                    {{ $pemesanan->created_at
-                                        ? $pemesanan->created_at->timezone('Asia/Jakarta')->format('d/m/Y H:i')
-                                        : '-' }}
-                                </strong>
+                                <strong>{{ $pemesanan->created_at?->timezone('Asia/Jakarta')->format('d/m/Y H:i') ?? '-' }}</strong>
                             </div>
 
                         </div>
@@ -841,15 +839,15 @@
                             </div>
 
                             @if($isPaid)
-                                <a href="{{ route('booking.tickets.index', $pemesanan->kode_booking) }}" class="action">
+                                <a href="{{ route('booking.tickets.index', $pemesanan->kode_booking) }}" class="btn-action">
                                     Lihat E-Ticket →
                                 </a>
                             @elseif($pemesanan->status === 'booking')
-                                <a href="{{ route('booking.payment.summary', $pemesanan->kode_booking) }}" class="action">
-                                    Lanjutkan Pembayaran →
+                                <a href="{{ route('booking.payment.summary', $pemesanan->kode_booking) }}" class="btn-action">
+                                    {{ $payment?->status === 'gagal' ? 'Coba Bayar Lagi' : 'Lanjutkan Pembayaran' }} →
                                 </a>
-                            @elseif(in_array($pemesanan->status, ['dibatalkan', 'kedaluwarsa']))
-                                <span class="action disabled">Transaksi Tidak Aktif</span>
+                            @else
+                                <span class="btn-action is-disabled">Transaksi Tidak Aktif</span>
                             @endif
 
                         </div>
@@ -861,36 +859,34 @@
             @empty
 
                 <div class="empty">
-
                     <div class="empty-icon">🎬</div>
-
-                    @if($filter === 'all')
-                        <h3>Belum Ada Riwayat Pemesanan</h3>
-                        <p>Kamu belum memiliki transaksi tiket. Yuk, temukan film favoritmu dan mulai pengalaman menonton bersama CinemaTicket!</p>
-                    @elseif($filter === 'upcoming')
-                        <h3>Belum Ada Tiket Upcoming</h3>
-                        <p>Kamu belum memiliki tiket lunas untuk jadwal yang akan atau sedang berlangsung.</p>
-                    @elseif($filter === 'pending')
-                        <h3>Tidak Ada Pembayaran Tertunda</h3>
-                        <p>Semua transaksi pembayaranmu sudah tidak memiliki status menunggu.</p>
-                    @elseif($filter === 'completed')
-                        <h3>Belum Ada Riwayat Film Selesai</h3>
-                        <p>Tiket untuk film yang sudah selesai ditayangkan akan muncul di sini.</p>
-                    @elseif($filter === 'cancelled')
-                        <h3>Tidak Ada Transaksi Dibatalkan</h3>
-                        <p>Kamu belum memiliki transaksi yang dibatalkan atau kedaluwarsa.</p>
-                    @endif
-
-                    <a href="{{ route('home') }}#film" class="action">Jelajahi Film →</a>
-
+                    <h3>{{ $emptyMessages[$filter][0] }}</h3>
+                    <p>{{ $emptyMessages[$filter][1] }}</p>
+                    <a href="{{ route('home') }}#film" class="btn-action">Jelajahi Film →</a>
                 </div>
 
             @endforelse
 
             @if($pemesanans->hasPages())
-                <div class="pagination">
-                    {{ $pemesanans->links() }}
-                </div>
+                <nav class="pager" aria-label="Navigasi halaman">
+
+                    @if($pemesanans->onFirstPage())
+                        <span class="pager-btn is-disabled">← Sebelumnya</span>
+                    @else
+                        <a href="{{ $pemesanans->previousPageUrl() }}" class="pager-btn" rel="prev">← Sebelumnya</a>
+                    @endif
+
+                    <span class="pager-info">
+                        Halaman {{ $pemesanans->currentPage() }} dari {{ $pemesanans->lastPage() }}
+                    </span>
+
+                    @if($pemesanans->hasMorePages())
+                        <a href="{{ $pemesanans->nextPageUrl() }}" class="pager-btn" rel="next">Selanjutnya →</a>
+                    @else
+                        <span class="pager-btn is-disabled">Selanjutnya →</span>
+                    @endif
+
+                </nav>
             @endif
 
         </section>

@@ -5,629 +5,396 @@
 @section('content')
 
 @php
-
     $pemesanan = $pembayaran->pemesanan;
-    $jadwal = $pemesanan->jadwal;
-    $film = $jadwal->film;
-    $studio = $jadwal->studio;
+    $jadwal    = $pemesanan->jadwal;
+    $film      = $jadwal?->film;
+    $studio    = $jadwal?->studio;
+    $kursi     = $pemesanan->detailKursis;
 
-    $metodeLabels = [
+    $methodLabels = [
         'transfer_bank' => 'Transfer Bank',
-        'qris' => 'QRIS',
-        'e_wallet' => 'E-Wallet',
+        'qris'          => 'QRIS',
+        'e_wallet'      => 'E-Wallet',
     ];
 
+    $statusLabels = [
+        'menunggu' => 'Menunggu',
+        'berhasil' => 'Berhasil',
+        'gagal'    => 'Gagal',
+    ];
+
+    $paymentBadge = match ($pembayaran->status) {
+        'berhasil' => 'lunas',
+        'gagal'    => 'dibatalkan',
+        default    => 'booking',
+    };
+
+    $hargaPerTiket = $kursi->isNotEmpty()
+        ? (float) $kursi->first()->harga
+        : (float) ($jadwal?->harga ?? 0);
+
+    $tanggalTayang = $jadwal
+        ? \Carbon\Carbon::parse($jadwal->tanggal_tayang)->locale('id')->translatedFormat('l, d F Y')
+        : '-';
 @endphp
 
-
 <style>
-    .payment-detail-grid {
+    .pay-detail-layout {
         display: grid;
-        grid-template-columns: minmax(0, 1.5fr) minmax(300px, .85fr);
+        grid-template-columns: minmax(0, 1.4fr) minmax(300px, .9fr);
         gap: 20px;
+        align-items: start;
     }
 
-    .payment-detail-column {
+    .pay-detail-stack {
         display: flex;
         flex-direction: column;
         gap: 20px;
         min-width: 0;
     }
 
-    .payment-detail-card {
-        background: white;
-        border: 1px solid #e8edf3;
-        border-radius: 12px;
-        padding: 23px;
+    .pay-card h2 {
+        font-size: var(--fs-md);
+        font-weight: 700;
+        margin-bottom: 4px;
     }
 
-    .payment-detail-card h2 {
-        font-size: 17px;
-        margin-bottom: 20px;
-    }
+    .pay-card .panel-subtitle { margin-bottom: 14px; }
 
-    .payment-info-row {
+    .pay-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 20px;
-        padding: 14px 0;
-        border-bottom: 1px solid #edf0f5;
-        font-size: 12px;
+        gap: 16px;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: var(--fs-sm);
     }
 
-    .payment-info-row:last-child {
-        border-bottom: none;
-    }
+    .pay-row:last-child { border-bottom: none; }
 
-    .payment-info-row span {
-        color: #64748b;
-    }
+    .pay-row span { color: var(--muted); }
 
-    .payment-info-row strong {
-        color: #18243b;
+    .pay-row strong {
+        color: var(--text);
+        font-weight: 600;
         text-align: right;
         overflow-wrap: anywhere;
     }
 
-    .payment-detail-status {
-        display: inline-block;
-        padding: 7px 12px;
-        border-radius: 20px;
-        font-size: 11px;
-        font-weight: bold;
+    .code-chip {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: var(--fs-sm);
+        font-weight: 700;
+        color: var(--info);
+        background: var(--info-soft);
+        padding: 4px 9px;
+        border-radius: var(--radius-sm);
     }
 
-    .payment-menunggu {
-        background: #fff4d8;
-        color: #a36b00;
+    .ref-code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: var(--fs-xs);
+        overflow-wrap: anywhere;
     }
 
-    .payment-berhasil {
-        background: #dcfce7;
-        color: #15803d;
-    }
-
-    .payment-gagal {
-        background: #fee2e2;
-        color: #b91c1c;
-    }
-
-    .payment-total-card {
-        background: #111b31;
-        color: white;
-        border-radius: 12px;
-        padding: 25px;
-    }
-
-    .payment-total-card span {
-        color: #cbd5e1;
-        font-size: 12px;
-    }
-
-    .payment-total-card strong {
-        display: block;
-        color: #f5b942;
-        font-size: 29px;
-        margin-top: 12px;
-    }
-
-    .payment-seat-list {
+    .seat-chips {
         display: flex;
-        justify-content: flex-end;
         flex-wrap: wrap;
-        gap: 6px;
+        gap: 8px;
+        justify-content: flex-end;
     }
 
-    .payment-seat {
-        background: #fff4d8;
-        color: #a36b00;
+    .seat-chip {
+        display: inline-flex;
         padding: 6px 10px;
-        border-radius: 6px;
-        font-size: 11px;
-        font-weight: bold;
+        border-radius: var(--radius-sm);
+        background: var(--primary-soft);
+        color: var(--primary-ink);
+        font-size: var(--fs-xs);
+        font-weight: 800;
     }
 
-    .payment-admin-note {
-        background: #fff8e8;
-        border: 1px solid #f5dfaa;
-        border-radius: 9px;
-        padding: 16px;
-        color: #98701e;
-        font-size: 12px;
-        line-height: 1.7;
+    .amount-total {
+        background: linear-gradient(135deg, #1e293b, #0f172a);
+        color: #fff;
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        box-shadow: var(--shadow-md);
     }
 
-    .payment-admin-note strong {
+    .amount-total span {
+        color: #cbd5e1;
+        font-size: var(--fs-sm);
+    }
+
+    .amount-total strong {
         display: block;
-        margin-bottom: 7px;
+        color: #fbbf24;
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        margin-top: 8px;
     }
 
-    .payment-actions {
+    .amount-total small {
+        display: block;
+        color: #94a3b8;
+        font-size: var(--fs-xs);
+        margin-top: 6px;
+    }
+
+    .status-banner {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 16px;
+        border-radius: var(--radius);
+        font-size: var(--fs-sm);
+        line-height: 1.6;
+        border: 1px solid transparent;
+    }
+
+    .status-banner strong { display: block; margin-bottom: 2px; }
+
+    .status-banner.is-success { background: var(--success-soft); border-color: #a7f3d0; color: #065f46; }
+    .status-banner.is-warning { background: var(--warning-soft); border-color: #fde68a; color: var(--primary-ink); }
+    .status-banner.is-danger  { background: var(--danger-soft);  border-color: #fecaca; color: #991b1b; }
+    .status-banner.is-neutral { background: var(--neutral-soft); border-color: var(--border); color: var(--text-soft); }
+
+    .action-row {
         display: flex;
         gap: 10px;
         flex-wrap: wrap;
-        margin-top: 20px;
     }
 
-    .payment-actions a {
-        display: inline-block;
-        padding: 11px 16px;
-        border-radius: 7px;
-        text-decoration: none;
-        font-size: 12px;
-        font-weight: bold;
+    .action-row > * {
+        flex: 1;
+        min-width: 160px;
+        text-align: center;
     }
 
-    .payment-btn-secondary {
-        background: #e8edf4;
-        color: #334155;
+    .muted-empty {
+        color: var(--muted);
+        font-size: var(--fs-sm);
     }
 
-    .payment-btn-primary {
-        background: #eeb63d;
-        color: #18243b;
-    }
-
-    .payment-btn-ticket {
-        background: #dcfce7;
-        color: #15803d;
-    }
-
-    @media(max-width: 900px) {
-        .payment-detail-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    @media(max-width: 550px) {
-        .payment-info-row {
-            align-items: flex-start;
-            flex-direction: column;
-            gap: 7px;
-        }
-
-        .payment-info-row strong {
-            text-align: left;
-        }
+    @media (max-width: 1100px) {
+        .pay-detail-layout { grid-template-columns: 1fr; }
     }
 </style>
 
 
 {{-- HEADER --}}
-
 <div class="page-heading">
-
     <div>
-
-        <div class="eyebrow">
-            PAYMENT DETAIL
-        </div>
-
+        <div class="eyebrow">Detail Transaksi</div>
         <h1>Detail Pembayaran</h1>
-
         <p>
-            Informasi lengkap transaksi pembayaran CinemaTicket.
+            Referensi pembayaran
+            <span class="code-chip">{{ $pembayaran->kode_referensi ?? 'Belum ada referensi' }}</span>
         </p>
-
     </div>
 
-
-    <a
-        href="{{ route('admin.pembayarans.index') }}"
-        class="btn-secondary"
-    >
-        ← Kembali
-    </a>
-
+    <a href="{{ route('admin.pembayarans.index') }}" class="btn-secondary">← Kembali</a>
 </div>
 
 
-<div class="payment-detail-grid">
-
+<div class="pay-detail-layout">
 
     {{-- KOLOM KIRI --}}
-
-    <div class="payment-detail-column">
-
+    <div class="pay-detail-stack">
 
         {{-- INFORMASI PEMBAYARAN --}}
-
-        <section class="payment-detail-card">
-
+        <section class="table-card pay-card">
             <h2>Informasi Pembayaran</h2>
+            <p class="panel-subtitle">Data transaksi pembayaran yang tercatat sistem.</p>
 
-
-            <div class="payment-info-row">
-
+            <div class="pay-row">
                 <span>Kode Referensi</span>
-
-                <strong>
-                    {{ $pembayaran->kode_referensi ?? '-' }}
-                </strong>
-
+                <strong><span class="ref-code">{{ $pembayaran->kode_referensi ?? '-' }}</span></strong>
             </div>
 
-
-            <div class="payment-info-row">
-
+            <div class="pay-row">
                 <span>Metode Pembayaran</span>
-
-                <strong>
-                    {{ $metodeLabels[$pembayaran->metode_pembayaran]
-                        ?? ucwords(str_replace('_', ' ', $pembayaran->metode_pembayaran)) }}
-                </strong>
-
+                <strong>{{ $methodLabels[$pembayaran->metode_pembayaran] ?? ucfirst($pembayaran->metode_pembayaran) }}</strong>
             </div>
 
-
-            <div class="payment-info-row">
-
-                <span>Status Pembayaran</span>
-
+            <div class="pay-row">
+                <span>Status</span>
                 <strong>
-                    <span class="payment-detail-status payment-{{ $pembayaran->status }}">
-                        {{ ucfirst($pembayaran->status) }}
+                    <span class="status status-{{ $paymentBadge }}">
+                        {{ $statusLabels[$pembayaran->status] ?? ucfirst($pembayaran->status) }}
                     </span>
                 </strong>
-
             </div>
 
-
-            <div class="payment-info-row">
-
-                <span>Jumlah Pembayaran</span>
-
-                <strong>
-                    Rp {{ number_format(
-                        (float) $pembayaran->jumlah_bayar,
-                        0,
-                        ',',
-                        '.'
-                    ) }}
-                </strong>
-
-            </div>
-
-
-            <div class="payment-info-row">
-
+            <div class="pay-row">
                 <span>Waktu Pembayaran</span>
-
                 <strong>
-
-                    @if($pembayaran->waktu_bayar)
-
-                        {{ \Carbon\Carbon::parse(
-                            $pembayaran->waktu_bayar
-                        )->format('d/m/Y H:i') }}
-
-                    @else
-
-                        Belum dibayar
-
-                    @endif
-
+                    {{ $pembayaran->waktu_bayar?->timezone('Asia/Jakarta')->format('d/m/Y H:i') ?? 'Belum dibayar' }}
                 </strong>
-
             </div>
 
-
-            <div class="payment-info-row">
-
+            <div class="pay-row">
                 <span>Tanggal Pencatatan</span>
-
-                <strong>
-                    {{ $pembayaran->created_at->format('d/m/Y H:i') }}
-                </strong>
-
+                <strong>{{ $pembayaran->created_at?->timezone('Asia/Jakarta')->format('d/m/Y H:i') ?? '-' }}</strong>
             </div>
-
         </section>
-
 
         {{-- INFORMASI PEMESAN --}}
-
-        <section class="payment-detail-card">
-
+        <section class="table-card pay-card">
             <h2>Informasi Pemesan</h2>
+            <p class="panel-subtitle">Pemesanan yang terhubung dengan pembayaran ini.</p>
 
-
-            <div class="payment-info-row">
-
+            <div class="pay-row">
                 <span>Kode Booking</span>
-
                 <strong>
-                    {{ $pemesanan->kode_booking }}
+                    <a href="{{ route('admin.pemesanans.show', $pemesanan->id) }}" class="code-link-inline">
+                        {{ $pemesanan->kode_booking }}
+                    </a>
                 </strong>
-
             </div>
 
-
-            <div class="payment-info-row">
-
+            <div class="pay-row">
                 <span>Nama Pemesan</span>
-
-                <strong>
-                    {{ $pemesanan->nama_pemesan }}
-                </strong>
-
+                <strong>{{ $pemesanan->nama_pemesan }}</strong>
             </div>
 
-
-            <div class="payment-info-row">
-
+            <div class="pay-row">
                 <span>Nomor HP</span>
-
-                <strong>
-                    {{ $pemesanan->no_hp }}
-                </strong>
-
+                <strong>{{ $pemesanan->no_hp }}</strong>
             </div>
 
-
-            <div class="payment-info-row">
-
-                <span>Tanggal Booking</span>
-
-                <strong>
-                    {{ $pemesanan->created_at->format('d/m/Y H:i') }}
-                </strong>
-
-            </div>
-
-
-            <div class="payment-info-row">
-
+            <div class="pay-row">
                 <span>Status Pemesanan</span>
-
                 <strong>
-                    {{ ucfirst($pemesanan->status) }}
+                    <span class="status status-{{ $pemesanan->status }}">
+                        {{ ['booking' => 'Menunggu Bayar', 'lunas' => 'Lunas', 'dibatalkan' => 'Dibatalkan', 'kedaluwarsa' => 'Kedaluwarsa'][$pemesanan->status] ?? ucfirst($pemesanan->status) }}
+                    </span>
                 </strong>
-
             </div>
-
         </section>
 
-
         {{-- INFORMASI PENAYANGAN --}}
-
-        <section class="payment-detail-card">
-
+        <section class="table-card pay-card">
             <h2>Informasi Penayangan</h2>
+            <p class="panel-subtitle">Film, jadwal, dan kursi yang dibayar.</p>
 
-
-            <div class="payment-info-row">
-
-                <span>Judul Film</span>
-
-                <strong>
-                    {{ $film->judul }}
-                </strong>
-
+            <div class="pay-row">
+                <span>Film</span>
+                <strong>{{ $film?->judul ?? '-' }}</strong>
             </div>
 
-
-            <div class="payment-info-row">
-
-                <span>Genre</span>
-
-                <strong>
-                    {{ $film->genre }}
-                </strong>
-
-            </div>
-
-
-            <div class="payment-info-row">
-
+            <div class="pay-row">
                 <span>Tanggal Tayang</span>
-
-                <strong>
-                    {{ \Carbon\Carbon::parse(
-                        $jadwal->tanggal_tayang
-                    )->format('d/m/Y') }}
-                </strong>
-
+                <strong>{{ $tanggalTayang }}</strong>
             </div>
 
-
-            <div class="payment-info-row">
-
+            <div class="pay-row">
                 <span>Jam Tayang</span>
-
                 <strong>
-                    {{ substr($jadwal->jam_mulai, 0, 5) }}
-                    -
-                    {{ substr($jadwal->jam_selesai, 0, 5) }}
+                    @if($jadwal)
+                        {{ substr($jadwal->jam_mulai, 0, 5) }} – {{ substr($jadwal->jam_selesai, 0, 5) }} WIB
+                    @else
+                        -
+                    @endif
                 </strong>
-
             </div>
 
-
-            <div class="payment-info-row">
-
+            <div class="pay-row">
                 <span>Studio</span>
-
-                <strong>
-                    {{ $studio->nama }}
-                </strong>
-
+                <strong>{{ $studio?->nama ?? '-' }}{{ $studio ? ' · ' . $studio->tipe : '' }}</strong>
             </div>
 
-
-            <div class="payment-info-row">
-
-                <span>Kursi yang Dipesan</span>
-
-                <strong>
-
-                    <div class="payment-seat-list">
-
-                        @foreach($pemesanan->detailKursis as $detail)
-
-                            <span class="payment-seat">
-                                {{ $detail->no_kursi }}
-                            </span>
-
+            <div class="pay-row">
+                <span>Kursi</span>
+                @if($kursi->isNotEmpty())
+                    <div class="seat-chips">
+                        @foreach($kursi as $detail)
+                            <span class="seat-chip">{{ $detail->no_kursi }}</span>
                         @endforeach
-
                     </div>
-
-                </strong>
-
+                @else
+                    <strong>-</strong>
+                @endif
             </div>
-
-
-            <div class="payment-info-row">
-
-                <span>Jumlah Tiket</span>
-
-                <strong>
-                    {{ $pemesanan->detailKursis->count() }} Tiket
-                </strong>
-
-            </div>
-
         </section>
 
     </div>
 
-
     {{-- KOLOM KANAN --}}
+    <div class="pay-detail-stack">
 
-    <div class="payment-detail-column">
-
-
-        {{-- TOTAL PEMBAYARAN --}}
-
-        <section class="payment-total-card">
-
-            <span>
-                Total Pembayaran
-            </span>
-
-            <strong>
-                Rp {{ number_format(
-                    (float) $pembayaran->jumlah_bayar,
-                    0,
-                    ',',
-                    '.'
-                ) }}
-            </strong>
-
+        {{-- TOTAL --}}
+        <section class="amount-total">
+            <span>Jumlah Pembayaran</span>
+            <strong>Rp {{ number_format((float) $pembayaran->jumlah_bayar, 0, ',', '.') }}</strong>
+            <small>{{ $kursi->count() }} tiket × Rp {{ number_format($hargaPerTiket, 0, ',', '.') }}</small>
         </section>
 
-
-        {{-- STATUS --}}
-
-        <section class="payment-detail-card">
-
+        {{-- STATUS TRANSAKSI --}}
+        <section class="table-card pay-card">
             <h2>Status Transaksi</h2>
 
-            <div style="margin-bottom: 17px;">
-
-                <span class="payment-detail-status payment-{{ $pembayaran->status }}">
-                    {{ ucfirst($pembayaran->status) }}
+            <div style="margin: 12px 0 16px;">
+                <span class="status status-{{ $paymentBadge }}">
+                    {{ $statusLabels[$pembayaran->status] ?? ucfirst($pembayaran->status) }}
                 </span>
-
             </div>
 
+            @switch($pembayaran->status)
+                @case('berhasil')
+                    <div class="status-banner is-success">
+                        <div>
+                            <strong>Pembayaran berhasil</strong>
+                            Pemesanan sudah lunas dan e-ticket tersedia untuk setiap kursi.
+                        </div>
+                    </div>
+                    @break
 
-            @if($pembayaran->status === 'berhasil')
+                @case('gagal')
+                    <div class="status-banner is-danger">
+                        <div>
+                            <strong>Pembayaran gagal</strong>
+                            Transaksi belum berhasil. Customer dapat mencoba kembali.
+                        </div>
+                    </div>
+                    @break
 
-                <div style="color:#15803d;font-size:12px;line-height:1.7;">
-
-                    <strong>✓ Pembayaran Berhasil</strong>
-
-                    <p style="margin-top:8px;">
-                        Transaksi telah berhasil diproses.
-                        Pemesanan berstatus lunas dan e-ticket
-                        tersedia untuk digunakan.
-                    </p>
-
-                </div>
-
-            @elseif($pembayaran->status === 'gagal')
-
-                <div style="color:#b91c1c;font-size:12px;line-height:1.7;">
-
-                    <strong>Pembayaran Gagal</strong>
-
-                    <p style="margin-top:8px;">
-                        Transaksi belum berhasil diproses.
-                        Pengunjung dapat mencoba kembali
-                        proses pembayaran.
-                    </p>
-
-                </div>
-
-            @else
-
-                <div style="color:#a36b00;font-size:12px;line-height:1.7;">
-
-                    <strong>Menunggu Pembayaran</strong>
-
-                    <p style="margin-top:8px;">
-                        Transaksi sudah tercatat, tetapi
-                        pembayaran belum berhasil diselesaikan.
-                    </p>
-
-                </div>
-
-            @endif
-
+                @default
+                    <div class="status-banner is-warning">
+                        <div>
+                            <strong>Menunggu pembayaran</strong>
+                            Metode sudah dipilih, tetapi pembayaran belum diselesaikan.
+                        </div>
+                    </div>
+            @endswitch
         </section>
 
-
-        {{-- INFORMASI ADMIN --}}
-
-        <div class="payment-admin-note">
-
-            <strong>Informasi Administrator</strong>
-
-            Status pembayaran diperbarui secara otomatis
-            berdasarkan hasil proses simulasi pembayaran.
-
-            Halaman ini digunakan untuk memantau informasi
-            dan detail transaksi.
-
-        </div>
-
-
-        {{-- TOMBOL --}}
-
-        <div class="payment-actions">
-
-            <a
-                href="{{ route(
-                    'admin.pemesanans.show',
-                    $pemesanan->id
-                ) }}"
-                class="payment-btn-secondary"
-            >
+        {{-- AKSI --}}
+        <div class="action-row">
+            <a href="{{ route('admin.pemesanans.show', $pemesanan->id) }}" class="btn-secondary">
                 Detail Pemesanan
             </a>
 
-
-            @if(
-                $pemesanan->status === 'lunas'
-                && $pembayaran->status === 'berhasil'
-            )
-
+            @if($pemesanan->status === 'lunas' && $pembayaran->status === 'berhasil')
                 <a
-                    href="{{ route(
-                        'booking.tickets.index',
-                        $pemesanan->kode_booking
-                    ) }}"
-                    class="payment-btn-ticket"
+                    href="{{ route('booking.tickets.index', $pemesanan->kode_booking) }}"
+                    class="btn-primary"
                     target="_blank"
+                    rel="noopener"
                 >
                     Lihat E-Ticket
                 </a>
-
             @endif
+        </div>
 
+        <div class="status-banner is-neutral">
+            <div>
+                <strong>Informasi administrator</strong>
+                Status pembayaran diperbarui otomatis oleh proses pembayaran customer. Halaman ini hanya untuk memantau.
+            </div>
         </div>
 
     </div>

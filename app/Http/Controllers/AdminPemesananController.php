@@ -130,6 +130,7 @@ class AdminPemesananController extends Controller
             'jadwal.film',
             'jadwal.studio',
             'detailKursis',
+            'pembayaran',
         ]);
 
         return view('admin.pemesanans.show', compact(

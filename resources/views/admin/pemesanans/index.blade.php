@@ -1,514 +1,316 @@
 @extends('layouts.admin')
 
-@section('title', 'Manajemen Pemesanan')
+@section('title', 'Manajemen Pembayaran')
 
 @section('content')
 
+@php
+    $statusLabels = [
+        'menunggu' => 'Menunggu',
+        'berhasil' => 'Berhasil',
+        'gagal'    => 'Gagal',
+    ];
+
+    $methodLabels = [
+        'transfer_bank' => 'Transfer Bank',
+        'qris'          => 'QRIS',
+        'e_wallet'      => 'E-Wallet',
+    ];
+
+    $hasFilter = $keyword !== '' || $status !== '';
+@endphp
+
 <style>
-    .order-summary {
+    .payment-summary {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
-        margin-bottom: 25px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 20px;
     }
 
-    .order-stat {
-        background: white;
-        padding: 20px;
-        border: 1px solid #e8edf3;
-        border-radius: 10px;
-    }
+    .payment-summary .order-stat strong { font-size: 25px; }
 
-    .order-stat span {
-        color: #64748b;
-        font-size: 12px;
-    }
+    .payment-summary .order-stat.is-warning strong { color: var(--warning); }
+    .payment-summary .order-stat.is-success strong { color: var(--success); }
+    .payment-summary .order-stat.is-danger  strong { color: var(--danger); }
 
-    .order-stat strong {
-        display: block;
-        font-size: 25px;
-        margin-top: 10px;
-    }
-
-    .filter-form {
-        display: grid;
-        grid-template-columns: 2fr 1fr 1fr auto auto;
-        gap: 10px;
-        margin-top: 22px;
-        align-items: center;
-    }
-
-    .filter-form select,
-    .filter-form input {
-        width: 100%;
-        height: 42px;
-        padding: 0 12px;
-        border: 1px solid #dce3ec;
-        border-radius: 7px;
-        background: white;
-        color: #18243b;
-        font-size: 12px;
-        outline: none;
-    }
-
-    .filter-form input:focus,
-    .filter-form select:focus {
-        border-color: #eeb63d;
-    }
-
-    .filter-button {
-        height: 42px;
-        padding: 0 17px;
-        border: none;
-        border-radius: 7px;
-        background: #eeb63d;
-        color: #18243b;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .reset-button {
-        height: 42px;
+    .revenue-note {
         display: flex;
         align-items: center;
-        justify-content: center;
-        padding: 0 15px;
-        border-radius: 7px;
-        background: #e8edf4;
-        color: #334155;
-        text-decoration: none;
-        font-size: 12px;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 14px 18px;
+        margin-bottom: 20px;
+        background: var(--success-soft);
+        border: 1px solid #a7f3d0;
+        border-radius: var(--radius);
+        color: #065f46;
+        font-size: var(--fs-sm);
     }
 
-    .booking-code {
-        font-weight: bold;
-        color: #1d4ed8;
+    .revenue-note strong {
+        font-size: var(--fs-md);
+        font-weight: 800;
     }
 
-    .customer-name {
-        font-weight: bold;
-        color: #18243b;
-    }
-
-    .customer-phone {
-        color: #94a3b8;
-        font-size: 11px;
-        margin-top: 5px;
-    }
-
-    .film-name {
-        font-weight: bold;
-    }
-
-    .film-date {
-        color: #94a3b8;
-        font-size: 11px;
-        margin-top: 5px;
-    }
-
-    .seat-list {
-        color: #475569;
-        font-size: 11px;
-        white-space: normal;
-        max-width: 140px;
-    }
-
-    .price {
-        font-weight: bold;
+    .payment-table .code-link {
+        color: var(--info);
+        font-weight: 700;
         white-space: nowrap;
     }
 
-    .detail-button {
-        display: inline-block;
-        background: #e0edff;
-        color: #1d4ed8;
-        padding: 8px 12px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 11px;
-        font-weight: bold;
+    .payment-table .code-link:hover { text-decoration: underline; }
+
+    .payment-table .col-muted {
+        color: var(--muted);
+        font-size: var(--fs-xs);
+        margin-top: 4px;
     }
 
-    .detail-button:hover {
-        background: #c9defd;
+    .payment-table .amount {
+        font-weight: 700;
+        white-space: nowrap;
     }
 
-    .order-table th,
-    .order-table td {
-        padding: 15px 11px;
+    .payment-table .ref-code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: var(--fs-xs);
+        color: var(--text-soft);
+        overflow-wrap: anywhere;
     }
 
-    .order-table td {
-        vertical-align: middle;
-    }
-
-    .order-table .empty {
+    .payment-table .empty-state {
         text-align: center;
-        padding: 40px;
+        padding: 48px 16px !important;
     }
 
-    @media(max-width: 1200px) {
-        .filter-form {
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .order-summary {
-            grid-template-columns: repeat(2, 1fr);
-        }
+    .payment-table .empty-state strong {
+        display: block;
+        color: var(--text);
+        font-size: var(--fs-md);
+        margin-bottom: 6px;
     }
 
-    @media(max-width: 700px) {
-        .filter-form {
-            grid-template-columns: 1fr;
-        }
+    .payment-table .empty-state span {
+        color: var(--muted);
+        font-size: var(--fs-sm);
+    }
 
-        .order-summary {
-            grid-template-columns: 1fr 1fr;
-        }
+    .result-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 14px;
+        color: var(--muted);
+        font-size: var(--fs-sm);
+    }
+
+    .result-info strong { color: var(--text); }
+
+    .is-disabled {
+        opacity: .5;
+        pointer-events: none;
+    }
+
+    @media (max-width: 1100px) {
+        .payment-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .payment-table .col-optional { display: none; }
+    }
+
+    @media (max-width: 640px) {
+        .payment-summary { grid-template-columns: 1fr 1fr; gap: 10px; }
     }
 </style>
 
 
 {{-- HEADER --}}
-
 <div class="page-heading">
-
     <div>
+        <div class="eyebrow">Manajemen Transaksi</div>
+        <h1>Manajemen Pembayaran</h1>
+        <p>Pantau seluruh pembayaran tiket yang tercatat di CinemaTicket.</p>
+    </div>
+</div>
 
-        <div class="eyebrow">TRANSACTION MANAGEMENT</div>
 
-        <h1>Manajemen Pemesanan</h1>
+{{-- RINGKASAN --}}
+<div class="payment-summary" aria-label="Ringkasan status pembayaran">
 
-        <p>
-            Kelola dan pantau seluruh transaksi pemesanan tiket CinemaTicket.
-        </p>
+    <div class="order-stat">
+        <span>Total Pembayaran</span>
+        <strong>{{ number_format($stats['total']) }}</strong>
+    </div>
 
+    <div class="order-stat is-warning">
+        <span>Menunggu</span>
+        <strong>{{ number_format($stats['menunggu']) }}</strong>
+    </div>
+
+    <div class="order-stat is-success">
+        <span>Berhasil</span>
+        <strong>{{ number_format($stats['berhasil']) }}</strong>
+    </div>
+
+    <div class="order-stat is-danger">
+        <span>Gagal</span>
+        <strong>{{ number_format($stats['gagal']) }}</strong>
     </div>
 
 </div>
 
-
-{{-- NOTIFIKASI --}}
-
-@if(session('success'))
-
-    <div class="alert-success">
-        {{ session('success') }}
-    </div>
-
-@endif
-
-@if(session('error'))
-
-    <div class="alert-error">
-        {{ session('error') }}
-    </div>
-
-@endif
-
-
-{{-- RINGKASAN TRANSAKSI --}}
-
-<div class="order-summary">
-
-    <div class="order-stat">
-
-        <span>Total Pemesanan</span>
-
-        <strong>
-            {{ number_format($statusCounts->sum()) }}
-        </strong>
-
-    </div>
-
-    <div class="order-stat">
-
-        <span>Menunggu Pembayaran</span>
-
-        <strong style="color:#b88620;">
-            {{ number_format($statusCounts->get('booking', 0)) }}
-        </strong>
-
-    </div>
-
-    <div class="order-stat">
-
-        <span>Sudah Lunas</span>
-
-        <strong style="color:#15803d;">
-            {{ number_format($statusCounts->get('lunas', 0)) }}
-        </strong>
-
-    </div>
-
-    <div class="order-stat">
-
-        <span>Dibatalkan / Kedaluwarsa</span>
-
-        <strong style="color:#b91c1c;">
-            {{ number_format(
-                $statusCounts->get('dibatalkan', 0) +
-                $statusCounts->get('kedaluwarsa', 0)
-            ) }}
-        </strong>
-
-    </div>
-
+<div class="revenue-note">
+    <span>Total nominal pembayaran yang berhasil</span>
+    <strong>Rp {{ number_format((float) $stats['nominal_berhasil'], 0, ',', '.') }}</strong>
 </div>
 
 
-{{-- TABEL PEMESANAN --}}
-
+{{-- TABEL --}}
 <div class="table-card">
 
-    <div class="crud-toolbar">
-
-        <div>
-
-            <h2 style="font-size:17px;">
-                Daftar Transaksi Pemesanan
-            </h2>
-
-            <p class="panel-subtitle">
-                Seluruh transaksi booking yang tersimpan dalam database.
-            </p>
-
-        </div>
-
-    </div>
-
+    <h2>Daftar Transaksi Pembayaran</h2>
+    <p class="panel-subtitle">Seluruh pembayaran yang telah tercatat dalam database.</p>
 
     {{-- FILTER --}}
-
     <form
-        action="{{ route('admin.pemesanans.index') }}"
+        action="{{ route('admin.pembayarans.index') }}"
         method="GET"
         class="filter-form"
+        role="search"
     >
-
+        <label for="q" class="visually-hidden">Cari pembayaran</label>
         <input
-            type="text"
-            name="cari"
-            placeholder="Cari kode booking, nama, HP, atau film..."
-            value="{{ request('cari') }}"
+            type="search"
+            id="q"
+            name="q"
+            value="{{ $keyword }}"
+            placeholder="Cari kode booking, pemesan, HP, film, atau referensi..."
+            maxlength="100"
         >
 
-        <select name="status">
-
+        <label for="status" class="visually-hidden">Filter status pembayaran</label>
+        <select id="status" name="status">
             <option value="">Semua Status</option>
-
-            <option value="booking"
-                {{ request('status') === 'booking' ? 'selected' : '' }}>
-                Booking
-            </option>
-
-            <option value="lunas"
-                {{ request('status') === 'lunas' ? 'selected' : '' }}>
-                Lunas
-            </option>
-
-            <option value="dibatalkan"
-                {{ request('status') === 'dibatalkan' ? 'selected' : '' }}>
-                Dibatalkan
-            </option>
-
-            <option value="kedaluwarsa"
-                {{ request('status') === 'kedaluwarsa' ? 'selected' : '' }}>
-                Kedaluwarsa
-            </option>
-
+            @foreach($statusLabels as $value => $label)
+                <option value="{{ $value }}" @selected($status === $value)>{{ $label }}</option>
+            @endforeach
         </select>
 
-
-        <input
-            type="date"
-            name="tanggal"
-            value="{{ request('tanggal') }}"
-            title="Filter tanggal penayangan"
-        >
-
-
-        <button type="submit" class="filter-button">
-            Cari
-        </button>
-
+        <button type="submit" class="filter-button">Cari</button>
 
         <a
-            href="{{ route('admin.pemesanans.index') }}"
-            class="reset-button"
+            href="{{ route('admin.pembayarans.index') }}"
+            class="reset-button {{ $hasFilter ? '' : 'is-disabled' }}"
+            @unless($hasFilter) aria-disabled="true" tabindex="-1" @endunless
         >
             Reset
         </a>
-
     </form>
 
+    {{-- INFO HASIL --}}
+    @if($pembayarans->total() > 0)
+        <div class="result-info">
+            <span>
+                Menampilkan
+                <strong>{{ $pembayarans->firstItem() }}–{{ $pembayarans->lastItem() }}</strong>
+                dari
+                <strong>{{ number_format($pembayarans->total()) }}</strong>
+                pembayaran
+            </span>
 
-    {{-- DATA TRANSAKSI --}}
+            @if($hasFilter)
+                <span>Filter aktif</span>
+            @endif
+        </div>
+    @endif
 
+    {{-- DATA --}}
     <div class="table-wrap">
 
-        <table class="order-table">
+        <table class="payment-table">
 
             <thead>
-
                 <tr>
-
-                    <th>KODE BOOKING</th>
-
-                    <th>PEMESAN</th>
-
-                    <th>FILM</th>
-
-                    <th>JADWAL</th>
-
-                    <th>KURSI</th>
-
-                    <th>TOTAL</th>
-
-                    <th>STATUS</th>
-
-                    <th>AKSI</th>
-
+                    <th>Kode Booking</th>
+                    <th>Pemesan</th>
+                    <th class="col-optional">Film</th>
+                    <th>Metode</th>
+                    <th>Jumlah</th>
+                    <th class="col-optional">Kode Referensi</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
                 </tr>
-
             </thead>
-
 
             <tbody>
 
-                @forelse($pemesanans as $pemesanan)
+                @forelse($pembayarans as $pembayaran)
+
+                    @php
+                        $pemesanan = $pembayaran->pemesanan;
+                    @endphp
 
                     <tr>
 
                         {{-- KODE BOOKING --}}
-
                         <td>
-
-                            <span class="booking-code">
+                            <a
+                                href="{{ route('admin.pemesanans.show', $pemesanan->id) }}"
+                                class="code-link"
+                            >
                                 {{ $pemesanan->kode_booking }}
-                            </span>
-
-                            <div class="film-date">
-                                {{ $pemesanan->created_at?->format('d/m/Y H:i') }}
+                            </a>
+                            <div class="col-muted">
+                                {{ $pembayaran->created_at?->format('d/m/Y H:i') ?? '-' }}
                             </div>
-
                         </td>
-
 
                         {{-- PEMESAN --}}
-
                         <td>
-
-                            <div class="customer-name">
-                                {{ $pemesanan->nama_pemesan }}
-                            </div>
-
-                            <div class="customer-phone">
-                                {{ $pemesanan->no_hp }}
-                            </div>
-
+                            <div class="customer-name">{{ $pemesanan->nama_pemesan }}</div>
+                            <div class="customer-phone">{{ $pemesanan->no_hp }}</div>
                         </td>
-
 
                         {{-- FILM --}}
-
-                        <td>
-
-                            <div class="film-name">
-                                {{ $pemesanan->jadwal?->film?->judul ?? '-' }}
-                            </div>
-
-                            <div class="film-date">
-                                {{ $pemesanan->jadwal?->studio?->nama ?? '-' }}
-                            </div>
-
+                        <td class="col-optional">
+                            <div class="film-name">{{ $pemesanan->jadwal?->film?->judul ?? '-' }}</div>
                         </td>
 
-
-                        {{-- JADWAL --}}
-
+                        {{-- METODE --}}
                         <td>
-
-                            @if($pemesanan->jadwal)
-
-                                <div>
-                                    {{ \Carbon\Carbon::parse(
-                                        $pemesanan->jadwal->tanggal_tayang
-                                    )->format('d M Y') }}
-                                </div>
-
-                                <div class="film-date">
-                                    {{ date(
-                                        'H:i',
-                                        strtotime($pemesanan->jadwal->jam_mulai)
-                                    ) }}
-                                </div>
-
-                            @else
-
-                                -
-
-                            @endif
-
+                            {{ $methodLabels[$pembayaran->metode_pembayaran] ?? ucfirst($pembayaran->metode_pembayaran) }}
                         </td>
 
-
-                        {{-- KURSI --}}
-
+                        {{-- JUMLAH --}}
                         <td>
-
-                            <div class="seat-list">
-
-                                {{ $pemesanan->detailKursis
-                                    ->pluck('no_kursi')
-                                    ->implode(', ') ?: '-' }}
-
-                            </div>
-
-                        </td>
-
-
-                        {{-- TOTAL --}}
-
-                        <td>
-
-                            <span class="price">
-                                Rp {{ number_format(
-                                    (float) $pemesanan->total_harga,
-                                    0,
-                                    ',',
-                                    '.'
-                                ) }}
+                            <span class="amount">
+                                Rp {{ number_format((float) $pembayaran->jumlah_bayar, 0, ',', '.') }}
                             </span>
-
                         </td>
 
+                        {{-- REFERENSI --}}
+                        <td class="col-optional">
+                            <span class="ref-code">{{ $pembayaran->kode_referensi ?? '-' }}</span>
+                        </td>
 
                         {{-- STATUS --}}
-
                         <td>
-
-                            <span class="status status-{{ $pemesanan->status }}">
-                                {{ ucfirst($pemesanan->status) }}
+                            <span class="status status-{{ $pembayaran->status === 'berhasil' ? 'lunas' : ($pembayaran->status === 'gagal' ? 'dibatalkan' : 'booking') }}">
+                                {{ $statusLabels[$pembayaran->status] ?? ucfirst($pembayaran->status) }}
                             </span>
-
                         </td>
 
-
                         {{-- AKSI --}}
-
                         <td>
-
                             <a
-                                href="{{ route(
-                                    'admin.pemesanans.show',
-                                    $pemesanan->id
-                                ) }}"
+                                href="{{ route('admin.pembayarans.show', $pembayaran->id) }}"
                                 class="detail-button"
+                                aria-label="Lihat detail pembayaran {{ $pemesanan->kode_booking }}"
                             >
                                 Detail
                             </a>
-
                         </td>
 
                     </tr>
@@ -516,13 +318,15 @@
                 @empty
 
                     <tr>
-
-                        <td colspan="8" class="empty">
-
-                            Belum ada transaksi pemesanan yang ditemukan.
-
+                        <td colspan="8" class="empty-state">
+                            @if($hasFilter)
+                                <strong>Tidak ada pembayaran yang cocok</strong>
+                                <span>Coba ubah kata kunci atau filter, lalu cari kembali.</span>
+                            @else
+                                <strong>Belum ada data pembayaran</strong>
+                                <span>Pembayaran akan tercatat setelah customer memilih metode pembayaran.</span>
+                            @endif
                         </td>
-
                     </tr>
 
                 @endforelse
@@ -533,14 +337,28 @@
 
     </div>
 
-
     {{-- PAGINATION --}}
+    @if($pembayarans->hasPages())
+        <nav class="pagination-wrap" aria-label="Navigasi halaman">
 
-    <div class="pagination-wrap">
+            @if($pembayarans->onFirstPage())
+                <span class="pagination-disabled">← Sebelumnya</span>
+            @else
+                <a href="{{ $pembayarans->previousPageUrl() }}" rel="prev">← Sebelumnya</a>
+            @endif
 
-        {{ $pemesanans->links() }}
+            <span>
+                Halaman {{ $pembayarans->currentPage() }} dari {{ $pembayarans->lastPage() }}
+            </span>
 
-    </div>
+            @if($pembayarans->hasMorePages())
+                <a href="{{ $pembayarans->nextPageUrl() }}" rel="next">Selanjutnya →</a>
+            @else
+                <span class="pagination-disabled">Selanjutnya →</span>
+            @endif
+
+        </nav>
+    @endif
 
 </div>
 
