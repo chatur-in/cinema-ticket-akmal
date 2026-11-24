@@ -5,94 +5,66 @@
 @section('content')
 
 @php
-    $studioSort = request('studio_sort');
-
-    $nextStudioSort = $studioSort === 'asc'
-        ? 'desc'
-        : 'asc';
+    $cari        = request('search', '');
+    $statusF     = request('status', '');
+    $studioSort  = request('studio_sort');
+    $nextSort    = $studioSort === 'asc' ? 'desc' : 'asc';
+    $sortIcon    = $studioSort === 'asc' ? '↑' : ($studioSort === 'desc' ? '↓' : '↕');
+    $hasFilter   = $cari !== '' || $statusF !== '';
 @endphp
 
 <div class="page-heading">
     <div>
-        <div class="eyebrow">MANAJEMEN DATA</div>
+        <div class="eyebrow">Manajemen Data</div>
         <h1>Jadwal Tayang</h1>
         <p>Kelola jadwal penayangan film di seluruh studio.</p>
     </div>
+
+    <a href="{{ route('admin.jadwals.create') }}" class="btn-primary">+ Tambah Jadwal</a>
 </div>
 
-{{-- Notifikasi sukses --}}
 @if(session('success'))
-    <div class="alert-success">
-        {{ session('success') }}
-    </div>
+    <div class="alert-success" role="status">{{ session('success') }}</div>
 @endif
 
-{{-- Notifikasi error --}}
 @if(session('error'))
-    <div class="alert-error">
-        {{ session('error') }}
-    </div>
+    <div class="alert-error" role="alert">{{ session('error') }}</div>
 @endif
 
-{{-- Toolbar pencarian dan filter --}}
-<div class="crud-toolbar">
-
-    <form action="{{ route('admin.jadwals.index') }}" method="GET">
-
-        <input
-            type="text"
-            name="search"
-            class="search-input"
-            placeholder="Cari judul film atau studio..."
-            value="{{ request('search') }}"
-        >
-
-        <select name="status" class="search-input">
-
-            <option value="">
-                Semua Status
-            </option>
-
-            <option
-                value="aktif"
-                @selected(request('status') === 'aktif')
-            >
-                Aktif
-            </option>
-
-            <option
-                value="dibatalkan"
-                @selected(request('status') === 'dibatalkan')
-            >
-                Dibatalkan
-            </option>
-
-        </select>
-
-        <button type="submit" class="btn-secondary">
-            Filter
-        </button>
-
-    </form>
-
-    <a
-        href="{{ route('admin.jadwals.create') }}"
-        class="btn-primary"
-    >
-        + Tambah Jadwal
-    </a>
-
-</div>
-
-
-{{-- Tabel jadwal --}}
 <div class="table-card">
 
-    <h2>Daftar Jadwal Tayang</h2>
+    <div class="crud-toolbar">
+        <div>
+            <h2>Daftar Jadwal Tayang</h2>
+            <p class="panel-subtitle">Total {{ number_format($jadwals->total()) }} jadwal terdaftar.</p>
+        </div>
 
-    <p class="panel-subtitle">
-        Total {{ $jadwals->total() }} jadwal terdaftar.
-    </p>
+        <form action="{{ route('admin.jadwals.index') }}" method="GET" role="search">
+            <label for="search" class="visually-hidden">Cari film atau studio</label>
+            <input
+                type="search"
+                id="search"
+                name="search"
+                class="search-input"
+                placeholder="Cari judul film atau studio..."
+                value="{{ $cari }}"
+                maxlength="100"
+            >
+
+            <label for="status" class="visually-hidden">Filter status jadwal</label>
+            <select id="status" name="status" class="search-input">
+                <option value="">Semua Status</option>
+                <option value="aktif" @selected($statusF === 'aktif')>Aktif</option>
+                <option value="dibatalkan" @selected($statusF === 'dibatalkan')>Dibatalkan</option>
+            </select>
+
+            <button type="submit" class="btn-secondary">Filter</button>
+
+            @if($hasFilter)
+                <a href="{{ route('admin.jadwals.index') }}" class="btn-secondary">Reset</a>
+            @endif
+        </form>
+    </div>
 
     <div class="table-wrap">
 
@@ -100,65 +72,21 @@
 
             <thead>
                 <tr>
-
-                    {{-- Kolom Film --}}
-                    <th>FILM</th>
-
-                    {{-- Kolom Studio: Sorting ASC / DESC --}}
+                    <th>Film</th>
                     <th>
                         <a
-                            href="{{ request()->fullUrlWithQuery([
-                                'studio_sort' => $nextStudioSort,
-                                'page' => null
-                            ]) }}"
-                            style="
-                                color: inherit;
-                                text-decoration: none;
-                                cursor: pointer;
-                                display: inline-flex;
-                                align-items: center;
-                                gap: 5px;
-                            "
-                            title="Klik untuk mengurutkan studio"
+                            href="{{ request()->fullUrlWithQuery(['studio_sort' => $nextSort, 'page' => null]) }}"
+                            class="sort-link {{ $studioSort ? 'is-active' : '' }}"
+                            title="Urutkan berdasarkan studio"
                         >
-
-                            STUDIO
-
-                            @if($studioSort === 'asc')
-                                <span style="color: #F5B82E;">↑</span>
-                            @elseif($studioSort === 'desc')
-                                <span style="color: #F5B82E;">↓</span>
-                            @else
-                                <span style="color: #94A3B8;">↕</span>
-                            @endif
-
+                            Studio <span>{{ $sortIcon }}</span>
                         </a>
                     </th>
-
-                    {{-- Kolom Tanggal: Terlama ke Terbaru --}}
-                    <th>
-                        TANGGAL
-                        <span style="color: #16A34A;">↑</span>
-                    </th>
-
-                    {{-- Kolom Jam: Paling Awal ke Paling Akhir --}}
-                    <th>
-                        JAM MULAI
-                        <span style="color: #16A34A;">↑</span>
-                    </th>
-
-                    {{-- Kolom Jam Selesai --}}
-                    <th>JAM SELESAI</th>
-
-                    {{-- Kolom Harga --}}
-                    <th>HARGA TIKET</th>
-
-                    {{-- Kolom Status --}}
-                    <th>STATUS</th>
-
-                    {{-- Kolom Aksi --}}
-                    <th>AKSI</th>
-
+                    <th>Tanggal</th>
+                    <th>Jam Tayang</th>
+                    <th>Harga</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
 
@@ -168,91 +96,56 @@
 
                     <tr>
 
-                        {{-- Nama Film --}}
                         <td>
-                            <strong>
-                                {{ $jadwal->film->judul ?? '-' }}
-                            </strong>
+                            <span class="row-title">{{ $jadwal->film?->judul ?? '-' }}</span>
                         </td>
 
-                        {{-- Nama Studio --}}
+                        <td>{{ $jadwal->studio?->nama ?? '-' }}</td>
+
                         <td>
-                            {{ $jadwal->studio->nama ?? '-' }}
+                            {{ \Carbon\Carbon::parse($jadwal->tanggal_tayang)->locale('id')->translatedFormat('d M Y') }}
                         </td>
 
-                        {{-- Tanggal Tayang --}}
                         <td>
-                            {{ \Carbon\Carbon::parse($jadwal->tanggal_tayang)->translatedFormat('d M Y') }}
+                            {{ substr($jadwal->jam_mulai, 0, 5) }}
+                            &ndash;
+                            {{ substr($jadwal->jam_selesai, 0, 5) }}
                         </td>
 
-                        {{-- Jam Mulai --}}
                         <td>
-                            {{ date('H:i', strtotime($jadwal->jam_mulai)) }}
+                            <strong>Rp {{ number_format((float) $jadwal->harga, 0, ',', '.') }}</strong>
                         </td>
 
-                        {{-- Jam Selesai --}}
                         <td>
-                            {{ date('H:i', strtotime($jadwal->jam_selesai)) }}
-                        </td>
-
-                        {{-- Harga Tiket --}}
-                        <td>
-                            Rp {{ number_format((float) $jadwal->harga, 0, ',', '.') }}
-                        </td>
-
-                        {{-- Status Jadwal --}}
-                        <td>
-
                             @if($jadwal->status === 'aktif')
-
-                                <span class="pill pill-green">
-                                    Aktif
-                                </span>
-
+                                <span class="pill pill-green">Aktif</span>
                             @else
-
-                                <span class="pill pill-gray">
-                                    Dibatalkan
-                                </span>
-
+                                <span class="pill pill-gray">Dibatalkan</span>
                             @endif
-
                         </td>
 
-                        {{-- Aksi --}}
                         <td>
-
                             <div class="table-actions">
 
-                                {{-- Edit --}}
                                 <a
                                     href="{{ route('admin.jadwals.edit', $jadwal->id) }}"
                                     class="btn-edit"
+                                    aria-label="Edit jadwal {{ $jadwal->film?->judul ?? '' }}"
                                 >
                                     Edit
                                 </a>
 
-                                {{-- Hapus --}}
                                 <form
                                     action="{{ route('admin.jadwals.destroy', $jadwal->id) }}"
                                     method="POST"
-                                    onsubmit="return confirm('Yakin ingin menghapus jadwal ini?')"
+                                    onsubmit="return confirm('Yakin ingin menghapus jadwal ini? Jadwal yang sudah memiliki pemesanan tidak dapat dihapus.')"
                                 >
-
                                     @csrf
                                     @method('DELETE')
-
-                                    <button
-                                        type="submit"
-                                        class="btn-danger"
-                                    >
-                                        Hapus
-                                    </button>
-
+                                    <button type="submit" class="btn-danger">Hapus</button>
                                 </form>
 
                             </div>
-
                         </td>
 
                     </tr>
@@ -260,11 +153,15 @@
                 @empty
 
                     <tr>
-
-                        <td colspan="8" class="empty">
-                            Belum ada jadwal penayangan.
+                        <td colspan="7" class="empty">
+                            @if($hasFilter)
+                                <strong>Jadwal tidak ditemukan</strong>
+                                <span>Coba ubah kata kunci atau filter status.</span>
+                            @else
+                                <strong>Belum ada jadwal penayangan</strong>
+                                <span>Tambahkan jadwal setelah film dan studio tersedia.</span>
+                            @endif
                         </td>
-
                     </tr>
 
                 @endforelse
@@ -275,10 +172,7 @@
 
     </div>
 
-    {{-- Pagination --}}
-    <div class="pagination-wrap">
-        {{ $jadwals->links() }}
-    </div>
+    @include('admin.partials.pagination', ['paginator' => $jadwals])
 
 </div>
 

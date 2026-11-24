@@ -4,49 +4,58 @@
 
 @section('content')
 
+@php
+    $cari      = request('search', '');
+    $hasSearch = $cari !== '';
+@endphp
+
 <div class="page-heading">
     <div>
-        <div class="eyebrow">MANAJEMEN DATA</div>
+        <div class="eyebrow">Manajemen Data</div>
         <h1>Data Film</h1>
-        <p>Kelola seluruh informasi film CinemaTicket.</p>
+        <p>Kelola film yang tayang dan tidak tayang di CinemaTicket.</p>
     </div>
+
+    <a href="{{ route('admin.films.create') }}" class="btn-primary">+ Tambah Film</a>
 </div>
 
 @if(session('success'))
-    <div class="alert-success">{{ session('success') }}</div>
+    <div class="alert-success" role="status">{{ session('success') }}</div>
 @endif
 
 @if(session('error'))
-    <div class="alert-error">{{ session('error') }}</div>
+    <div class="alert-error" role="alert">{{ session('error') }}</div>
 @endif
-
-<div class="crud-toolbar">
-
-    <form action="{{ route('admin.films.index') }}" method="GET">
-        <input
-            type="text"
-            name="search"
-            class="search-input"
-            placeholder="Cari judul atau genre film..."
-            value="{{ request('search') }}"
-        >
-        <button type="submit" class="btn-secondary">
-            Cari
-        </button>
-    </form>
-
-    <a href="{{ route('admin.films.create') }}" class="btn-primary">
-        + Tambah Film
-    </a>
-
-</div>
 
 <div class="table-card">
 
-    <h2>Daftar Film</h2>
-    <p class="panel-subtitle">
-        Total {{ $films->total() }} film terdaftar.
-    </p>
+    <div class="crud-toolbar">
+        <div>
+            <h2>Daftar Film</h2>
+            <p class="panel-subtitle">
+                Total {{ number_format($films->total()) }} film
+                @if($hasSearch) &middot; hasil pencarian "{{ $cari }}" @endif
+            </p>
+        </div>
+
+        <form action="{{ route('admin.films.index') }}" method="GET" role="search">
+            <label for="search" class="visually-hidden">Cari film</label>
+            <input
+                type="search"
+                id="search"
+                name="search"
+                class="search-input"
+                placeholder="Cari judul atau genre..."
+                value="{{ $cari }}"
+                maxlength="100"
+            >
+            <button type="submit" class="btn-secondary">Cari</button>
+
+            @if($hasSearch)
+                <a href="{{ route('admin.films.index') }}" class="btn-secondary">Reset</a>
+            @endif
+        </form>
+    </div>
 
     <div class="table-wrap">
 
@@ -54,13 +63,13 @@
 
             <thead>
                 <tr>
-                    <th>POSTER</th>
-                    <th>JUDUL FILM</th>
-                    <th>GENRE</th>
-                    <th>DURASI</th>
-                    <th>RATING</th>
-                    <th>STATUS</th>
-                    <th>AKSI</th>
+                    <th>Poster</th>
+                    <th>Judul Film</th>
+                    <th>Genre</th>
+                    <th>Durasi</th>
+                    <th>Rating</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
 
@@ -69,27 +78,32 @@
                 @forelse($films as $film)
 
                     <tr>
+
                         <td>
                             @if($film->poster)
                                 <img
-                                    src="{{ asset('storage/'.$film->poster) }}"
+                                    src="{{ asset('storage/' . $film->poster) }}"
                                     class="poster-thumb"
-                                    alt="{{ $film->judul }}"
+                                    alt="Poster {{ $film->judul }}"
+                                    loading="lazy"
+                                    decoding="async"
                                 >
                             @else
-                                <span>-</span>
+                                <span class="poster-thumb-empty" aria-label="Poster belum tersedia">🎬</span>
                             @endif
                         </td>
 
                         <td>
-                            <strong>{{ $film->judul }}</strong>
+                            <span class="row-title">{{ $film->judul }}</span>
                         </td>
 
                         <td>{{ $film->genre }}</td>
 
                         <td>{{ $film->durasi_menit }} menit</td>
 
-                        <td>{{ $film->rating_usia }}</td>
+                        <td>
+                            <span class="pill pill-gray">{{ $film->rating_usia }}</span>
+                        </td>
 
                         <td>
                             @if($film->status === 'tayang')
@@ -105,6 +119,7 @@
                                 <a
                                     href="{{ route('admin.films.edit', $film->id) }}"
                                     class="btn-edit"
+                                    aria-label="Edit film {{ $film->judul }}"
                                 >
                                     Edit
                                 </a>
@@ -112,25 +127,35 @@
                                 <form
                                     action="{{ route('admin.films.destroy', $film->id) }}"
                                     method="POST"
-                                    onsubmit="return confirm('Yakin ingin menghapus film ini?')"
+                                    onsubmit="return confirm('Yakin ingin menghapus film ini? Film yang masih memiliki jadwal tidak dapat dihapus.')"
                                 >
                                     @csrf
                                     @method('DELETE')
-
-                                    <button type="submit" class="btn-danger">
+                                    <button
+                                        type="submit"
+                                        class="btn-danger"
+                                        aria-label="Hapus film {{ $film->judul }}"
+                                    >
                                         Hapus
                                     </button>
                                 </form>
 
                             </div>
                         </td>
+
                     </tr>
 
                 @empty
 
                     <tr>
                         <td colspan="7" class="empty">
-                            Belum ada data film.
+                            @if($hasSearch)
+                                <strong>Film tidak ditemukan</strong>
+                                <span>Tidak ada film yang cocok dengan "{{ $cari }}".</span>
+                            @else
+                                <strong>Belum ada data film</strong>
+                                <span>Tambahkan film pertama untuk mulai membuat jadwal.</span>
+                            @endif
                         </td>
                     </tr>
 
@@ -142,9 +167,7 @@
 
     </div>
 
-    <div class="pagination-wrap">
-        {{ $films->links() }}
-    </div>
+    @include('admin.partials.pagination', ['paginator' => $films])
 
 </div>
 
